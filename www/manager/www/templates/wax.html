@@ -1,0 +1,98 @@
+<ion-view>
+  <ion-content>
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>Process</h3>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        
+        <div class="row">
+          <div class="col-md-6 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2>Wax <small>Input Wax</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="{{ordershow}}" ng-click="trigorder()"></i></a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Settings 1</a>
+                      </li>
+                      <li><a href="#">Settings 2</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
+                  </li>
+                </ul>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <div class="profile_img">
+                  <div id="crop-avatar">
+                    <!-- Current avatar -->
+                    <img ng-show="selor.picture !== undefined" class="img-responsive avatar-view" src="{{ selor.picture }}">
+                  </div>
+                </div>
+                <br />
+                <form class="form-horizontal form-label-left input_mask">
+                  <div ng-hide="!sorder" class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Order</label>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                      <select class="select2_single form-control" tabindex="-1" ng-model="selor" ng-options="transaction.kode for transaction in transactions | orderBy:'kode'">
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" class="form-control has-feedback-left" id="inputSuccess4" placeholder="Tanggal Mulai" ng-click="openDatePicker()" ng-model="OrderDate | date">
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+
+                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" class="form-control" id="inputSuccess5" placeholder="Tanggal Selesai" ng-click="DeadlinePicker()" ng-model="DeadlineDate | date">
+                    <span class="fa fa-calendar form-control-feedback right" aria-hidden="true"></span>
+                  </div>
+
+                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" class="form-control has-feedback-left" id="inputSuccess3" placeholder="Product" ng-model="selor.product" disabled>
+                    <span class="fa fa-diamond form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+
+                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <select class="select2_single form-control" tabindex="-1" ng-model="selpic" ng-options="contact.fullname for contact in contacts | orderBy:'fullname'">
+                      </select>
+                    <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="col-md-3 col-sm-3 col-xs-12 control-label">Approve?
+                    </label>
+
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" class="flat" ng-model="pesanan.express">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ln_solid"></div>
+                  <div class="form-group">
+                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                      <button type="submit" class="btn btn-primary" ng-click="cancelOrder(pesanan, selor, selpic)">Cancel</button>
+                      <button type="submit" class="btn btn-success" ng-click="createOrder(pesanan, selor, selpic)">Submit</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

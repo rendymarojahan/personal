@@ -1,0 +1,74 @@
+<ion-view>
+  <ion-content>
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>Setting Sank Cost</h3>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        
+        <div class="row">
+          <div class="col-md-6 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2>Sank Cost Form <small>setting</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Settings 1</a>
+                      </li>
+                      <li><a href="#">Settings 2</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
+                  </li>
+                </ul>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <!-- start form for validation -->
+                <form >
+                  <label>Sank Cost * :</label>
+                  <input type="text" class="form-control" ng-model="setting.sank" required />
+
+                  <label>Process:</label>
+                  <br>
+                    <div class="icheckbox_flat-green {{casting}}" style="position: relative;">
+                      <input type="checkbox" name="hobbies[]" id="hobby1" value="ski" data-parsley-mincheck="2" required class="flat" style="position: absolute; opacity: 0;" ng-model="setting.process"/> 
+                      <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);" ng-click="trigcasting()"></ins>
+                    </div>
+                    Casting
+                    <br>
+                    
+                    <div class="icheckbox_flat-green {{transfering}}" style="position: relative;">
+                      <input type="checkbox" name="hobbies[]" id="hobby1" value="ski" data-parsley-mincheck="2" required class="flat" style="position: absolute; opacity: 0;" ng-model="setting.process"/> 
+                      <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);" ng-click="trigtransfer()"></ins>
+                    </div>
+                    Transfer Bahan
+                    <br>
+
+                    <div class="icheckbox_flat-green {{inventoring}}" style="position: relative;">
+                      <input type="checkbox" name="hobbies[]" id="hobby1" value="ski" data-parsley-mincheck="2" required class="flat" style="position: absolute; opacity: 0;" ng-model="setting.process"/> 
+                      <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);" ng-click="triginventor()"></ins>
+                    </div>
+                    Inventory Uses
+                    <br>
+                    
+                    <br>
+                    <span class="btn btn-primary" ng-click="createSank(setting)">Submit</span>
+
+                </form>
+                <!-- end form for validations -->
+
+              </div>
+            </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

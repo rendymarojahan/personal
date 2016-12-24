@@ -1,0 +1,79 @@
+<ion-view>
+  <ion-content>
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>Inventory Uses</h3>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        
+        <div class="row">
+          <div class="col-md-6 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2>Inventory Uses Form <small>add New Uses</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Settings 1</a>
+                      </li>
+                      <li><a href="#">Settings 2</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
+                  </li>
+                </ul>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <div class="profile_img">
+                  <div id="crop-avatar">
+                    <!-- Current avatar -->
+                    <img ng-show="selinven.picture !== undefined" class="img-responsive avatar-view" src="{{ selinven.picture }}">
+                  </div>
+                </div>
+                <br>
+                
+                <!-- start form for validation -->
+                <form >
+                  <label>Number * :</label>
+                  <input type="text" class="form-control" ng-model="uses.number" required />
+
+                  <label for="stock">Inventory Stock * :</label>
+                  <input type="tel" class="form-control" ng-model="selinven.stock" required disabled/>
+                  
+
+                  <div class="form-group">
+                    <label>Inventory * :</label>
+                    <div>
+                      <select class="select2_single form-control" tabindex="-1" ng-model="selinven" ng-options="inventory.name for inventory in inventories | orderBy:'name'">
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>PIC * :</label>
+                    <div>
+                      <select class="select2_single form-control" tabindex="-1" ng-model="selpic" ng-options="contact.fullname for contact in contacts | orderBy:'fullname'">
+                      </select>
+                    </div>
+                  </div>
+                    
+                    <br>
+                    <span class="btn btn-primary" ng-click="createUses(uses,selinven, selpic)">Submit</span>
+
+                </form>
+                <!-- end form for validations -->
+
+              </div>
+            </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
