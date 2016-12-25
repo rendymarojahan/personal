@@ -67,7 +67,7 @@
   </ion-side-menu-content>
 
   <ion-side-menu side="left" width="230">
-    <a menu-close ng-click="login()" class="site_title"><i class="fa fa-paw"></i> <span>Inspire</span></a>
+    <a menu-close ng-click="login()" class="site_title"><i class="fa fa-paw"></i> <span>Web Manager</span></a>
     <ion-content>
       <div class="profile">
         <div class="profile_pic">
@@ -88,57 +88,24 @@
             <li ng-click="trighome()" class="{{home}}"><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_menu" style={{homeshow}}>
                 <li><a menu-close href="#/app/dashboard/{{userid}}/{{level}}">Dashboard</a></li>
-                <li><a menu-close href="#/app/dashboard/{{userid}}/{{level}}">Dashboard2</a></li>
-                <li><a menu-close href="#/app/dashboard/{{userid}}/{{level}}">Dashboard3</a></li>
+                <li><a menu-close href="#/app/profile">Profile</a></li>
               </ul>
             </li>
-            <li ng-click="trigorder()" class="{{order}}"><a><i class="fa fa-edit"></i> Order <span class="fa fa-chevron-down"></span></a>
-              <ul class="nav child_menu" style={{ordershow}}>
-                <li><a menu-close href="#/app/order">Order</a></li>
-                <li><a href="form_advanced.html">Price Calculator</a></li>
-              </ul>
-            </li>
-            <li ng-click="trigprod()" class="{{prod}}"><a><i class="fa fa-desktop"></i> Production <span class="fa fa-chevron-down"></span></a>
-              <ul class="nav child_menu" style={{prodshow}}>
-                <li><a menu-close href="#/app/dimension">3D</a></li>
-                <li><a menu-close href="#/app/wax">Wax</a></li>
-                <li><a menu-close href="#/app/casting">Casting</a></li>
-                <li><a menu-close href="#/app/finishing">Finishing</a></li>
-                <li><a menu-close href="#/app/setting">Setting</a></li>
-                <li><a menu-close href="#/app/polishing">Polishing</a></li>
-                <li><a menu-close href="#/app/chrome">Chrome</a></li>
-              </ul>
-            </li>
-            <li ng-click="triginven()" class="{{inven}}"><a><i class="fa fa-table"></i> Inventory Uses <span class="fa fa-chevron-down"></span></a>
-              <ul class="nav child_menu" style={{invenshow}}>
-                <li><a menu-close href="#/app/inventoryuses/">Inventory Uses</a></li>
-                <li><a menu-close href="#/app/transferbahan/">Transfer Bahan</a></li>
-              </ul>
-            </li>
-            <li ng-click="trigpurc()" class="{{purc}}"><a><i class="fa fa-bar-chart-o"></i> Purchasing <span class="fa fa-chevron-down"></span></a>
-              <ul class="nav child_menu" style={{purcshow}}>
-                <li><a menu-close href="#/app/addmaterial">Raw Material</a></li>
-                <li><a menu-close href="#/app/addinventory">Inventory</a></li>
-              </ul>
-            </li>
-            <li ng-click="trigmast()" class="{{mast}}"><a><i class="fa fa-clone"></i>Master Data <span class="fa fa-chevron-down"></span></a>
+            <li ng-click="trigmast()" class="{{mast}}"><a><i class="fa fa-clone"></i>Content <span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_menu" style={{mastshow}}>
-                <li><a menu-close href="#/app/employee/">Employee</a></li>
-                <li><a menu-close href="#/app/addinventory">Inventory</a></li>
-                <li><a menu-close href="#/app/addmaterial">Raw Material</a></li>
+                <li><a menu-close href="#/app/addproject">Project</a></li>
+                <li><a menu-close href="#/app/addblog">Blog</a></li>
+                <li><a menu-close href="#/app/addcarrier/">Carrier</a></li>
+                <li><a menu-close href="#/app/addoverview">Overview</a></li>
                 <li><a menu-close href="#/app/registration">User</a></li>
-                <li><a menu-close href="#/app/addproduct/">Product</a></li>
               </ul>
             </li>
             <li ng-click="trigsett()" class="{{sett}}"><a><i class="fa fa-clone"></i>Setting <span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_menu" style={{settshow}}>
-                <li><a menu-close href="#/app/price/">Price</a></li>
-                <li><a menu-close href="#/app/susut/">Jatah Susut</a></li>
-                <li><a menu-close href="#/app/contact">Employee</a></li>
-                <li><a menu-close href="#/app/sankcost/">Sank Cost</a></li>
-                <li><a menu-close href="#/app/material">Raw Material</a></li>
-                <li><a menu-close href="#/app/inventory">Inventory</a></li>
-                <li><a menu-close href="#/app/product">Product</a></li>
+                <li><a menu-close href="#/app/project">Project</a></li>
+                <li><a menu-close href="#/app/blog">Blog</a></li>
+                <li><a menu-close href="#/app/carrier">Carrier</a></li>
+                <li><a menu-close href="#/app/overview">Overview</a></li>
               </ul>
             </li>
           </ul>

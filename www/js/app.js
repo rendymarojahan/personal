@@ -70,11 +70,11 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   })
 
-  .state('app.carier', {
-    url: '/carier',
+  .state('app.carrier', {
+    url: '/carrier',
     views: {
       'menuContent': {
-        templateUrl: 'templates/carier.html'
+        templateUrl: 'templates/carrier.html'
       }
     }
   })

@@ -4,7 +4,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Employee Master</h3>
+            <h3>Inventory Master</h3>
           </div>
         </div>
         <div class="clearfix"></div>
@@ -14,29 +14,22 @@
             <div class="x_panel">
               <div class="x_content">
                 <div class="row">
-                    <div class="col-md-4 col-sm-4 col-xs-12 profile_details" ng-repeat="contact in contacts | orderBy:'-fullname'">
+                    <div class="col-md-4 col-sm-4 col-xs-12 profile_details" ng-repeat="inventory in inventories | orderBy:'name'">
                       <div class="well profile_view">
                         <div class="col-sm-12">
-                          <h4 class="brief"><i>{{contact.title}}</i></h4>
+                          <h4 class="brief"><i>{{inventory.name}}</i></h4>
                           <div class="left col-xs-7">
-                            <h2>{{contact.fullname}}</h2>
-                            <p><strong>Sex: </strong> {{contact.gender}} </p>
-                            <ul class="list-unstyled">
-                              <li><i class="fa fa-building"></i> Address: {{contact.address}}</li>
-                              <li><i class="fa fa-phone"></i> Phone #: {{contact.phone}}</li>
-                            </ul>
+                            <h2><strong>Stock: </strong> {{inventory.stock}}</h2>
+                            <p><strong>Harga: </strong> {{inventory.harga}} </p>
                           </div>
                           <div class="right col-xs-5 text-center">
-                            <img src="{{contact.picture}}" alt="" class="img-circle img-responsive">
+                            <img src="{{inventory.picture}}" alt="" class="img-circle img-responsive">
                           </div>
                         </div>
                         <div class="col-xs-12 bottom text-center">
                           <div class="col-xs-12 col-sm-6 emphasis">
-                            <button type="button" class="btn btn-success btn-xs">
-                              <i class="fa fa-user"> </i> {{contact.status}}
-                            </button>
-                            <button type="button" class="btn btn-primary btn-xs" ng-click="edit(contact)">
-                              <i class="fa fa-user"> </i> Edit Employee
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="edit(inventory)">
+                              <i class="fa fa-gears"> </i> Edit Inventory
                             </button>
                           </div>
                         </div>

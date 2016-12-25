@@ -1,7 +1,7 @@
 angular.module('starter.services', [])
 
 .factory('Auth', function ($firebaseAuth) {
-        return $firebaseAuth(fb);
+        return $firebaseAuth(firebase.auth());
 })
 
 .factory('myCache', function ($cacheFactory) {
@@ -11,6 +11,7 @@ angular.module('starter.services', [])
 })
 
 .factory('MembersFactory', function ($firebaseArray, $q, myCache, $timeout) {
+        var fb = firebase.database().ref();
         var ref = fb.child("users");
         var mRef = {};
         var members = {};
@@ -60,6 +61,7 @@ angular.module('starter.services', [])
 })
 
 .factory('TransactionFactory', function ($firebaseArray, $q, myCache, CurrentUserService, $timeout) {
+        var fb = firebase.database().ref();
         var ref = {};
         var transactionsRef = {};
         var ordersRef = {};
@@ -103,6 +105,7 @@ angular.module('starter.services', [])
 })
 
 .factory('MasterFactory', function ($firebaseArray, $q, myCache, CurrentUserService) {
+        var fb = firebase.database().ref();
         var ref = {};
         var materialsRef = {};
         var inventoriesRef = {};
@@ -214,6 +217,7 @@ angular.module('starter.services', [])
 })
 
 .factory('ContactsFactory', function ($firebaseArray, $q, myCache, MembersFactory, CurrentUserService) {
+        var fb = firebase.database().ref();
         var ref = {};
         var contactsRef = {};
         var eRef = fb.child("employees");
@@ -240,6 +244,7 @@ angular.module('starter.services', [])
 })
 
 .factory('AccountsFactory', function ($firebaseArray, $q, myCache, MembersFactory, CurrentUserService, $timeout) {
+        var fb = firebase.database().ref();
         var ref = {};
         var usersRef = {};
         var uRef = fb.child("users");

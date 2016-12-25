@@ -4,7 +4,7 @@
       <div class="">
         <div class="page-title">
           <div class="title_left">
-            <h3>Inventory Uses</h3>
+            <h3>Inventory</h3>
           </div>
         </div>
         <div class="clearfix"></div>
@@ -13,7 +13,7 @@
           <div class="col-md-6 col-xs-12">
             <div class="x_panel">
               <div class="x_title">
-                <h2>Inventory Uses Form <small>add New Uses</small></h2>
+                <h2>Inventory <small>add New</small></h2>
                 <ul class="nav navbar-right panel_toolbox">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>
@@ -35,38 +35,27 @@
                 <div class="profile_img">
                   <div id="crop-avatar">
                     <!-- Current avatar -->
-                    <img ng-show="selinven.picture !== undefined" class="img-responsive avatar-view" src="{{ selinven.picture }}">
+                    <img ng-show="item.photo !== undefined" class="img-responsive avatar-view" src="{{ item.photo }}">
                   </div>
                 </div>
                 <br>
-                
+
                 <!-- start form for validation -->
                 <form >
-                  <label>Number * :</label>
-                  <input type="text" class="form-control" ng-model="uses.number" required />
+                  <label>Nama * :</label>
+                  <input type="text" class="form-control" ng-model="inventory.name" required />
 
-                  <label for="stock">Inventory Stock * :</label>
-                  <input type="tel" class="form-control" ng-model="selinven.stock" required disabled/>
-                  
+                  <label for="jumlah">Jumlah * :</label>
+                  <input type="text" class="form-control" ng-model="inventory.jumlah" required />
 
-                  <div class="form-group">
-                    <label>Inventory * :</label>
-                    <div>
-                      <select class="select2_single form-control" tabindex="-1" ng-model="selinven" ng-options="inventory.name for inventory in inventories | orderBy:'name'">
-                      </select>
-                    </div>
-                  </div>
+                  <label for="harga">Harga * :</label>
+                  <input type="tel" class="form-control" ng-model="inventory.harga" required />
 
-                  <div class="form-group">
-                    <label>PIC * :</label>
-                    <div>
-                      <select class="select2_single form-control" tabindex="-1" ng-model="selpic" ng-options="contact.fullname for contact in contacts | orderBy:'fullname'">
-                      </select>
-                    </div>
-                  </div>
+                  <label for="picture">Picture * :</label>
+                  <input ng-click="takepic()" type="file" id="nameImg" ng-model="inventory.picture" required>
                     
                     <br>
-                    <span class="btn btn-primary" ng-click="createUses(uses,selinven, selpic)">Submit</span>
+                    <span class="btn btn-primary" ng-click="createInventory(inventory)">Submit</span>
 
                 </form>
                 <!-- end form for validations -->
