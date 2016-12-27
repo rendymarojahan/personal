@@ -995,42 +995,44 @@ angular.module('starter.controllers', [])
       var ref = TransactionFactory.ovRef();
       var newChildRef = ref.push($scope.temp);
       $scope.idov = newChildRef.key;
-      var index;
+      $scope.datai = [];
+      $scope.datat = [];
+      $scope.dataf = [];
       /* SAVE INFO DATA */
-      for (index = 0; index < informations.length; ++index) {
-          //
-          var ref = TransactionFactory.ovRef();
-          var information = informations[index];
-          var info = "info"+index;
-          $scope.data = {
-              info: information.isi.$id,
-              value: information.value
+      angular.forEach(informations, function (information) {
+          if (information.isi.$id !== "") {
+              $scope.data = {
+                  info: information.isi.$id,
+                  value: information.value
+              }
+              $scope.datai.push($scope.data);
           }
-          var infoRef = ref.child($scope.idov).child("infos");
-          infoRef.update($scope.data);
-      }
-      for (index = 0; index < tages.length; ++index) {
-          //
-          var ref = TransactionFactory.ovRef();
-          var tage = tages[index];
-          var tag = "tag"+index;
-          $scope.data = {
-              tag: tage.isi.$id
+      })
+      angular.forEach(tages, function (tage) {
+          if (tage.isi.$id !== "") {
+              $scope.data = {
+                  tag: tage.isi.$id
+              }
+              $scope.datat.push($scope.data);
           }
-          var tagRef = ref.child($scope.idov).child("tags");
-          tagRef.update($scope.data);
-      }
-      for (index = 0; index < features.length; ++index) {
-          //
-          var ref = TransactionFactory.ovRef();
-          var featur = features[index];
-          var feature = "feature"+index;
-          $scope.data = {
-              feature: featur.isi.$id
+      })
+      angular.forEach(features, function (featur) {
+          if (featur.isi.$id !== "") {
+              $scope.data = {
+                  feature: featur.isi.$id
+              }
+              $scope.dataf.push($scope.data);
           }
-          var featRef = ref.child($scope.idov).child("features");
-          featRef.update($scope.data);
-      }
+      })
+
+      var infoRef = ref.child($scope.idov).child("infos");
+      infoRef.set($scope.datai);
+
+      var tagRef = ref.child($scope.idov).child("tags");
+      tagRef.set($scope.datat);
+
+      var featRef = ref.child($scope.idov).child("features");
+      featRef.set($scope.dataf);
 
       $ionicLoading.hide();
       refresh($scope.overview, $scope);
