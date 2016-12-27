@@ -66,6 +66,7 @@ angular.module('starter.services', [])
         var transactionsRef = {};
         var ordersRef = {};
         var tRef = fb.child("transactions").child("orders");
+        var ovRef = fb.child("overviews");
         return {
             ref: function () {
                 ref = fb.child("publics").child(thisPublicId).child(thisUserId);
@@ -73,6 +74,9 @@ angular.module('starter.services', [])
             },
             tRef: function () {
                 return tRef;
+            },
+            ovRef: function () {
+                return ovRef;
             },
             getTransactions: function () {
                 ref = fb.child("transactions").child("orders").orderByChild('kode');
@@ -108,6 +112,9 @@ angular.module('starter.services', [])
         var fb = firebase.database().ref();
         var ref = {};
         var materialsRef = {};
+        var informationsRef = {};
+        var featuresRef = {};
+        var tagsRef = {};
         var inventoriesRef = {};
         var productsRef = {};
         var pricesRef = {};
@@ -115,7 +122,9 @@ angular.module('starter.services', [])
         var sanksRef = {};
         var sankcostRef = {};
         var raws = {};
-        var mRef = fb.child("master").child("material");
+        var miRef = fb.child("master").child("infos");
+        var mfRef = fb.child("master").child("features");
+        var mtRef = fb.child("master").child("tags");
         var iRef = fb.child("master").child("inventory");
         var pRef = fb.child("master").child("product");
         var prRef = fb.child("master").child("price");
@@ -126,8 +135,14 @@ angular.module('starter.services', [])
                 ref = fb.child("publics").child(thisPublicId).child(thisUserId);
                 return ref;
             },
-            mRef: function () {
-                return mRef;
+            miRef: function () {
+                return miRef;
+            },
+            mfRef: function () {
+                return mfRef;
+            },
+            mtRef: function () {
+                return mtRef;
             },
             iRef: function () {
                 return iRef;
@@ -152,6 +167,31 @@ angular.module('starter.services', [])
             getMaterial: function (materialid) {
                 var thisMaterial = materialsRef.$getRecord(materialid);
                 return thisMaterial;
+            },
+            getInformations: function () {
+                ref = fb.child("master").child("infos").orderByChild('title');
+                informationsRef = $firebaseArray(ref);
+                return informationsRef;
+            },
+            getInformation: function (informationid) {
+                var thisInformation = informationsRef.$getRecord(informationid);
+                return thisInformation;
+            },
+            getFeatures: function () {
+                ref = fb.child("master").child("features").orderByChild('title');
+                featuresRef = $firebaseArray(ref);
+                return featuresRef;
+            },getFeature: function (featureid) {
+                var thisFeature = featuresRef.$getRecord(featureid);
+                return thisFeature;
+            },
+            getTags: function () {
+                ref = fb.child("master").child("tags").orderByChild('title');
+                tagsRef = $firebaseArray(ref);
+                return tagsRef;
+            },getTag: function (tagid) {
+                var thisTag = tagsRef.$getRecord(tagid);
+                return thisTag;
             },
             getInventories: function () {
                 ref = fb.child("master").child("inventory").orderByChild('name');

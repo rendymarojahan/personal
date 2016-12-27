@@ -63,44 +63,14 @@ angular.module('starter.controllers', [])
         $scope.homeshow = "display: none;";
     }
   };
-  $scope.order = "";
-  $scope.trigorder = function() {
-    if ($scope.order === "") {
-        $scope.order = "active";
-        $scope.ordershow = "display: block;";
-    } else if ($scope.order === "active") {
-        $scope.order = "";
-        $scope.ordershow = "display: none;";
-    }
-  };
-  $scope.prod = "";
-  $scope.trigprod = function() {
-    if ($scope.prod === "") {
-        $scope.prod = "active";
-        $scope.prodshow = "display: block;";
-    } else if ($scope.prod === "active") {
-        $scope.prod = "";
-        $scope.prodshow = "display: none;";
-    }
-  };
-  $scope.inven = "";
-  $scope.triginven = function() {
-    if ($scope.inven === "") {
-        $scope.inven = "active";
-        $scope.invenshow = "display: block;";
-    } else if ($scope.inven === "active") {
-        $scope.inven = "";
-        $scope.invenshow = "display: none;";
-    }
-  };
-  $scope.purc = "";
-  $scope.trigpurc = function() {
-    if ($scope.purc === "") {
-        $scope.purc = "active";
-        $scope.purcshow = "display: block;";
-    } else if ($scope.purc === "active") {
-        $scope.purc = "";
-        $scope.purcshow = "display: none;";
+  $scope.cont = "";
+  $scope.trigcont = function() {
+    if ($scope.cont === "") {
+        $scope.cont = "active";
+        $scope.contshow = "display: block;";
+    } else if ($scope.cont === "active") {
+        $scope.cont = "";
+        $scope.contshow = "display: none;";
     }
   };
   $scope.mast = "";
@@ -497,6 +467,402 @@ angular.module('starter.controllers', [])
   };
 })
 
+.controller('infoCtrl', function($scope, $state, $ionicLoading, MasterFactory, $ionicPopup, myCache) {
+
+  $scope.informations = [];
+
+  $scope.informations = MasterFactory.getInformations();
+  $scope.informations.$loaded().then(function (x) {
+    refresh($scope.informations, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    refresh($scope.informations, $scope);
+  });
+
+  $scope.edit = function(item) {
+    $state.go('app.editinfo', { informationId: item.$id });
+  };
+
+  function refresh(informations, $scope, item) {
+  }
+})
+
+.controller('addinfoCtrl', function($scope, $state, $ionicLoading, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+
+  $scope.info = {'title': '','icon': ''};
+
+  $scope.createInformation = function (info) {
+
+      // Validate form data
+      if (typeof info.title === 'undefined' || info.title === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter title"
+          return;
+      }
+      if (typeof info.icon === 'undefined' || info.icon === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter icon"
+          return;
+      }
+
+      $ionicLoading.show({
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
+      });
+
+      /* PREPARE DATA FOR FIREBASE*/
+      $scope.temp = {
+          title: info.title,
+          icon: info.icon,
+          addedby: CurrentUserService.fullname,
+          datecreated: Date.now(),
+          dateupdated: Date.now()
+      }
+
+      /* SAVE MEMBER DATA */
+      var ref = MasterFactory.miRef();
+      ref.push($scope.temp);
+
+      $ionicLoading.hide();
+      refresh($scope.info, $scope);
+  };
+
+  function refresh(info, $scope, item) {
+
+    $scope.info = {'title': '','icon': ''};
+  }
+})
+
+.controller('editinfoCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+
+  $scope.information = {'title': '','icon': ''};
+  $scope.inEditMode = false;
+  var getinformation = MasterFactory.getInformation($stateParams.informationId);
+
+  if ($stateParams.informationId === '') {
+      //
+      // Create Material
+      //
+  } else {
+      //
+      // Edit Material
+      //
+      var getinformation = MasterFactory.getInformation($stateParams.informationId);
+      $scope.inEditMode = true;
+      $scope.information = getinformation;
+  }
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    $scope.information = getinformation;
+  });
+
+  $scope.editInformation = function () {
+
+      // Validate form data
+      if (typeof $scope.information.title === 'undefined' || $scope.information.title === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter title"
+          return;
+      }
+      if (typeof $scope.information.icon === 'undefined' || $scope.information.icon === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter icon"
+          return;
+      }
+
+      $ionicLoading.show({
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Editing...'
+      });
+
+      /* PREPARE DATA FOR FIREBASE*/
+      $scope.temp = {
+          title: $scope.information.title,
+          icon: $scope.information.icon,
+          addedby: CurrentUserService.fullname,
+          dateupdated: Date.now()
+      }
+
+      /* SAVE MATERIAL DATA */
+      var informationref = MasterFactory.miRef();
+      var newData = informationref.child($stateParams.informationId);
+      newData.update($scope.temp, function (ref) {
+      });
+
+      $scope.temp = {};
+      $ionicLoading.hide();
+      refresh($scope.information, $scope.temp, $scope);
+      $ionicHistory.goBack();
+  };
+
+  function refresh(temp, information, $scope, item) {
+
+    $scope.information = {'title': '','icon': ''};
+    $scope.temp = {};
+  }
+})
+
+.controller('tagCtrl', function($scope, $state, $ionicLoading, MasterFactory, $ionicPopup, myCache) {
+
+  $scope.tags = [];
+
+  $scope.tags = MasterFactory.getTags();
+  $scope.tags.$loaded().then(function (x) {
+    refresh($scope.tags, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    refresh($scope.tags, $scope);
+  });
+
+  $scope.edit = function(item) {
+    $state.go('app.edittag', { tagId: item.$id });
+  };
+
+  function refresh(tags, $scope, item) {
+  }
+})
+
+.controller('addtagCtrl', function($scope, $state, $ionicLoading, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+
+  $scope.tag = {'title': ''};
+
+  $scope.createTag = function (tag) {
+
+      // Validate form data
+      if (typeof tag.title === 'undefined' || tag.title === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter title"
+          return;
+      }
+
+      $ionicLoading.show({
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
+      });
+
+      /* PREPARE DATA FOR FIREBASE*/
+      $scope.temp = {
+          title: tag.title,
+          addedby: CurrentUserService.fullname,
+          datecreated: Date.now(),
+          dateupdated: Date.now()
+      }
+
+      /* SAVE MEMBER DATA */
+      var ref = MasterFactory.mtRef();
+      ref.push($scope.temp);
+
+      $ionicLoading.hide();
+      refresh($scope.tag, $scope);
+  };
+
+  function refresh(tag, $scope, item) {
+
+    $scope.tag = {'title': ''};
+  }
+})
+
+.controller('edittagCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+
+  $scope.tag = {'title': ''};
+  $scope.inEditMode = false;
+  var gettag = MasterFactory.getTag($stateParams.tagId);
+
+  if ($stateParams.tagId === '') {
+      //
+      // Create Material
+      //
+  } else {
+      //
+      // Edit Material
+      //
+      var gettag = MasterFactory.getTag($stateParams.tagId);
+      $scope.inEditMode = true;
+      $scope.tag = gettag;
+  }
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    $scope.tag = gettag;
+  });
+
+  $scope.editTag = function () {
+
+      // Validate form data
+      if (typeof $scope.tag.title === 'undefined' || $scope.tag.title === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter title"
+          return;
+      }
+
+      $ionicLoading.show({
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Editing...'
+      });
+
+      /* PREPARE DATA FOR FIREBASE*/
+      $scope.temp = {
+          title: $scope.tag.title,
+          addedby: CurrentUserService.fullname,
+          dateupdated: Date.now()
+      }
+
+      /* SAVE MATERIAL DATA */
+      var tagref = MasterFactory.mtRef();
+      var newData = tagref.child($stateParams.tagId);
+      newData.update($scope.temp, function (ref) {
+      });
+
+      $scope.temp = {};
+      $ionicLoading.hide();
+      refresh($scope.tag, $scope.temp, $scope);
+      $ionicHistory.goBack();
+  };
+
+  function refresh(temp, feature, $scope, item) {
+
+    $scope.feature = {'title': ''};
+    $scope.temp = {};
+  }
+})
+
+.controller('featureCtrl', function($scope, $state, $ionicLoading, MasterFactory, $ionicPopup, myCache) {
+
+  $scope.features = [];
+
+  $scope.features = MasterFactory.getFeatures();
+  $scope.features.$loaded().then(function (x) {
+    refresh($scope.features, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    refresh($scope.features, $scope);
+  });
+
+  $scope.edit = function(item) {
+    $state.go('app.editfeature', { featureId: item.$id });
+  };
+
+  function refresh(features, $scope, item) {
+  }
+})
+
+.controller('addfeatureCtrl', function($scope, $state, $ionicLoading, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+
+  $scope.feature = {'title': '','icon': ''};
+
+  $scope.createFeature = function (feature) {
+
+      // Validate form data
+      if (typeof feature.title === 'undefined' || feature.title === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter title"
+          return;
+      }
+      if (typeof feature.icon === 'undefined' || feature.icon === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter icon"
+          return;
+      }
+
+      $ionicLoading.show({
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
+      });
+
+      /* PREPARE DATA FOR FIREBASE*/
+      $scope.temp = {
+          title: feature.title,
+          icon: feature.icon,
+          addedby: CurrentUserService.fullname,
+          datecreated: Date.now(),
+          dateupdated: Date.now()
+      }
+
+      /* SAVE MEMBER DATA */
+      var ref = MasterFactory.mfRef();
+      ref.push($scope.temp);
+
+      $ionicLoading.hide();
+      refresh($scope.feature, $scope);
+  };
+
+  function refresh(feature, $scope, item) {
+
+    $scope.feature = {'title': '','icon': ''};
+  }
+})
+
+.controller('editfeatureCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+
+  $scope.feature = {'title': '','icon': ''};
+  $scope.inEditMode = false;
+  var getfeature = MasterFactory.getFeature($stateParams.featureId);
+
+  if ($stateParams.featureId === '') {
+      //
+      // Create Material
+      //
+  } else {
+      //
+      // Edit Material
+      //
+      var getfeature = MasterFactory.getFeature($stateParams.featureId);
+      $scope.inEditMode = true;
+      $scope.feature = getfeature;
+  }
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    $scope.feature = getfeature;
+  });
+
+  $scope.editFeature = function () {
+
+      // Validate form data
+      if (typeof $scope.feature.title === 'undefined' || $scope.feature.title === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter title"
+          return;
+      }
+      if (typeof $scope.feature.icon === 'undefined' || $scope.feature.icon === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please enter icon"
+          return;
+      }
+
+      $ionicLoading.show({
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Editing...'
+      });
+
+      /* PREPARE DATA FOR FIREBASE*/
+      $scope.temp = {
+          title: $scope.feature.title,
+          icon: $scope.feature.icon,
+          addedby: CurrentUserService.fullname,
+          dateupdated: Date.now()
+      }
+
+      /* SAVE MATERIAL DATA */
+      var featureref = MasterFactory.mfRef();
+      var newData = featureref.child($stateParams.featureId);
+      newData.update($scope.temp, function (ref) {
+      });
+
+      $scope.temp = {};
+      $ionicLoading.hide();
+      refresh($scope.feature, $scope.temp, $scope);
+      $ionicHistory.goBack();
+  };
+
+  function refresh(temp, feature, $scope, item) {
+
+    $scope.feature = {'title': '','icon': ''};
+    $scope.temp = {};
+  }
+})
+
 .controller('overviewCtrl', function($scope, $state, $ionicLoading, MasterFactory, $ionicPopup, myCache) {
 
   $scope.inventories = [];
@@ -520,13 +886,45 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('addoverviewCtrl', function($scope, $state, $ionicLoading, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+.controller('addoverviewCtrl', function($scope, $state, $ionicLoading, TransactionFactory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
 
-  $scope.inventory = {'name': '','jumlah': '','harga': '','photo': '','picture': ''};
+  $scope.overview = {'title': '','desc': '','picture': ''};
   $scope.item = {'photo': ''};
 
   $scope.$on('$ionicView.beforeEnter', function () {
     $scope.item.photo = PickTransactionServices.photoSelected;
+  });
+
+  $scope.infos = [];
+  $scope.addinfos = function () {
+      $scope.infos.push({})
+  }
+  $scope.tags = [];
+  $scope.addtags = function () {
+      $scope.tags.push({})
+  }
+  $scope.feats = [];
+  $scope.addfeats = function () {
+      $scope.feats.push({})
+  }
+
+  $scope.informations = MasterFactory.getInformations();
+  $scope.informations.$loaded().then(function (x) {
+    refresh($scope.informations, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+  $scope.tages = MasterFactory.getTags();
+  $scope.tages.$loaded().then(function (x) {
+    refresh($scope.tages, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+  $scope.features = MasterFactory.getFeatures();
+  $scope.features.$loaded().then(function (x) {
+    refresh($scope.features, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
   });
 
   $scope.takepic = function() {
@@ -549,7 +947,7 @@ angular.module('starter.controllers', [])
     }
   };
 
-  $scope.createInventory = function (inventory) {
+  $scope.createOverview = function (overview,informations,tages,features) {
       var filesSelected = document.getElementById("nameImg").files;
       if (filesSelected.length > 0) {
         var fileToLoad = filesSelected[0];
@@ -567,19 +965,14 @@ angular.module('starter.controllers', [])
       }
 
       // Validate form data
-      if (typeof inventory.name === 'undefined' || inventory.name === '') {
+      if (typeof overview.title === 'undefined' || overview.title === '') {
           $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter name"
+          $scope.validationMessage = "Please enter title"
           return;
       }
-      if (typeof inventory.jumlah === 'undefined' || inventory.jumlah === '') {
+      if (typeof overview.desc === 'undefined' || overview.desc === '') {
           $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter jumlah"
-          return;
-      }
-      if (typeof inventory.harga === 'undefined' || inventory.harga === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter harga"
+          $scope.validationMessage = "Please enter desc"
           return;
       }
 
@@ -590,27 +983,66 @@ angular.module('starter.controllers', [])
       /* PREPARE DATA FOR FIREBASE*/
       var photo = $scope.item.photo;
       $scope.temp = {
-          name: inventory.name,
+          title: overview.title,
           picture: photo,
-          harga: inventory.harga,
-          stock: inventory.jumlah,
+          desc: overview.desc,
           addedby: CurrentUserService.fullname,
           datecreated: Date.now(),
           dateupdated: Date.now()
       }
 
-      /* SAVE MEMBER DATA */
-      var ref = fb.child("master").child("inventory");
-      ref.push($scope.temp);
+      /* SAVE OVERVIEW DATA */
+      var ref = TransactionFactory.ovRef();
+      var newChildRef = ref.push($scope.temp);
+      $scope.idov = newChildRef.key;
+      var index;
+      /* SAVE INFO DATA */
+      for (index = 0; index < informations.length; ++index) {
+          //
+          var ref = TransactionFactory.ovRef();
+          var information = informations[index];
+          var info = "info"+index;
+          $scope.data = {
+              info: information.isi.$id,
+              value: information.value
+          }
+          var infoRef = ref.child($scope.idov).child("infos");
+          infoRef.update($scope.data);
+      }
+      for (index = 0; index < tages.length; ++index) {
+          //
+          var ref = TransactionFactory.ovRef();
+          var tage = tages[index];
+          var tag = "tag"+index;
+          $scope.data = {
+              tag: tage.isi.$id
+          }
+          var tagRef = ref.child($scope.idov).child("tags");
+          tagRef.update($scope.data);
+      }
+      for (index = 0; index < features.length; ++index) {
+          //
+          var ref = TransactionFactory.ovRef();
+          var featur = features[index];
+          var feature = "feature"+index;
+          $scope.data = {
+              feature: featur.isi.$id
+          }
+          var featRef = ref.child($scope.idov).child("features");
+          featRef.update($scope.data);
+      }
 
       $ionicLoading.hide();
-      refresh($scope.inventory, $scope);
+      refresh($scope.overview, $scope);
   };
 
-  function refresh(inventory, $scope, item) {
+  function refresh(overview, $scope, item) {
 
-    $scope.inventory = {'name': '','berat': '','harga': '','picture': ''};
+    $scope.overview = {'title': '','desc': '','picture': ''};
     $scope.item = {'photo': ''};
+    $scope.infos = [];
+    $scope.tags = [];
+    $scope.feats = [];
   }
 })
 

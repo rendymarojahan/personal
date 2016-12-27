@@ -188,6 +188,96 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-datepicker', '
     }
   })
 
+  .state('app.info', {
+    url: '/info',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/info.html',
+        controller: 'infoCtrl'
+      }
+    }
+  })
+
+  .state('app.editinfo', {
+    url: '/editinfo/:informationId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/editinfo.html',
+        controller: 'editinfoCtrl'
+      }
+    }
+  })
+
+  .state('app.addinfo', {
+    url: '/addinfo',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/addinfo.html',
+        controller: 'addinfoCtrl'
+      }
+    }
+  })
+
+  .state('app.tag', {
+    url: '/tag',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/tag.html',
+        controller: 'tagCtrl'
+      }
+    }
+  })
+
+  .state('app.edittag', {
+    url: '/edittag/:tagId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/edittag.html',
+        controller: 'edittagCtrl'
+      }
+    }
+  })
+
+  .state('app.addtag', {
+    url: '/addtag',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/addtag.html',
+        controller: 'addtagCtrl'
+      }
+    }
+  })
+
+  .state('app.feature', {
+    url: '/feature',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/feature.html',
+        controller: 'featureCtrl'
+      }
+    }
+  })
+
+  .state('app.editfeature', {
+    url: '/editfeature/:featureId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/editfeature.html',
+        controller: 'editfeatureCtrl'
+      }
+    }
+  })
+
+  .state('app.addfeature', {
+    url: '/addfeature',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/addfeature.html',
+        controller: 'addfeatureCtrl'
+      }
+    }
+  })
+
   .state('app.profile', {
     url: '/profile',
     views: {
