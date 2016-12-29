@@ -65,6 +65,7 @@ angular.module('starter.services', [])
         var ref = {};
         var transactionsRef = {};
         var ordersRef = {};
+        var overviewsRef = {};
         var tRef = fb.child("transactions").child("orders");
         var ovRef = fb.child("overviews");
         return {
@@ -77,6 +78,15 @@ angular.module('starter.services', [])
             },
             ovRef: function () {
                 return ovRef;
+            },
+            getOverviews: function () {
+                ref = fb.child("overviews");
+                overviewsRef = $firebaseArray(ref);
+                return overviewsRef;
+            },
+            getOverview: function (overviewid) {
+                var thisOverview = overviewsRef.$getRecord(overviewid);
+                return thisOverview;
             },
             getTransactions: function () {
                 ref = fb.child("transactions").child("orders").orderByChild('kode');
@@ -113,6 +123,7 @@ angular.module('starter.services', [])
         var ref = {};
         var materialsRef = {};
         var informationsRef = {};
+        var infoRef = {};
         var featuresRef = {};
         var tagsRef = {};
         var inventoriesRef = {};
@@ -177,11 +188,20 @@ angular.module('starter.services', [])
                 var thisInformation = informationsRef.$getRecord(informationid);
                 return thisInformation;
             },
+            getInfo: function (infoid) {
+                var deferred = $q.defer();
+                ref = fb.child("master").child("infos").child(infoid);
+                ref.once("value", function (snap) {
+                    deferred.resolve(snap.val());
+                });
+                return deferred.promise;
+            },
             getFeatures: function () {
                 ref = fb.child("master").child("features").orderByChild('title');
                 featuresRef = $firebaseArray(ref);
                 return featuresRef;
-            },getFeature: function (featureid) {
+            },
+            getFeature: function (featureid) {
                 var thisFeature = featuresRef.$getRecord(featureid);
                 return thisFeature;
             },
@@ -189,7 +209,8 @@ angular.module('starter.services', [])
                 ref = fb.child("master").child("tags").orderByChild('title');
                 tagsRef = $firebaseArray(ref);
                 return tagsRef;
-            },getTag: function (tagid) {
+            },
+            getTag: function (tagid) {
                 var thisTag = tagsRef.$getRecord(tagid);
                 return thisTag;
             },

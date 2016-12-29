@@ -863,26 +863,26 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('overviewCtrl', function($scope, $state, $ionicLoading, MasterFactory, $ionicPopup, myCache) {
+.controller('overviewCtrl', function($scope, $state, $ionicLoading, TransactionFactory, $ionicPopup, myCache) {
 
-  $scope.inventories = [];
+  $scope.overviews = [];
 
-  $scope.inventories = MasterFactory.getInventories();
-  $scope.inventories.$loaded().then(function (x) {
-    refresh($scope.inventories, $scope, MasterFactory);
+  $scope.overviews = TransactionFactory.getOverviews();
+  $scope.overviews.$loaded().then(function (x) {
+    refresh($scope.overviews, $scope, TransactionFactory);
   }).catch(function (error) {
       console.error("Error:", error);
   });
 
   $scope.$on('$ionicView.beforeEnter', function () {
-    refresh($scope.inventories, $scope);
+    refresh($scope.overviews, $scope);
   });
 
   $scope.edit = function(item) {
-    $state.go('app.rawinventory', { inventoryId: item.$id });
+    $state.go('app.editoverview', { overviewId: item.$id });
   };
 
-  function refresh(inventories, $scope, item) {
+  function refresh(overviews, $scope, item) {
   }
 })
 
@@ -1048,15 +1048,32 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('editoverviewCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+.controller('editoverviewCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, TransactionFactory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
 
-  $scope.inventory = {'name': '','jumlah': '','harga': '','photo': '','picture': ''};
+  $scope.overview = {'title': '','desc': '','picture': ''};
   $scope.item = {'photo': ''};
   $scope.inEditMode = false;
-  var getinventory = MasterFactory.getInventory($stateParams.inventoryId);
-  $scope.stock = getinventory.jumlah;
+  $scope.informations = MasterFactory.getInformations();
+  $scope.informations.$loaded().then(function (x) {
+    refresh($scope.informations, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+  $scope.tages = MasterFactory.getTags();
+  $scope.tages.$loaded().then(function (x) {
+    refresh($scope.tages, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+  $scope.features = MasterFactory.getFeatures();
+  $scope.features.$loaded().then(function (x) {
+    refresh($scope.features, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+  $scope.item.isi = $scope.informations[1];
 
-  if ($stateParams.inventoryId === '') {
+  if ($stateParams.overviewId === '') {
       //
       // Create Material
       //
@@ -1065,26 +1082,32 @@ angular.module('starter.controllers', [])
       //
       // Edit Material
       //
-      var getinventory = MasterFactory.getInventory($stateParams.inventoryId);
+      var getoverview = TransactionFactory.getOverview($stateParams.overviewId);
       $scope.inEditMode = true;
-      $scope.inventory = getinventory;
-      $scope.inventory.jumlah = "";
-      $scope.stock = $scope.inventory.stock;
-      $scope.item = {'photo': $scope.inventory.picture};
+      $scope.overview = getoverview;
+      $scope.infos = getoverview.infos;
+      angular.forEach($scope.infos, function (info) {
+          if (info.info !== "") {
+              info.isi = 1;
+          }
+      })
+      $scope.tags = getoverview.tags;
+      $scope.feats = getoverview.features;
+      $scope.item = {'photo': $scope.overview.picture};
+      $scope.addinfos = function () {
+          $scope.infos.push({})
+      }
+      $scope.addtags = function () {
+          $scope.tags.push({})
+      }
+      $scope.addfeats = function () {
+          $scope.feats.push({})
+      }
   }
 
-  $scope.myFunc = function() {
-    if($scope.inventory.jumlah !== undefined){
-      $scope.stock = parseFloat($scope.inventory.jumlah) + parseFloat($scope.inventory.stock);
-    } else {
-      $scope.stock = $scope.inventory.stock;
-    }
-  };
-
   $scope.$on('$ionicView.beforeEnter', function () {
-    $scope.inventory = getinventory;
-    $scope.stock = $scope.inventory.stock;
-    $scope.item = {'photo': $scope.inventory.picture};
+    $scope.overview = getoverview;
+    $scope.item = {'photo': $scope.overview.picture};
   });
 
   $scope.takepic = function() {
@@ -1125,17 +1148,17 @@ angular.module('starter.controllers', [])
       }
 
       // Validate form data
-      if (typeof $scope.inventory.name === 'undefined' || $scope.inventory.name === '') {
+      if (typeof $scope.overview.title === 'undefined' || $scope.overview.title === '') {
           $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter name"
+          $scope.validationMessage = "Please enter title"
           return;
       }
-      if (typeof $scope.inventory.jumlah === 'undefined' || $scope.inventory.jumlah === '') {
+      if (typeof $scope.overview.desc === 'undefined' || $scope.overview.desc === '') {
           $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter jumlah"
+          $scope.validationMessage = "Please enter desc"
           return;
       }
-      if (typeof $scope.inventory.harga === 'undefined' || $scope.inventory.harga === '') {
+      if (typeof $scope.overview.harga === 'undefined' || $scope.overview.harga === '') {
           $scope.hideValidationMessage = false;
           $scope.validationMessage = "Please enter harga"
           return;
@@ -1149,9 +1172,9 @@ angular.module('starter.controllers', [])
       var photo = $scope.item.photo;
       var currentstock = $scope.stock;
       $scope.temp = {
-          name: $scope.inventory.name,
+          title: $scope.overview.title,
           picture: photo,
-          harga: $scope.inventory.harga,
+          harga: $scope.overview.harga,
           stock: currentstock,
           addedby: CurrentUserService.fullname,
           datecreated: Date.now(),
@@ -1159,23 +1182,21 @@ angular.module('starter.controllers', [])
       }
 
       /* SAVE MATERIAL DATA */
-      var inventoryref = MasterFactory.iRef();
-      var newData = inventoryref.child($stateParams.inventoryId);
+      var overviewref = TransactionFactory.iRef();
+      var newData = overviewref.child($stateParams.overviewId);
       newData.update($scope.temp, function (ref) {
       });
 
       $scope.temp = {};
       $ionicLoading.hide();
-      refresh($scope.inventory, $scope.temp, $scope);
+      refresh($scope.overview, $scope.temp, $scope);
       $ionicHistory.goBack();
   };
 
-  function refresh(temp, inventory, $scope, item) {
+  function refresh(temp, overview, $scope, item) {
 
-    $scope.inventory = {'name': '','jumlah': '','harga': '','picture': ''};
+    $scope.overview = {'title': '','desc': '','harga': '','picture': ''};
     $scope.item = {'photo': ''};
-    $scope.stock = "";
-    $scope.temp = {};
   }
 })
 
