@@ -1053,12 +1053,6 @@ angular.module('starter.controllers', [])
   $scope.overview = {'title': '','desc': '','picture': ''};
   $scope.item = {'photo': ''};
   $scope.inEditMode = false;
-  $scope.informations = MasterFactory.getInformations();
-  $scope.informations.$loaded().then(function (x) {
-    refresh($scope.informations, $scope, MasterFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
   $scope.tages = MasterFactory.getTags();
   $scope.tages.$loaded().then(function (x) {
     refresh($scope.tages, $scope, MasterFactory);
@@ -1071,7 +1065,6 @@ angular.module('starter.controllers', [])
   }).catch(function (error) {
       console.error("Error:", error);
   });
-  $scope.item.isi = $scope.informations[1];
 
   if ($stateParams.overviewId === '') {
       //
@@ -1086,9 +1079,11 @@ angular.module('starter.controllers', [])
       $scope.inEditMode = true;
       $scope.overview = getoverview;
       $scope.infos = getoverview.infos;
+      $scope.informations = MasterFactory.getInformations();
+      $scope.sel = $scope.informations[1];
       angular.forEach($scope.infos, function (info) {
           if (info.info !== "") {
-              info.isi = 1;
+              info.sel = true;
           }
       })
       $scope.tags = getoverview.tags;
