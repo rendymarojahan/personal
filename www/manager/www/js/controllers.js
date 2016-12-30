@@ -1053,6 +1053,12 @@ angular.module('starter.controllers', [])
   $scope.overview = {'title': '','desc': '','picture': ''};
   $scope.item = {'photo': ''};
   $scope.inEditMode = false;
+  $scope.informations = MasterFactory.getInformations();
+  $scope.informations.$loaded().then(function (x) {
+    refresh($scope.informations, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
   $scope.tages = MasterFactory.getTags();
   $scope.tages.$loaded().then(function (x) {
     refresh($scope.tages, $scope, MasterFactory);
@@ -1079,15 +1085,89 @@ angular.module('starter.controllers', [])
       $scope.inEditMode = true;
       $scope.overview = getoverview;
       $scope.infos = getoverview.infos;
-      $scope.informations = MasterFactory.getInformations();
-      $scope.sel = $scope.informations[1];
+      if ($scope.infos === undefined) {
+        $scope.infos = [];
+      }
       angular.forEach($scope.infos, function (info) {
           if (info.info !== "") {
-              info.sel = true;
+            MasterFactory.getInfo(info.info).then(function(data){
+              info.title = data.title;
+              info.sel = false;
+            })
           }
       })
+      $scope.editin = function (data) {
+        angular.forEach($scope.infos, function (info) {
+            if (info.info === data) {
+              info.sel = true;
+            }
+        })
+      }
+      $scope.chanin = function (data) {
+        angular.forEach($scope.infos, function (info) {
+            if (info.info === data) {
+              if (info.isi.$id === data){
+                info.sel = false;
+              }
+            }
+        })
+      }
       $scope.tags = getoverview.tags;
+      if ($scope.tags === undefined) {
+        $scope.tags = [];
+      }
+      angular.forEach($scope.tags, function (tage) {
+          if (tage.tag !== "") {
+            MasterFactory.getTage(tage.tag).then(function(data){
+              tage.title = data.title;
+              tage.sel = false;
+            })
+          }
+      })
+      $scope.edittag = function (data) {
+        angular.forEach($scope.tags, function (tag) {
+            if (tag.tag === data) {
+              tag.sel = true;
+            }
+        })
+      }
+      $scope.chantag = function (data) {
+        angular.forEach($scope.tags, function (tag) {
+            if (tag.tag === data) {
+              if (tag.isi.$id === data){
+                tag.sel = false;
+              }
+            }
+        })
+      }
       $scope.feats = getoverview.features;
+      if ($scope.feats === undefined) {
+        $scope.feats = [];
+      }
+      angular.forEach($scope.feats, function (feat) {
+          if (feat.feature !== "") {
+            MasterFactory.getFeat(feat.feature).then(function(data){
+              feat.title = data.title;
+              feat.sel = false;
+            })
+          }
+      })
+      $scope.editfeat = function (data) {
+        angular.forEach($scope.feats, function (feat) {
+            if (feat.feature === data) {
+              feat.sel = true;
+            }
+        })
+      }
+      $scope.chanfeat = function (data) {
+        angular.forEach($scope.feats, function (feat) {
+            if (feat.feature === data) {
+              if (feat.isi.$id === data){
+                feat.sel = false;
+              }
+            }
+        })
+      }
       $scope.item = {'photo': $scope.overview.picture};
       $scope.addinfos = function () {
           $scope.infos.push({})
@@ -1125,7 +1205,7 @@ angular.module('starter.controllers', [])
     }
   };
 
-  $scope.createInventory = function () {
+  $scope.editOverview = function (overview,informations,tages,features) {
       var filesSelected = document.getElementById("nameImg").files;
       if (filesSelected.length > 0) {
         var fileToLoad = filesSelected[0];
@@ -1143,54 +1223,83 @@ angular.module('starter.controllers', [])
       }
 
       // Validate form data
-      if (typeof $scope.overview.title === 'undefined' || $scope.overview.title === '') {
+      if (typeof overview.title === 'undefined' || overview.title === '') {
           $scope.hideValidationMessage = false;
           $scope.validationMessage = "Please enter title"
           return;
       }
-      if (typeof $scope.overview.desc === 'undefined' || $scope.overview.desc === '') {
+      if (typeof overview.desc === 'undefined' || overview.desc === '') {
           $scope.hideValidationMessage = false;
           $scope.validationMessage = "Please enter desc"
           return;
       }
-      if (typeof $scope.overview.harga === 'undefined' || $scope.overview.harga === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter harga"
-          return;
-      }
 
       $ionicLoading.show({
-          template: '<ion-spinner icon="ios"></ion-spinner><br>Editing...'
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
       });
 
       /* PREPARE DATA FOR FIREBASE*/
       var photo = $scope.item.photo;
-      var currentstock = $scope.stock;
       $scope.temp = {
-          title: $scope.overview.title,
+          title: overview.title,
           picture: photo,
-          harga: $scope.overview.harga,
-          stock: currentstock,
+          desc: overview.desc,
           addedby: CurrentUserService.fullname,
           datecreated: Date.now(),
           dateupdated: Date.now()
       }
 
-      /* SAVE MATERIAL DATA */
-      var overviewref = TransactionFactory.iRef();
-      var newData = overviewref.child($stateParams.overviewId);
-      newData.update($scope.temp, function (ref) {
-      });
+      /* SAVE OVERVIEW DATA */
+      var ref = TransactionFactory.ovRef();
+      var childRef = ref.child($stateParams.overviewId);
+      childRef.set($scope.temp);
+      $scope.datai = [];
+      $scope.datat = [];
+      $scope.dataf = [];
+      /* SAVE INFO DATA */
+      angular.forEach(informations, function (information) {
+        if (informations.isi !== "") {
+          if (information.isi.$id !== undefined) {
+              $scope.data = {
+                  info: information.isi.$id,
+                  value: information.value
+              }
+              $scope.datai.push($scope.data);
+          }
+        }
+      })
+      angular.forEach(tages, function (tage) {
+          if (tage.isi.$id !== undefined) {
+              $scope.data = {
+                  tag: tage.isi.$id
+              }
+              $scope.datat.push($scope.data);
+          }
+      })
+      angular.forEach(features, function (featur) {
+          if (featur.isi.$id !== undefined) {
+              $scope.data = {
+                  feature: featur.isi.$id
+              }
+              $scope.dataf.push($scope.data);
+          }
+      })
 
-      $scope.temp = {};
+      var infoRef = ref.child($stateParams.overviewId).child("infos");
+      infoRef.set($scope.datai);
+
+      var tagRef = ref.child($stateParams.overviewId).child("tags");
+      tagRef.set($scope.datat);
+
+      var featRef = ref.child($stateParams.overviewId).child("features");
+      featRef.set($scope.dataf);
+
       $ionicLoading.hide();
-      refresh($scope.overview, $scope.temp, $scope);
+      refresh($scope.overview, $scope);
       $ionicHistory.goBack();
   };
 
   function refresh(temp, overview, $scope, item) {
-
-    $scope.overview = {'title': '','desc': '','harga': '','picture': ''};
     $scope.item = {'photo': ''};
   }
 })

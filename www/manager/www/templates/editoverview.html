@@ -46,17 +46,16 @@
                   <input type="text" class="form-control" ng-model="overview.title" required />
 
                   <label for="desc">Desc * :</label>
-                  <input type="text" class="form-control" ng-model="overview.desc" required />
-                  <pre>{{informations|json}}</pre>
+                  <textarea class="form-control" ng-model="overview.desc" required></textarea>
 
                   <label><input type="checkbox" ng-click="addinfos()">Add Info ?</label><br>
 	                <div ng-repeat="item in infos">
 	                  <div class="form-group">
 		                <label>Information * :</label>
 		                <div>
-		                  <select class="select2_single form-control" tabindex="-1" ng-model="item.isi">
-		                  <option data-ng-repeat="information in informations track by information.$id | orderBy:'title'" ng-selected="item.sel" value="{{information.$id}}" ng-model="sel">{{information.title}}</option>
+		                  <select ng-show="item.sel" class="select2_single form-control" tabindex="-1" ng-model="item.isi" ng-options="information.title for information in informations | orderBy:'title'" ng-change="chanin(item.info)">
 		                  </select>
+                      <input ng-hide="item.sel" type="text" class="form-control" ng-model="item.title" ng-click="editin(item.info)" required>
 		                  <input type="text" class="form-control" ng-model="item.value" required/><br>
 		                </div>
 		              </div>
@@ -67,8 +66,9 @@
 	                  <div class="form-group">
 		                <label>Tag * :</label>
 		                <div>
-		                  <select class="select2_single form-control" tabindex="-1" ng-model="item.isi" ng-options="tage.title for tage in tages | orderBy:'title'">
+		                  <select ng-show="item.sel" class="select2_single form-control" tabindex="-1" ng-model="item.isi" ng-options="tage.title for tage in tages | orderBy:'title'" ng-change="chantag(item.tag)">
 		                  </select>
+                      <input ng-hide="item.sel" type="text" class="form-control" ng-model="item.title" ng-click="edittag(item.tag)" required>
 		                </div>
 		              </div>
 	                </div>
@@ -78,8 +78,9 @@
 	                  <div class="form-group">
 		                <label>Feature * :</label>
 		                <div>
-		                  <select class="select2_single form-control" tabindex="-1" ng-model="item.isi" ng-options="feature.title for feature in features | orderBy:'title'">
+		                  <select ng-show="item.sel" class="select2_single form-control" tabindex="-1" ng-model="item.isi" ng-options="feature.title for feature in features | orderBy:'title'" ng-change="chanfeat(item.feature)">
 		                  </select>
+                      <input ng-hide="item.sel" type="text" class="form-control" ng-model="item.title" ng-click="editfeat(item.feature)" required>
 		                </div>
 		              </div>
 	                </div>

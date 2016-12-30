@@ -46,7 +46,7 @@
                   <input type="text" class="form-control" ng-model="overview.title" required />
 
                   <label for="desc">Desc * :</label>
-                  <input type="text" class="form-control" ng-model="overview.desc" required />
+                  <textarea class="form-control" ng-model="overview.desc" required></textarea>
 
                   <label><input type="checkbox" ng-click="addinfos()">Add Info ?</label><br>
 	                <div ng-repeat="item in infos">

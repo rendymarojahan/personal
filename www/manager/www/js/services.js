@@ -196,6 +196,22 @@ angular.module('starter.services', [])
                 });
                 return deferred.promise;
             },
+            getTage: function (tagid) {
+                var deferred = $q.defer();
+                ref = fb.child("master").child("tags").child(tagid);
+                ref.once("value", function (snap) {
+                    deferred.resolve(snap.val());
+                });
+                return deferred.promise;
+            },
+            getFeat: function (featureid) {
+                var deferred = $q.defer();
+                ref = fb.child("master").child("features").child(featureid);
+                ref.once("value", function (snap) {
+                    deferred.resolve(snap.val());
+                });
+                return deferred.promise;
+            },
             getFeatures: function () {
                 ref = fb.child("master").child("features").orderByChild('title');
                 featuresRef = $firebaseArray(ref);
