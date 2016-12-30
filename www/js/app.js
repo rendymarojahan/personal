@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'firebase'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -23,6 +23,14 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
+  var config = {
+    apiKey: "AIzaSyBXhU4LBinZc77szCRL-eLbj16Msn3NR34",
+    authDomain: "rendymarojahan-ae340.firebaseapp.com",
+    databaseURL: "https://rendymarojahan-ae340.firebaseio.com",
+    storageBucket: "rendymarojahan-ae340.appspot.com",
+    messagingSenderId: "658043758885"
+  };
+  var fb = firebase.initializeApp(config);
   $stateProvider
 
   .state('app', {

@@ -1093,6 +1093,7 @@ angular.module('starter.controllers', [])
             MasterFactory.getInfo(info.info).then(function(data){
               info.title = data.title;
               info.sel = false;
+              info.isi = {$id: info.info, value: info.value};
             })
           }
       })
@@ -1121,6 +1122,7 @@ angular.module('starter.controllers', [])
             MasterFactory.getTage(tage.tag).then(function(data){
               tage.title = data.title;
               tage.sel = false;
+              tage.isi = {$id: tage.tag};
             })
           }
       })
@@ -1149,6 +1151,7 @@ angular.module('starter.controllers', [])
             MasterFactory.getFeat(feat.feature).then(function(data){
               feat.title = data.title;
               feat.sel = false;
+              feat.isi = {$id: feat.feature};
             })
           }
       })
@@ -1198,7 +1201,7 @@ angular.module('starter.controllers', [])
         $scope.item = {
           photo: fileLoadedEvent.target.result
         };
-        $scope.inventory.photo = fileLoadedEvent.target.result;
+        PickTransactionServices.updatePhoto($scope.item.photo);
       };
 
       fileReader.readAsDataURL(fileToLoad);
@@ -1258,7 +1261,6 @@ angular.module('starter.controllers', [])
       $scope.dataf = [];
       /* SAVE INFO DATA */
       angular.forEach(informations, function (information) {
-        if (informations.isi !== "") {
           if (information.isi.$id !== undefined) {
               $scope.data = {
                   info: information.isi.$id,
@@ -1266,7 +1268,6 @@ angular.module('starter.controllers', [])
               }
               $scope.datai.push($scope.data);
           }
-        }
       })
       angular.forEach(tages, function (tage) {
           if (tage.isi.$id !== undefined) {
@@ -1300,7 +1301,6 @@ angular.module('starter.controllers', [])
   };
 
   function refresh(temp, overview, $scope, item) {
-    $scope.item = {'photo': ''};
   }
 })
 
