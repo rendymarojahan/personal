@@ -863,7 +863,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('overviewCtrl', function($scope, $state, $ionicLoading, TransactionFactory, $ionicPopup, myCache) {
+.controller('overviewCtrl', function($scope, $state, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
 
   $scope.overviews = [];
 
@@ -1003,7 +1003,9 @@ angular.module('starter.controllers', [])
           if (information.isi.$id !== "") {
               $scope.data = {
                   info: information.isi.$id,
-                  value: information.value
+                  title: information.isi.title,
+                  value: information.value,
+                  icon: information.isi.icon
               }
               $scope.datai.push($scope.data);
           }
@@ -1011,7 +1013,8 @@ angular.module('starter.controllers', [])
       angular.forEach(tages, function (tage) {
           if (tage.isi.$id !== "") {
               $scope.data = {
-                  tag: tage.isi.$id
+                  tag: tage.isi.$id,
+                  title: tage.isi.title
               }
               $scope.datat.push($scope.data);
           }
@@ -1019,7 +1022,9 @@ angular.module('starter.controllers', [])
       angular.forEach(features, function (featur) {
           if (featur.isi.$id !== "") {
               $scope.data = {
-                  feature: featur.isi.$id
+                  feature: featur.isi.$id,
+                  title: featur.isi.title,
+                  icon: featur.isi.icon
               }
               $scope.dataf.push($scope.data);
           }
@@ -1033,6 +1038,9 @@ angular.module('starter.controllers', [])
 
       var featRef = ref.child($scope.idov).child("features");
       featRef.set($scope.dataf);
+
+      var kindRef = ref.child($stateParams.overviewId);
+      kindRef.update({kind: $scope.datat[0].title});
 
       $ionicLoading.hide();
       refresh($scope.overview, $scope);
@@ -1091,9 +1099,8 @@ angular.module('starter.controllers', [])
       angular.forEach($scope.infos, function (info) {
           if (info.info !== "") {
             MasterFactory.getInfo(info.info).then(function(data){
-              info.title = data.title;
               info.sel = false;
-              info.isi = {$id: info.info, value: info.value};
+              info.isi = {$id: info.info, value: info.value, title: info.title, icon: info.icon};
             })
           }
       })
@@ -1120,9 +1127,8 @@ angular.module('starter.controllers', [])
       angular.forEach($scope.tags, function (tage) {
           if (tage.tag !== "") {
             MasterFactory.getTage(tage.tag).then(function(data){
-              tage.title = data.title;
               tage.sel = false;
-              tage.isi = {$id: tage.tag};
+              tage.isi = {$id: tage.tag, title: tage.title};
             })
           }
       })
@@ -1149,9 +1155,8 @@ angular.module('starter.controllers', [])
       angular.forEach($scope.feats, function (feat) {
           if (feat.feature !== "") {
             MasterFactory.getFeat(feat.feature).then(function(data){
-              feat.title = data.title;
               feat.sel = false;
-              feat.isi = {$id: feat.feature};
+              feat.isi = {$id: feat.feature, title: feat.title, icon: feat.icon};
             })
           }
       })
@@ -1264,7 +1269,9 @@ angular.module('starter.controllers', [])
           if (information.isi.$id !== undefined) {
               $scope.data = {
                   info: information.isi.$id,
-                  value: information.value
+                  title: information.isi.title,
+                  value: information.value,
+                  icon: information.isi.icon
               }
               $scope.datai.push($scope.data);
           }
@@ -1272,7 +1279,8 @@ angular.module('starter.controllers', [])
       angular.forEach(tages, function (tage) {
           if (tage.isi.$id !== undefined) {
               $scope.data = {
-                  tag: tage.isi.$id
+                  tag: tage.isi.$id,
+                  title: tage.isi.title
               }
               $scope.datat.push($scope.data);
           }
@@ -1280,7 +1288,9 @@ angular.module('starter.controllers', [])
       angular.forEach(features, function (featur) {
           if (featur.isi.$id !== undefined) {
               $scope.data = {
-                  feature: featur.isi.$id
+                  feature: featur.isi.$id,
+                  title: featur.isi.title,
+                  icon: featur.isi.icon
               }
               $scope.dataf.push($scope.data);
           }
@@ -1294,6 +1304,9 @@ angular.module('starter.controllers', [])
 
       var featRef = ref.child($stateParams.overviewId).child("features");
       featRef.set($scope.dataf);
+
+      var kindRef = ref.child($stateParams.overviewId);
+      kindRef.update({kind: $scope.datat[0].title});
 
       $ionicLoading.hide();
       refresh($scope.overview, $scope);

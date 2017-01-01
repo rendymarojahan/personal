@@ -68,5 +68,43 @@ angular.module('starter.controllers', [])
   }
 })
 
+.controller('projectCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+  $scope.overviews = [];
+  $scope.projects = [];
+
+  if ($stateParams.projectId === '') {
+      $scope.article = "Project";
+      $scope.overviews = TransactionFactory.getProjects($scope.article);
+      $scope.overviews.$loaded().then(function (x) {
+        $scope.project = $scope.overviews[0];
+        refresh($scope.overviews, $scope, TransactionFactory);
+      }).catch(function (error) {
+          console.error("Error:", error);
+      });
+  } else {
+      $scope.article = "Project";
+      $scope.overviews = TransactionFactory.getProjects($scope.article);
+      $scope.overviews.$loaded().then(function (x) {
+        var index = $scope.overviews.indexOf($stateParams.projectId);
+        $scope.project = $scope.overviews[index];
+        refresh($scope.overviews, $scope, TransactionFactory);
+      }).catch(function (error) {
+          console.error("Error:", error);
+      });
+      //$scope.project = TransactionFactory.getProject($stateParams.projectId);
+  }
+
+  $scope.focus = function(item) {
+    $state.go('app.project', { projectId: item.$id });
+  };
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    refresh($scope.overviews, $scope.project, $scope);
+  });
+
+  function refresh(overviews, project, $scope, item) {
+  }
+})
+
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });

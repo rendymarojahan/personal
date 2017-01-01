@@ -446,13 +446,12 @@ ul.likes li a:hover{
 	text-decoration:none;
 	color:#1ab5b3;
 }
-ul.likes li  i{
-	background: url(../images/img-sprite.png)no-repeat -14px -91px ;
-	width: 40px;
-	height: 40px;
-	display: inline-block;
-	vertical-align: middle;
-	margin:0 13px 0 0;
+ul.likes li  i.fa{
+	width: 30px;
+    height: 19px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 13px 0;
 }
 ul.likes li  i.like{
 	background-position:  -139px -91px ;

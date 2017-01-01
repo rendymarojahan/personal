@@ -14,6 +14,7 @@ angular.module('starter.services', [])
         var fb = firebase.database().ref();
         var ref = {};
         var overviewsRef = {};
+        var articleRef = {};
         var ovRef = fb.child("overviews");
         return {
             ref: function () {
@@ -31,6 +32,99 @@ angular.module('starter.services', [])
             getOverview: function (overviewid) {
                 var thisOverview = overviewsRef.$getRecord(overviewid);
                 return thisOverview;
+            },
+            getProjects: function (article) {
+                ref = fb.child("overviews").orderByChild("kind").equalTo(article);
+                projectsRef = $firebaseArray(ref);
+                return projectsRef;
+            },
+            getProject: function (projectid) {
+                var deferred = $q.defer();
+                ref = fb.child("overviews").child(projectid);
+                ref.once("value", function (snap) {
+                    deferred.resolve(snap.val());
+                });
+                return deferred.promise;
+            }
+            
+            
+        };
+})
+
+.factory('MasterFactory', function ($firebaseArray, $q, myCache) {
+        var fb = firebase.database().ref();
+        var ref = {};
+        var informationsRef = {};
+        var infoRef = {};
+        var featuresRef = {};
+        var tagsRef = {};
+        var miRef = fb.child("master").child("infos");
+        var mfRef = fb.child("master").child("features");
+        var mtRef = fb.child("master").child("tags");
+        return {
+            ref: function () {
+                ref = fb.child("publics").child(thisPublicId).child(thisUserId);
+                return ref;
+            },
+            miRef: function () {
+                return miRef;
+            },
+            mfRef: function () {
+                return mfRef;
+            },
+            mtRef: function () {
+                return mtRef;
+            },
+            getInformations: function () {
+                ref = fb.child("master").child("infos").orderByChild('title');
+                informationsRef = $firebaseArray(ref);
+                return informationsRef;
+            },
+            getInformation: function (informationid) {
+                var thisInformation = informationsRef.$getRecord(informationid);
+                return thisInformation;
+            },
+            getInfo: function (infoid) {
+                var deferred = $q.defer();
+                ref = fb.child("master").child("infos").child(infoid);
+                ref.once("value", function (snap) {
+                    deferred.resolve(snap.val());
+                });
+                return deferred.promise;
+            },
+            getTage: function (tagid) {
+                var deferred = $q.defer();
+                ref = fb.child("master").child("tags").child(tagid);
+                ref.once("value", function (snap) {
+                    deferred.resolve(snap.val());
+                });
+                return deferred.promise;
+            },
+            getFeat: function (featureid) {
+                var deferred = $q.defer();
+                ref = fb.child("master").child("features").child(featureid);
+                ref.once("value", function (snap) {
+                    deferred.resolve(snap.val());
+                });
+                return deferred.promise;
+            },
+            getFeatures: function () {
+                ref = fb.child("master").child("features").orderByChild('title');
+                featuresRef = $firebaseArray(ref);
+                return featuresRef;
+            },
+            getFeature: function (featureid) {
+                var thisFeature = featuresRef.$getRecord(featureid);
+                return thisFeature;
+            },
+            getTags: function () {
+                ref = fb.child("master").child("tags").orderByChild('title');
+                tagsRef = $firebaseArray(ref);
+                return tagsRef;
+            },
+            getTag: function (tagid) {
+                var thisTag = tagsRef.$getRecord(tagid);
+                return thisTag;
             }
             
             

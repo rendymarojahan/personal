@@ -60,10 +60,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   })
 
   .state('app.project', {
-    url: '/project',
+    url: '/project/:projectId',
     views: {
       'menuContent': {
-        templateUrl: 'templates/project.html'
+        templateUrl: 'templates/project.html',
+        controller: 'projectCtrl'
       }
     }
   })
