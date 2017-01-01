@@ -85,13 +85,11 @@ angular.module('starter.controllers', [])
       $scope.article = "Project";
       $scope.overviews = TransactionFactory.getProjects($scope.article);
       $scope.overviews.$loaded().then(function (x) {
-        var index = $scope.overviews.indexOf($stateParams.projectId);
-        $scope.project = $scope.overviews[index];
         refresh($scope.overviews, $scope, TransactionFactory);
       }).catch(function (error) {
           console.error("Error:", error);
       });
-      //$scope.project = TransactionFactory.getProject($stateParams.projectId);
+      $scope.project = TransactionFactory.getProject($stateParams.projectId);
   }
 
   $scope.focus = function(item) {
