@@ -2,7 +2,7 @@
   <ion-content>
     <div class="content">
 		<div class="content-grid" ng-repeat="overview in overviews | orderBy:'title'">
-			<a href="single.html" class="b-link-stripe b-animate-go  thickbox">
+			<a href="#/app/{{overview.kind | lowercase}}/{{overview.$id}}" class="b-link-stripe b-animate-go  thickbox">
 				<img  src="{{overview.picture}}" />
 					<div class="b-wrapper">
 						<h2 class="b-animate b-from-left    b-delay03 ">

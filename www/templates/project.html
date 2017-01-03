@@ -4,14 +4,14 @@
 		<div class="work">
 			<div class="work-top">
 				<div class="grid-about">
-					<a href="single.html"><img src="{{project.picture}}" alt=""></a>
+					<a><img src="{{project.picture}}" alt=""></a>
 				</div>
-				<h2><a href="single.html">{{project.title}}</a></h2>
-				<p>{{project.desc}}</p>
+				<h2><a>{{project.title}}</a></h2>
+				<pre><p>{{project.desc}}</p></pre>
 			<div class="projects">
-				<h3>Related Projects {{project|json}}</h3>
+				<h3>Related Projects</h3>
 				<ul>
-					<li ng-repeat="overview in overviews | orderBy:'title'"><a ng-click="focus(overview)"><img  src="{{overview.picture}}" /></a></li>
+					<li ng-repeat="overview in overviews | orderBy:'title'"><a href="#/app/{{overview.kind | lowercase}}/{{overview.$id}}"><img  src="{{overview.picture}}" /></a></li>
 					<div class="clear"> </div>
 				</ul>
 			</div>
@@ -32,14 +32,14 @@
 				<div class="gallery">
 				<h3>Project Gallery</h3>
 					<ul class="gallery-grid">
-						<li ng-repeat="overview in overviews | orderBy:'title'"><a ng-click="focus(overview)"><img  src="{{overview.picture}}" /></a></li>
+						<li ng-repeat="overview in overviews | orderBy:'title'"><a href="#/app/{{overview.kind | lowercase}}/{{overview.$id}}"><img  src="{{overview.picture}}" /></a></li>
 						<div class="clear"> </div>
 					</ul>
 				</div>
 				<div class="feature">
 				<h3>Project Features</h3>
 					<ul class="feature-grid">
-						<li ng-repeat="feat in project.features | orderBy:'title'"><a href="#"><i class="{{feat.icon}}"> </i> class="{{info.title}}"  </a></li>
+						<li ng-repeat="feat in project.features | orderBy:'title'"><a href="#"><i class="{{feat.icon}}"> </i>{{feat.title}}</a></li>
 					</ul>
 				</div>
 			</div>

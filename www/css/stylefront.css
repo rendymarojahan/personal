@@ -407,6 +407,7 @@ ul.callbacks_tabs.callbacks1_tabs {
 	line-height: 1.7em;
 	font-weight: 300;
 	padding: 0 0 1em;
+	text-align: justify;
 }
 .work-top p span{
 	padding:1.3em 0 0;
@@ -496,7 +497,7 @@ ul.feature-grid li a:hover{
 	color:#1ab5b3;
 }
 ul.feature-grid li i{
-	background: url(../images/img-sprite.png)no-repeat -188px -52px ;
+	background: url()no-repeat -188px -52px ;
 	width: 18px;
 	height: 18px;
 	display: inline-block;

@@ -85,16 +85,15 @@ angular.module('starter.controllers', [])
       $scope.article = "Project";
       $scope.overviews = TransactionFactory.getProjects($scope.article);
       $scope.overviews.$loaded().then(function (x) {
+        TransactionFactory.getProject($stateParams.projectId).then(function(data){
+          $scope.project = data;
+        })
         refresh($scope.overviews, $scope, TransactionFactory);
       }).catch(function (error) {
           console.error("Error:", error);
       });
-      $scope.project = TransactionFactory.getProject($stateParams.projectId);
-  }
 
-  $scope.focus = function(item) {
-    $state.go('app.project', { projectId: item.$id });
-  };
+  }
 
   $scope.$on('$ionicView.beforeEnter', function () {
     refresh($scope.overviews, $scope.project, $scope);
@@ -102,6 +101,64 @@ angular.module('starter.controllers', [])
 
   function refresh(overviews, project, $scope, item) {
   }
+})
+
+.controller('carrierCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+  $scope.overviews = [];
+  $scope.projects = [];
+
+  if ($stateParams.carrierId === '') {
+      $scope.article = "Carrier";
+      $scope.overviews = TransactionFactory.getProjects($scope.article);
+      $scope.overviews.$loaded().then(function (x) {
+        $scope.project = $scope.overviews[0];
+        refresh($scope.overviews, $scope, TransactionFactory);
+      }).catch(function (error) {
+          console.error("Error:", error);
+      });
+  } else {
+      $scope.article = "Carrier";
+      $scope.overviews = TransactionFactory.getProjects($scope.article);
+      $scope.overviews.$loaded().then(function (x) {
+        TransactionFactory.getProject($stateParams.carrierId).then(function(data){
+          $scope.project = data;
+        })
+        refresh($scope.overviews, $scope, TransactionFactory);
+      }).catch(function (error) {
+          console.error("Error:", error);
+      });
+
+  }
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    refresh($scope.overviews, $scope.project, $scope);
+  });
+
+  function refresh(overviews, project, $scope, item) {
+  }
+})
+
+.controller('profileCtrl', function($scope, $state, $ionicLoading, ContactsFactory, TransactionFactory, $ionicPopup, myCache) {
+
+  $scope.profile = {};
+  $scope.profile = ContactsFactory.getProfile();
+  $scope.profile.$loaded().then(function (x) {
+    refresh($scope.profile, $scope, ContactsFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.article = "Project";
+  $scope.projects = TransactionFactory.getProjects($scope.article);
+  $scope.projects.$loaded().then(function (x) {
+    refresh($scope.projects, $scope, TransactionFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  function refresh(profile, $scope, ContactsFactory) {
+  }
+  
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {

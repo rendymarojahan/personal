@@ -131,6 +131,43 @@ angular.module('starter.services', [])
         };
 })
 
+.factory('ContactsFactory', function ($firebaseArray, $q, myCache) {
+        var fb = firebase.database().ref();
+        var ref = {};
+        var contactsRef = {};
+        var profileRef = {};
+        var eRef = fb.child("profile");
+        return {
+            ref: function () {
+                ref = fb.child("publics").child(thisPublicId).child(thisUserId);
+                return ref;
+            },
+            eRef: function () {
+                return eRef;
+            },
+            getContacts: function () {
+                ref = fb.child("users").orderByKey();
+                contactsRef = $firebaseArray(ref);
+                return contactsRef;
+            },
+            getEmployee: function (employeeid) {
+                var thisEmployee = contactsRef.$getRecord(employeeid);
+                return thisEmployee;
+            },
+            getProfile: function () {
+                ref = fb.child("profile").orderByKey();
+                profileRef = $firebaseArray(ref);
+                return profileRef;
+            },
+            getUser: function (employeeid) {
+                var thisEmployee = profileRef.$getRecord(employeeid);
+                return thisEmployee;
+            },
+            
+            
+        };
+})
+
     
 ;
 

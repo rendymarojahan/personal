@@ -288,6 +288,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-datepicker', '
     }
   })
 
+  .state('app.detprofile', {
+    url: '/detprofile/:profileId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/detprofile.html',
+        controller: 'detprofileCtrl'
+      }
+    }
+  })
+
   .state('app.dashboard', {
 	url: '/dashboard/:memberId/:level',
 	views: {

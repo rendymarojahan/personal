@@ -297,7 +297,8 @@ angular.module('starter.services', [])
         var fb = firebase.database().ref();
         var ref = {};
         var contactsRef = {};
-        var eRef = fb.child("employees");
+        var profileRef = {};
+        var eRef = fb.child("profile");
         return {
             ref: function () {
                 ref = fb.child("publics").child(thisPublicId).child(thisUserId);
@@ -307,12 +308,21 @@ angular.module('starter.services', [])
                 return eRef;
             },
             getContacts: function () {
-                ref = fb.child("employees").orderByKey();
+                ref = fb.child("users").orderByKey();
                 contactsRef = $firebaseArray(ref);
                 return contactsRef;
             },
             getEmployee: function (employeeid) {
                 var thisEmployee = contactsRef.$getRecord(employeeid);
+                return thisEmployee;
+            },
+            getProfile: function () {
+                ref = fb.child("profile").orderByKey();
+                profileRef = $firebaseArray(ref);
+                return profileRef;
+            },
+            getUser: function (employeeid) {
+                var thisEmployee = profileRef.$getRecord(employeeid);
                 return thisEmployee;
             },
             

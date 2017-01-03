@@ -54,7 +54,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: '/profile',
     views: {
       'menuContent': {
-        templateUrl: 'templates/profile.html'
+        templateUrl: 'templates/profile.html',
+        controller: 'profileCtrl'
       }
     }
   })
@@ -80,10 +81,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   })
 
   .state('app.carrier', {
-    url: '/carrier',
+    url: '/carrier/:carrierId',
     views: {
       'menuContent': {
-        templateUrl: 'templates/carrier.html'
+        templateUrl: 'templates/carrier.html',
+        controller: 'carrierCtrl'
       }
     }
   })
