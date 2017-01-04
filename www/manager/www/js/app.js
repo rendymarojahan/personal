@@ -3,7 +3,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'ionic-datepicker', 'starter.services', 'angular.filter', 'angularMoment', 'firebase', 'ngStorage', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ionic-datepicker', 'starter.services', 'angular.filter', 'angularMoment', 'firebase', 'ngStorage', 'ngCordova', 'youtube-embed'])
 
 .run(function($ionicPlatform, $rootScope, $ionicLoading, $state, Auth, $cordovaStatusbar, $cordovaSplashscreen, $cordovaTouchID, $localStorage) {
   $ionicPlatform.ready(function() {
@@ -78,36 +78,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-datepicker', '
     }
   })
 
-  .state('app.project', {
-    url: '/project',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/project.html',
-        controller: 'projectCtrl'
-      }
-    }
-  })
-
-  .state('app.editproject', {
-    url: '/editproject/:projectId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/editproject.html',
-        controller: 'editprojectCtrl'
-      }
-    }
-  })
-
-  .state('app.addproject', {
-    url: '/addproject',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/addproject.html',
-        controller: 'addprojectCtrl'
-      }
-    }
-  })
-
   .state('app.blog', {
     url: '/blog',
     views: {
@@ -118,42 +88,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-datepicker', '
     }
   })
 
-  .state('app.editblog', {
-    url: '/editblog/:blogId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/editblog.html',
-        controller: 'editblogCtrl'
-      }
-    }
-  })
-
   .state('app.addblog', {
-    url: '/addblog',
+    url: '/addblog/:blogId',
     views: {
       'menuContent': {
         templateUrl: 'templates/addblog.html',
         controller: 'addblogCtrl'
-      }
-    }
-  })
-
-  .state('app.carrier', {
-    url: '/carrier',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/carrier.html',
-        controller: 'carrierCtrl'
-      }
-    }
-  })
-
-  .state('app.addcarrier', {
-    url: '/addcarrier/:carrierId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/addcarrier.html',
-        controller: 'addcarrierCtrl'
       }
     }
   })

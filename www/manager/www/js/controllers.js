@@ -1317,36 +1317,250 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('projectCtrl', function($scope, $state, $ionicLoading, MasterFactory, $ionicPopup, myCache) {
+.controller('blogCtrl', function($scope, $state, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
 
-  $scope.inventories = [];
+  $scope.blogs = [];
 
-  $scope.inventories = MasterFactory.getInventories();
-  $scope.inventories.$loaded().then(function (x) {
-    refresh($scope.inventories, $scope, MasterFactory);
+  $scope.blogs = TransactionFactory.getBlogs();
+  $scope.blogs.$loaded().then(function (x) {
+    refresh($scope.blogs, $scope, TransactionFactory);
   }).catch(function (error) {
       console.error("Error:", error);
   });
 
   $scope.$on('$ionicView.beforeEnter', function () {
-    refresh($scope.inventories, $scope);
+    refresh($scope.blogs, $scope);
   });
 
   $scope.edit = function(item) {
-    $state.go('app.rawinventory', { inventoryId: item.$id });
+    $state.go('app.addblog', { blogId: item.$id });
   };
 
-  function refresh(inventories, $scope, item) {
+  function refresh(blogs, $scope, item) {
   }
 })
 
-.controller('addprojectCtrl', function($scope, $state, $ionicLoading, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
+.controller('addblogCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, TransactionFactory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
 
-  $scope.inventory = {'name': '','jumlah': '','harga': '','photo': '','picture': ''};
+  $scope.blog = {'title': '','desc': '','picture': ''};
   $scope.item = {'photo': ''};
+  $scope.inEditMode = false;
+  $scope.informations = MasterFactory.getInformations();
+  $scope.informations.$loaded().then(function (x) {
+    refresh($scope.informations, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+  $scope.tages = MasterFactory.getTags();
+  $scope.tages.$loaded().then(function (x) {
+    refresh($scope.tages, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+  $scope.features = MasterFactory.getFeatures();
+  $scope.features.$loaded().then(function (x) {
+    refresh($scope.features, $scope, MasterFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  if ($stateParams.blogId === '') {
+      //
+      // New
+      //
+      $scope.item = {'photo': ''};
+      $scope.infos = [];
+      $scope.tags = [];
+      $scope.feats = [];
+      $scope.addinfos = function () {
+          $scope.infos.push({})
+      }
+      $scope.addtags = function () {
+          $scope.tags.push({})
+      }
+      $scope.addfeats = function () {
+          $scope.feats.push({})
+      }
+      angular.forEach($scope.infos, function (info) {
+          if (info.info !== "") {
+            MasterFactory.getInfo(info.info).then(function(data){
+              info.sel = false;
+              info.isi = {$id: info.info, value: info.value, title: info.title, icon: info.icon};
+            })
+          }
+      })
+      $scope.editin = function (data) {
+        angular.forEach($scope.infos, function (info) {
+            if (info.info === data) {
+              info.sel = true;
+            }
+        })
+      }
+      $scope.chanin = function (data) {
+        angular.forEach($scope.infos, function (info) {
+            if (info.info === data) {
+              if (info.isi.$id === data){
+                info.sel = false;
+              }
+            }
+        })
+      }
+      angular.forEach($scope.tags, function (tage) {
+          if (tage.tag !== "") {
+            MasterFactory.getTage(tage.tag).then(function(data){
+              tage.sel = false;
+              tage.isi = {$id: tage.tag, title: tage.title};
+            })
+          }
+      })
+      $scope.edittag = function (data) {
+        angular.forEach($scope.tags, function (tag) {
+            if (tag.tag === data) {
+              tag.sel = true;
+            }
+        })
+      }
+      $scope.chantag = function (data) {
+        angular.forEach($scope.tags, function (tag) {
+            if (tag.tag === data) {
+              if (tag.isi.$id === data){
+                tag.sel = false;
+              }
+            }
+        })
+      }
+      angular.forEach($scope.feats, function (feat) {
+          if (feat.feature !== "") {
+            MasterFactory.getFeat(feat.feature).then(function(data){
+              feat.sel = false;
+              feat.isi = {$id: feat.feature, title: feat.title, icon: feat.icon};
+            })
+          }
+      })
+      $scope.editfeat = function (data) {
+        angular.forEach($scope.feats, function (feat) {
+            if (feat.feature === data) {
+              feat.sel = true;
+            }
+        })
+      }
+      $scope.chanfeat = function (data) {
+        angular.forEach($scope.feats, function (feat) {
+            if (feat.feature === data) {
+              if (feat.isi.$id === data){
+                feat.sel = false;
+              }
+            }
+        })
+      }
+  } else {
+      //
+      // Edit Material
+      //
+      var getblog = TransactionFactory.getBlog($stateParams.blogId);
+      $scope.inEditMode = true;
+      $scope.blog = getblog;
+      $scope.infos = getblog.infos;
+      if ($scope.infos === undefined) {
+        $scope.infos = [];
+      }
+      if ($scope.blog.video !== ""){
+        $scope.blog.isvideo = true;
+      }
+      angular.forEach($scope.infos, function (info) {
+          if (info.info !== "") {
+            MasterFactory.getInfo(info.info).then(function(data){
+              info.sel = false;
+              info.isi = {$id: info.info, value: info.value, title: info.title, icon: info.icon};
+            })
+          }
+      })
+      $scope.editin = function (data) {
+        angular.forEach($scope.infos, function (info) {
+            if (info.info === data) {
+              info.sel = true;
+            }
+        })
+      }
+      $scope.chanin = function (data) {
+        angular.forEach($scope.infos, function (info) {
+            if (info.info === data) {
+              if (info.isi.$id === data){
+                info.sel = false;
+              }
+            }
+        })
+      }
+      $scope.tags = getblog.tags;
+      if ($scope.tags === undefined) {
+        $scope.tags = [];
+      }
+      angular.forEach($scope.tags, function (tage) {
+          if (tage.tag !== "") {
+            MasterFactory.getTage(tage.tag).then(function(data){
+              tage.sel = false;
+              tage.isi = {$id: tage.tag, title: tage.title};
+            })
+          }
+      })
+      $scope.edittag = function (data) {
+        angular.forEach($scope.tags, function (tag) {
+            if (tag.tag === data) {
+              tag.sel = true;
+            }
+        })
+      }
+      $scope.chantag = function (data) {
+        angular.forEach($scope.tags, function (tag) {
+            if (tag.tag === data) {
+              if (tag.isi.$id === data){
+                tag.sel = false;
+              }
+            }
+        })
+      }
+      $scope.feats = getblog.features;
+      if ($scope.feats === undefined) {
+        $scope.feats = [];
+      }
+      angular.forEach($scope.feats, function (feat) {
+          if (feat.feature !== "") {
+            MasterFactory.getFeat(feat.feature).then(function(data){
+              feat.sel = false;
+              feat.isi = {$id: feat.feature, title: feat.title, icon: feat.icon};
+            })
+          }
+      })
+      $scope.editfeat = function (data) {
+        angular.forEach($scope.feats, function (feat) {
+            if (feat.feature === data) {
+              feat.sel = true;
+            }
+        })
+      }
+      $scope.chanfeat = function (data) {
+        angular.forEach($scope.feats, function (feat) {
+            if (feat.feature === data) {
+              if (feat.isi.$id === data){
+                feat.sel = false;
+              }
+            }
+        })
+      }
+      $scope.item = {'photo': $scope.blog.picture};
+      $scope.addinfos = function () {
+          $scope.infos.push({})
+      }
+      $scope.addtags = function () {
+          $scope.tags.push({})
+      }
+      $scope.addfeats = function () {
+          $scope.feats.push({})
+      }
+  }
 
   $scope.$on('$ionicView.beforeEnter', function () {
-    $scope.item.photo = PickTransactionServices.photoSelected;
+    $scope.blog = getblog;
   });
 
   $scope.takepic = function() {
@@ -1369,7 +1583,8 @@ angular.module('starter.controllers', [])
     }
   };
 
-  $scope.createInventory = function (inventory) {
+  $scope.createBlog = function (blog,informations,tages,features) {
+
       var filesSelected = document.getElementById("nameImg").files;
       if (filesSelected.length > 0) {
         var fileToLoad = filesSelected[0];
@@ -1387,19 +1602,14 @@ angular.module('starter.controllers', [])
       }
 
       // Validate form data
-      if (typeof inventory.name === 'undefined' || inventory.name === '') {
+      if (typeof blog.title === 'undefined' || blog.title === '') {
           $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter name"
+          $scope.validationMessage = "Please enter title"
           return;
       }
-      if (typeof inventory.jumlah === 'undefined' || inventory.jumlah === '') {
+      if (typeof blog.desc === 'undefined' || blog.desc === '') {
           $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter jumlah"
-          return;
-      }
-      if (typeof inventory.harga === 'undefined' || inventory.harga === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter harga"
+          $scope.validationMessage = "Please enter desc"
           return;
       }
 
@@ -1407,571 +1617,146 @@ angular.module('starter.controllers', [])
           template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
       });
 
-      /* PREPARE DATA FOR FIREBASE*/
+    if ($stateParams.blogId === '') {
+
       var photo = $scope.item.photo;
       $scope.temp = {
-          name: inventory.name,
+          title: blog.title,
           picture: photo,
-          harga: inventory.harga,
-          stock: inventory.jumlah,
+          desc: blog.desc,
+          video: blog.video,
           addedby: CurrentUserService.fullname,
           datecreated: Date.now(),
           dateupdated: Date.now()
       }
 
-      /* SAVE MEMBER DATA */
-      var ref = fb.child("master").child("inventory");
-      ref.push($scope.temp);
+      /* SAVE OVERVIEW DATA */
+      var ref = TransactionFactory.blRef();
+      var newChildRef = ref.push($scope.temp);
+      $scope.idbl = newChildRef.key;
+      $scope.datai = [];
+      $scope.datat = [];
+      $scope.dataf = [];
+      /* SAVE INFO DATA */
+      angular.forEach(informations, function (information) {
+          if (information.isi.$id !== undefined) {
+              $scope.data = {
+                  info: information.isi.$id,
+                  title: information.isi.title,
+                  value: information.value,
+                  icon: information.isi.icon
+              }
+              $scope.datai.push($scope.data);
+          }
+      })
+      angular.forEach(tages, function (tage) {
+          if (tage.isi.$id !== undefined) {
+              $scope.data = {
+                  tag: tage.isi.$id,
+                  title: tage.isi.title
+              }
+              $scope.datat.push($scope.data);
+          }
+      })
+      angular.forEach(features, function (featur) {
+          if (featur.isi.$id !== undefined) {
+              $scope.data = {
+                  feature: featur.isi.$id,
+                  title: featur.isi.title,
+                  icon: featur.isi.icon
+              }
+              $scope.dataf.push($scope.data);
+          }
+      })
+
+      var infoRef = ref.child($scope.idbl).child("infos");
+      infoRef.set($scope.datai);
+
+      var tagRef = ref.child($scope.idbl).child("tags");
+      tagRef.set($scope.datat);
+
+      var featRef = ref.child($scope.idbl).child("features");
+      featRef.set($scope.dataf);
+
+      var kindRef = ref.child($scope.idbl);
+      kindRef.update({kind: $scope.datat[0].title});
 
       $ionicLoading.hide();
-      refresh($scope.inventory, $scope);
-  };
-
-  function refresh(inventory, $scope, item) {
-
-    $scope.inventory = {'name': '','berat': '','harga': '','picture': ''};
-    $scope.item = {'photo': ''};
-  }
-})
-
-.controller('editprojectCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
-
-  $scope.inventory = {'name': '','jumlah': '','harga': '','photo': '','picture': ''};
-  $scope.item = {'photo': ''};
-  $scope.inEditMode = false;
-  var getinventory = MasterFactory.getInventory($stateParams.inventoryId);
-  $scope.stock = getinventory.jumlah;
-
-  if ($stateParams.inventoryId === '') {
-      //
-      // Create Material
-      //
-      $scope.item = {'photo': ''};
-  } else {
-      //
-      // Edit Material
-      //
-      var getinventory = MasterFactory.getInventory($stateParams.inventoryId);
-      $scope.inEditMode = true;
-      $scope.inventory = getinventory;
-      $scope.inventory.jumlah = "";
-      $scope.stock = $scope.inventory.stock;
-      $scope.item = {'photo': $scope.inventory.picture};
-  }
-
-  $scope.myFunc = function() {
-    if($scope.inventory.jumlah !== undefined){
-      $scope.stock = parseFloat($scope.inventory.jumlah) + parseFloat($scope.inventory.stock);
-    } else {
-      $scope.stock = $scope.inventory.stock;
-    }
-  };
-
-  $scope.$on('$ionicView.beforeEnter', function () {
-    $scope.inventory = getinventory;
-    $scope.stock = $scope.inventory.stock;
-    $scope.item = {'photo': $scope.inventory.picture};
-  });
-
-  $scope.takepic = function() {
-    
-    var filesSelected = document.getElementById("nameImg").files;
-    if (filesSelected.length > 0) {
-      var fileToLoad = filesSelected[0];
-      var fileReader = new FileReader();
-      fileReader.onload = function(fileLoadedEvent) {
-        var textAreaFileContents = document.getElementById(
-          "textAreaFileContents"
-        );
-        $scope.item = {
-          photo: fileLoadedEvent.target.result
-        };
-        $scope.inventory.photo = fileLoadedEvent.target.result;
-      };
-
-      fileReader.readAsDataURL(fileToLoad);
-    }
-  };
-
-  $scope.createInventory = function () {
-      var filesSelected = document.getElementById("nameImg").files;
-      if (filesSelected.length > 0) {
-        var fileToLoad = filesSelected[0];
-        var fileReader = new FileReader();
-        fileReader.onload = function(fileLoadedEvent) {
-          var textAreaFileContents = document.getElementById(
-            "textAreaFileContents"
-          );
-          $scope.item = {
-            photo: fileLoadedEvent.target.result
-          };
-        };
-
-        fileReader.readAsDataURL(fileToLoad);
-      }
-
-      // Validate form data
-      if (typeof $scope.inventory.name === 'undefined' || $scope.inventory.name === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter name"
-          return;
-      }
-      if (typeof $scope.inventory.jumlah === 'undefined' || $scope.inventory.jumlah === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter jumlah"
-          return;
-      }
-      if (typeof $scope.inventory.harga === 'undefined' || $scope.inventory.harga === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter harga"
-          return;
-      }
-
-      $ionicLoading.show({
-          template: '<ion-spinner icon="ios"></ion-spinner><br>Editing...'
-      });
-
-      /* PREPARE DATA FOR FIREBASE*/
-      var photo = $scope.item.photo;
-      var currentstock = $scope.stock;
-      $scope.temp = {
-          name: $scope.inventory.name,
-          picture: photo,
-          harga: $scope.inventory.harga,
-          stock: currentstock,
-          addedby: CurrentUserService.fullname,
-          datecreated: Date.now(),
-          dateupdated: Date.now()
-      }
-
-      /* SAVE MATERIAL DATA */
-      var inventoryref = MasterFactory.iRef();
-      var newData = inventoryref.child($stateParams.inventoryId);
-      newData.update($scope.temp, function (ref) {
-      });
-
-      $scope.temp = {};
-      $ionicLoading.hide();
-      refresh($scope.inventory, $scope.temp, $scope);
+      refresh($scope.blog, $scope);
       $ionicHistory.goBack();
-  };
 
-  function refresh(temp, inventory, $scope, item) {
-
-    $scope.inventory = {'name': '','jumlah': '','harga': '','picture': ''};
-    $scope.item = {'photo': ''};
-    $scope.stock = "";
-    $scope.temp = {};
-  }
-})
-
-.controller('blogCtrl', function($scope, $state, $ionicLoading, MasterFactory, $ionicPopup, myCache) {
-
-  $scope.materials = [];
-
-  $scope.materials = MasterFactory.getMaterials();
-  $scope.materials.$loaded().then(function (x) {
-    refresh($scope.materials, $scope, MasterFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
-  $scope.$on('$ionicView.beforeEnter', function () {
-    refresh($scope.materials, $scope);
-  });
-
-  $scope.edit = function(item) {
-    $state.go('app.rawmaterial', { materialId: item.$id });
-  };
-
-  function refresh(materials, $scope, item) {
-  }
-})
-
-.controller('addblogCtrl', function($scope, $state, $ionicLoading, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
-
-  $scope.material = {'jenis': '','berat': '','harga': '','photo': '','picture': ''};
-  $scope.item = {'photo': ''};
-
-  $scope.$on('$ionicView.beforeEnter', function () {
-    $scope.item.photo = PickTransactionServices.photoSelected;
-  });
-
-  $scope.takepic = function() {
-    
-    var filesSelected = document.getElementById("nameImg").files;
-    if (filesSelected.length > 0) {
-      var fileToLoad = filesSelected[0];
-      var fileReader = new FileReader();
-      fileReader.onload = function(fileLoadedEvent) {
-        var textAreaFileContents = document.getElementById(
-          "textAreaFileContents"
-        );
-        $scope.item = {
-          photo: fileLoadedEvent.target.result
-        };
-        PickTransactionServices.updatePhoto($scope.item.photo);
-      };
-
-      fileReader.readAsDataURL(fileToLoad);
-    }
-  };
-
-  $scope.createMaterial = function (material) {
-      var filesSelected = document.getElementById("nameImg").files;
-      if (filesSelected.length > 0) {
-        var fileToLoad = filesSelected[0];
-        var fileReader = new FileReader();
-        fileReader.onload = function(fileLoadedEvent) {
-          var textAreaFileContents = document.getElementById(
-            "textAreaFileContents"
-          );
-          $scope.item = {
-            photo: fileLoadedEvent.target.result
-          };
-        };
-
-        fileReader.readAsDataURL(fileToLoad);
-      }
-
-      // Validate form data
-      if (typeof material.jenis === 'undefined' || material.jenis === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter jenis"
-          return;
-      }
-      if (typeof material.berat === 'undefined' || material.berat === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter berat"
-          return;
-      }
-      if (typeof material.harga === 'undefined' || material.harga === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter harga"
-          return;
-      }
-
-      $ionicLoading.show({
-          template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
-      });
-
-      /* PREPARE DATA FOR FIREBASE*/
-      var photo = $scope.item.photo;
-      $scope.temp = {
-          jenis: material.jenis,
-          picture: photo,
-          harga: material.harga,
-          stock: material.berat,
-          transfer: false,
-          berattransfer: "",
-          addedby: CurrentUserService.fullname,
-          datecreated: Date.now(),
-          dateupdated: Date.now()
-      }
-
-      /* SAVE MEMBER DATA */
-      var ref = fb.child("master").child("material");
-      ref.push($scope.temp);
-
-      $ionicLoading.hide();
-      refresh($scope.material, $scope);
-  };
-
-  function refresh(material, $scope, item) {
-
-    $scope.material = {'jenis': '','berat': '','harga': '','picture': ''};
-    $scope.item = {'photo': ''};
-  }
-})
-
-.controller('editblogCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
-
-  $scope.material = {'jenis': '','berat': '','harga': '','photo': '','picture': ''};
-  $scope.item = {'photo': ''};
-  $scope.inEditMode = false;
-  var getmaterial = MasterFactory.getMaterial($stateParams.materialId);
-  $scope.stock = getmaterial.berat;
-
-  if ($stateParams.materialId === '') {
-      //
-      // Create Material
-      //
-      $scope.item = {'photo': ''};
-  } else {
-      //
-      // Edit Material
-      //
-      var getmaterial = MasterFactory.getMaterial($stateParams.materialId);
-      $scope.inEditMode = true;
-      $scope.material = getmaterial;
-      $scope.material.berat = "";
-      $scope.stock = $scope.material.stock;
-      $scope.item = {'photo': $scope.material.picture};
-  }
-
-  $scope.myFunc = function() {
-    if($scope.material.berat !== undefined){
-      $scope.stock = parseFloat($scope.material.berat) + parseFloat($scope.material.stock);
     } else {
-      $scope.stock = $scope.material.stock;
-    }
-    
-  };
-
-  $scope.$on('$ionicView.beforeEnter', function () {
-    $scope.material = getmaterial;
-    $scope.stock = $scope.material.stock;
-    $scope.item = {'photo': $scope.material.picture};
-  });
-
-  $scope.takepic = function() {
-    
-    var filesSelected = document.getElementById("nameImg").files;
-    if (filesSelected.length > 0) {
-      var fileToLoad = filesSelected[0];
-      var fileReader = new FileReader();
-      fileReader.onload = function(fileLoadedEvent) {
-        var textAreaFileContents = document.getElementById(
-          "textAreaFileContents"
-        );
-        $scope.item = {
-          photo: fileLoadedEvent.target.result
-        };
-        $scope.material.photo = fileLoadedEvent.target.result;
-      };
-
-      fileReader.readAsDataURL(fileToLoad);
-    }
-  };
-
-  $scope.createMaterial = function () {
-      var filesSelected = document.getElementById("nameImg").files;
-      if (filesSelected.length > 0) {
-        var fileToLoad = filesSelected[0];
-        var fileReader = new FileReader();
-        fileReader.onload = function(fileLoadedEvent) {
-          var textAreaFileContents = document.getElementById(
-            "textAreaFileContents"
-          );
-          $scope.item = {
-            photo: fileLoadedEvent.target.result
-          };
-        };
-
-        fileReader.readAsDataURL(fileToLoad);
-      }
-
-      // Validate form data
-      if (typeof $scope.material.jenis === 'undefined' || $scope.material.jenis === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter jenis"
-          return;
-      }
-      if (typeof $scope.material.berat === 'undefined' || $scope.material.berat === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter berat"
-          return;
-      }
-      if (typeof $scope.material.harga === 'undefined' || $scope.material.harga === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter harga"
-          return;
-      }
-
-      $ionicLoading.show({
-          template: '<ion-spinner icon="ios"></ion-spinner><br>Editing...'
-      });
 
       /* PREPARE DATA FOR FIREBASE*/
       var photo = $scope.item.photo;
-      var currentstock = $scope.stock;
       $scope.temp = {
-          jenis: $scope.material.jenis,
+          title: blog.title,
           picture: photo,
-          harga: $scope.material.harga,
-          stock: currentstock,
+          desc: blog.desc,
+          video: blog.video,
           addedby: CurrentUserService.fullname,
           datecreated: Date.now(),
           dateupdated: Date.now()
       }
 
-      /* SAVE MATERIAL DATA */
-      var materialref = MasterFactory.mRef();
-      var newData = materialref.child($stateParams.materialId);
-      newData.update($scope.temp, function (ref) {
-      });
+      /* SAVE OVERVIEW DATA */
+      var ref = TransactionFactory.blRef();
+      var childRef = ref.child($stateParams.blogId);
+      childRef.set($scope.temp);
+      $scope.datai = [];
+      $scope.datat = [];
+      $scope.dataf = [];
+      /* SAVE INFO DATA */
+      angular.forEach(informations, function (information) {
+          if (information.isi.$id !== undefined) {
+              $scope.data = {
+                  info: information.isi.$id,
+                  title: information.isi.title,
+                  value: information.value,
+                  icon: information.isi.icon
+              }
+              $scope.datai.push($scope.data);
+          }
+      })
+      angular.forEach(tages, function (tage) {
+          if (tage.isi.$id !== undefined) {
+              $scope.data = {
+                  tag: tage.isi.$id,
+                  title: tage.isi.title
+              }
+              $scope.datat.push($scope.data);
+          }
+      })
+      angular.forEach(features, function (featur) {
+          if (featur.isi.$id !== undefined) {
+              $scope.data = {
+                  feature: featur.isi.$id,
+                  title: featur.isi.title,
+                  icon: featur.isi.icon
+              }
+              $scope.dataf.push($scope.data);
+          }
+      })
 
-      $scope.temp = {};
+      var infoRef = ref.child($stateParams.blogId).child("infos");
+      infoRef.set($scope.datai);
+
+      var tagRef = ref.child($stateParams.blogId).child("tags");
+      tagRef.set($scope.datat);
+
+      var featRef = ref.child($stateParams.blogId).child("features");
+      featRef.set($scope.dataf);
+
+      var kindRef = ref.child($stateParams.blogId);
+      kindRef.update({kind: $scope.datat[0].title});
+
       $ionicLoading.hide();
-      refresh($scope.material, $scope.temp, $scope);
+      refresh($scope.blog, $scope);
       $ionicHistory.goBack();
-  };
-
-  function refresh(temp, material, $scope, item) {
-
-    $scope.material = {'jenis': '','berat': '','harga': '','picture': ''};
-    $scope.item = {'photo': ''};
-    $scope.stock = "";
-    $scope.temp = {};
-  }
-})
-
-.controller('carrierCtrl', function($scope, $state, $ionicLoading, MasterFactory, $ionicPopup, myCache) {
-
-  $scope.products = [];
-
-  $scope.products = MasterFactory.getProducts();
-  $scope.products.$loaded().then(function (x) {
-    refresh($scope.products, $scope, MasterFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
-  $scope.$on('$ionicView.beforeEnter', function () {
-    refresh($scope.products, $scope);
-  });
-
-  $scope.edit = function(item) {
-    $state.go('app.addproduct', { productId: item.$id });
-  };
-
-  function refresh(products, $scope, item) {
-  }
-})
-
-.controller('addcarrierCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {
-
-  $scope.product = {'nama': '','berat': '','harga': '','photo': '','picture': ''};
-  $scope.item = {'photo': ''};
-  $scope.inEditMode = false;
-
-  $scope.$on('$ionicView.beforeEnter', function () {
-    if ($scope.product.picture === ""){
-       $scope.item.photo = PickTransactionServices.photoSelected;
-    } else {
-      $scope.item = {'photo': $scope.product.picture};
-    }
-  });
-
-  if ($stateParams.productId === '') {
-      //
-      // Create Product
-      //
-      $scope.item = {'photo': ''};
-  } else {
-      //
-      // Edit Product
-      //
-      var getproduct = MasterFactory.getProduct($stateParams.productId);
-      $scope.inEditMode = true;
-      $scope.product = getproduct;
-      $scope.item = {'photo': $scope.product.picture};
-  }
-
-  $scope.takepic = function() {
-    
-    var filesSelected = document.getElementById("nameImg").files;
-    if (filesSelected.length > 0) {
-      var fileToLoad = filesSelected[0];
-      var fileReader = new FileReader();
-      fileReader.onload = function(fileLoadedEvent) {
-        var textAreaFileContents = document.getElementById(
-          "textAreaFileContents"
-        );
-        $scope.item = {
-          photo: fileLoadedEvent.target.result
-        };
-        $scope.product.photo = fileLoadedEvent.target.result;
-        PickTransactionServices.updatePhoto($scope.item.photo);
-      };
-
-      fileReader.readAsDataURL(fileToLoad);
     }
   };
 
-  $scope.createProduct = function (product) {
-      var filesSelected = document.getElementById("nameImg").files;
-      if (filesSelected.length > 0) {
-        var fileToLoad = filesSelected[0];
-        var fileReader = new FileReader();
-        fileReader.onload = function(fileLoadedEvent) {
-          var textAreaFileContents = document.getElementById(
-            "textAreaFileContents"
-          );
-          $scope.item = {
-            photo: fileLoadedEvent.target.result
-          };
-        };
-
-        fileReader.readAsDataURL(fileToLoad);
-      }
-
-      // Validate form data
-      if (typeof product.nama === 'undefined' || product.nama === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter nama"
-          return;
-      }
-      if (typeof product.berat === 'undefined' || product.berat === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter berat"
-          return;
-      }
-      if (typeof product.harga === 'undefined' || product.harga === '') {
-          $scope.hideValidationMessage = false;
-          $scope.validationMessage = "Please enter harga"
-          return;
-      }
-
-      if ($scope.inEditMode) {
-        $ionicLoading.show({
-            template: '<ion-spinner icon="ios"></ion-spinner><br>Editing...'
-        });
-        /* PREPARE DATA FOR FIREBASE*/
-        var photo = $scope.item.photo;
-        $scope.temp = {
-            nama: product.nama,
-            picture: photo,
-            harga: product.harga,
-            berat: product.berat,
-            addedby: CurrentUserService.fullname,
-            datecreated: Date.now(),
-            dateupdated: Date.now()
-        }
-        /* SAVE PRODUCT DATA */
-        var productref = MasterFactory.pRef();
-        var newData = productref.child($stateParams.productId);
-        newData.update($scope.temp, function (ref) {
-        });
-        $ionicHistory.goBack();
-      }else {
-        $ionicLoading.show({
-            template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
-        });
-        /* PREPARE DATA FOR FIREBASE*/
-        var photo = $scope.item.photo;
-        $scope.temp = {
-            nama: product.nama,
-            picture: photo,
-            harga: product.harga,
-            berat: product.berat,
-            addedby: CurrentUserService.fullname,
-            datecreated: Date.now(),
-            dateupdated: Date.now()
-        }
-        /* SAVE PRODUCT DATA */
-        var ref = fb.child("master").child("product");
-        ref.push($scope.temp);
-      }
-
-      $ionicLoading.hide();
-      refresh($scope.product, $scope);
-  };
-
-  function refresh(product, $scope, item) {
-
-    $scope.product = {'nama': '','berat': '','harga': '','picture': ''};
-    $scope.item = {'photo': ''};
+  function refresh(temp, blog, $scope, item) {
   }
 })
 
@@ -1987,7 +1772,6 @@ angular.module('starter.controllers', [])
 
   function refresh(profile, $scope, ContactsFactory) {
   }
-  
 })
 
 .controller('detprofileCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicHistory, ContactsFactory, MasterFactory, CurrentUserService, PickTransactionServices, $ionicPopup, myCache) {

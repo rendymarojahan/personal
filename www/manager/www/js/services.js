@@ -66,8 +66,10 @@ angular.module('starter.services', [])
         var transactionsRef = {};
         var ordersRef = {};
         var overviewsRef = {};
+        var blogsRef = {};
         var tRef = fb.child("transactions").child("orders");
         var ovRef = fb.child("overviews");
+        var blRef = fb.child("blogs");
         return {
             ref: function () {
                 ref = fb.child("publics").child(thisPublicId).child(thisUserId);
@@ -78,6 +80,9 @@ angular.module('starter.services', [])
             },
             ovRef: function () {
                 return ovRef;
+            },
+            blRef: function () {
+                return blRef;
             },
             getOverviews: function () {
                 ref = fb.child("overviews");
@@ -92,6 +97,15 @@ angular.module('starter.services', [])
                 ref = fb.child("transactions").child("orders").orderByChild('kode');
                 transactionsRef = $firebaseArray(ref);
                 return transactionsRef;
+            },
+            getBlogs: function () {
+                ref = fb.child("blogs");
+                blogsRef = $firebaseArray(ref);
+                return blogsRef;
+            },
+            getBlog: function (blogid) {
+                var thisBlog = blogsRef.$getRecord(blogid);
+                return thisBlog;
             },
             getOrders: function () {
                 ref = fb.child("transactions").child("orders");
