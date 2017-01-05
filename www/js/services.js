@@ -15,6 +15,7 @@ angular.module('starter.services', [])
         var ref = {};
         var overviewsRef = {};
         var articleRef = {};
+        var blogRef = {};
         var ovRef = fb.child("overviews");
         return {
             ref: function () {
@@ -45,6 +46,15 @@ angular.module('starter.services', [])
                     deferred.resolve(snap.val());
                 });
                 return deferred.promise;
+            },
+            getBlogs: function (article) {
+                ref = fb.child("blogs").orderByChild("topic").equalTo(article);
+                blogsRef = $firebaseArray(ref);
+                return blogsRef;
+            },
+            getBlog: function (blogid) {
+                var thisBlog = blogsRef.$getRecord(blogid);
+                return thisBlog;
             }
             
             

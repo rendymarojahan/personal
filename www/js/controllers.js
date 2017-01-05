@@ -28,6 +28,61 @@ angular.module('starter.controllers', [])
     }
   };
 
+  $scope.menuhome = "";
+  $scope.menuprofile = "";
+  $scope.menuproject = "";
+  $scope.menublog = "";
+  $scope.menuqualification = "";
+  $scope.menucontact = "";
+  $scope.trighome = function() {
+    $scope.menuhome = "active";
+    $scope.menuprofile = "";
+    $scope.menuproject = "";
+    $scope.menublog = "";
+    $scope.menuqualification = "";
+    $scope.menucontact = "";
+  };
+  $scope.trigprofile = function() {
+    $scope.menuprofile = "active";
+    $scope.menuhome = "";
+    $scope.menuproject = "";
+    $scope.menublog = "";
+    $scope.menuqualification = "";
+    $scope.menucontact = "";
+  };
+  $scope.trigproject = function() {
+    $scope.menuproject = "active";
+    $scope.menuhome = "";
+    $scope.menuprofile = "";
+    $scope.menublog = "";
+    $scope.menuqualification = "";
+    $scope.menucontact = "";
+  };
+  $scope.trigblog = function() {
+    $scope.menublog = "active";
+    $scope.menuhome = "";
+    $scope.menuprofile = "";
+    $scope.menuproject = "";
+    $scope.menuqualification = "";
+    $scope.menucontact = "";
+  };
+  $scope.trigqualification = function() {
+    $scope.menuqualification = "active";
+    $scope.menuhome = "";
+    $scope.menuprofile = "";
+    $scope.menuproject = "";
+    $scope.menublog = "";
+    $scope.menucontact = "";
+  };
+  $scope.trigcontact = function() {
+    $scope.menucontact = "active";
+    $scope.menuhome = "";
+    $scope.menuprofile = "";
+    $scope.menuproject = "";
+    $scope.menublog = "";
+    $scope.menuqualification = "";
+  };
+
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
     $scope.modal.hide();
@@ -158,7 +213,47 @@ angular.module('starter.controllers', [])
 
   function refresh(profile, $scope, ContactsFactory) {
   }
-  
+})
+
+.controller('blogCtrl', function($scope, $state, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+
+  $scope.healths = [];
+  $scope.article = "Health";
+  $scope.healths = TransactionFactory.getBlogs($scope.article);
+  $scope.healths.$loaded().then(function (x) {
+    angular.forEach($scope.healths, function (data) {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
+          }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-on";
+          data.ispicture = true;
+        }
+    })
+    refresh($scope.healths, $scope, TransactionFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    refresh($scope.healths, $scope);
+  });
+
+  function refresh(healths, $scope, item) {
+  }
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {

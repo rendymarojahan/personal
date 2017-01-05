@@ -1679,7 +1679,7 @@ angular.module('starter.controllers', [])
       featRef.set($scope.dataf);
 
       var kindRef = ref.child($scope.idbl);
-      kindRef.update({kind: $scope.datat[0].title});
+      kindRef.update({kind: $scope.datat[0].title, topic: $scope.datat[1].title});
 
       $ionicLoading.hide();
       refresh($scope.blog, $scope);
@@ -1748,7 +1748,7 @@ angular.module('starter.controllers', [])
       featRef.set($scope.dataf);
 
       var kindRef = ref.child($stateParams.blogId);
-      kindRef.update({kind: $scope.datat[0].title});
+      kindRef.update({kind: $scope.datat[0].title, topic: $scope.datat[1].title});
 
       $ionicLoading.hide();
       refresh($scope.blog, $scope);
