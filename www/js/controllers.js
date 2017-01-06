@@ -256,5 +256,25 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('contactCtrl', function($scope, $stateParams, $ionicLoading, $http) {
+  $scope.email = {'name': '','contact': '','topic': '','message': ''};
+
+  $scope.sendEmail = function (email) {
+
+      $ionicLoading.show({
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
+      });
+      var receiper = "rendy.marojahan@gmail.com";
+      var from = function() { return email.name +" "+ email.contact;}
+
+      location.href = 'mailto:'+ receiper + '?subject=' + email.topic + '&body=' + email.message + '&header=' + from;
+
+      $ionicLoading.hide();
+      refresh($scope.email, $scope);
+  };
+
+  function refresh(email, $scope) {
+
+    $scope.email = {'name': '','contact': '','topic': '','message': ''};
+  }
 });

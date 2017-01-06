@@ -95,7 +95,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: '/contact',
     views: {
       'menuContent': {
-        templateUrl: 'templates/contact.html'
+        templateUrl: 'templates/contact.html',
+        controller: 'contactCtrl'
       }
     }
   })
