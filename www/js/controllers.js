@@ -248,11 +248,135 @@ angular.module('starter.controllers', [])
       console.error("Error:", error);
   });
 
-  $scope.$on('$ionicView.beforeEnter', function () {
-    refresh($scope.healths, $scope);
+  $scope.politics = [];
+  $scope.articlep = "Politic";
+  $scope.politics = TransactionFactory.getBlogs($scope.articlep);
+  $scope.politics.$loaded().then(function (x) {
+    angular.forEach($scope.politics, function (data) {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
+          }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-on";
+          data.ispicture = true;
+        }
+    })
+    refresh($scope.politics, $scope, TransactionFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
   });
 
-  function refresh(healths, $scope, item) {
+  $scope.sciences = [];
+  $scope.articles = "Science";
+  $scope.sciences = TransactionFactory.getBlogs($scope.articles);
+  $scope.sciences.$loaded().then(function (x) {
+    angular.forEach($scope.sciences, function (data) {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
+          }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-on";
+          data.ispicture = true;
+        }
+    })
+    refresh($scope.sciences, $scope, TransactionFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.sports = [];
+  $scope.articlesp = "Sport";
+  $scope.sports = TransactionFactory.getBlogs($scope.articlesp);
+  $scope.sports.$loaded().then(function (x) {
+    angular.forEach($scope.sports, function (data) {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
+          }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-on";
+          data.ispicture = true;
+        }
+    })
+    refresh($scope.sports, $scope, TransactionFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.technos = [];
+  $scope.articlet = "Technology";
+  $scope.technos = TransactionFactory.getBlogs($scope.articlet);
+  $scope.technos.$loaded().then(function (x) {
+    angular.forEach($scope.technos, function (data) {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
+          }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-on";
+          data.ispicture = true;
+        }
+    })
+    refresh($scope.technos, $scope, TransactionFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    refresh($scope.healths, $scope.politics, $scope.sciences, $scope.sports, $scope.technos, $scope);
+  });
+
+  function refresh(healths, politics, sciences, sports, technos, $scope, item) {
   }
 })
 
