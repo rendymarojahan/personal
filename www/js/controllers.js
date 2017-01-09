@@ -217,6 +217,45 @@ angular.module('starter.controllers', [])
 
 .controller('blogCtrl', function($scope, $state, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
 
+  $scope.doRefresh = function (){
+
+    $scope.sciences = [];
+    $scope.articles = "Science";
+    $scope.sciences = TransactionFactory.getBlogs($scope.articles);
+    $scope.sciences.$loaded().then(function (x) {
+      angular.forEach($scope.sciences, function (data) {
+          if (data.kind === "Blog") {
+            data.class = "col-d";
+            data.isblog = true;
+            data.isvideo = false;
+            if (data.video !== "Kosong"){
+              data.isvideo = true;
+            }
+          } else if (data.kind === "Note") {
+            data.class = "col-in-at";
+            data.isnote = true;
+          } else if (data.kind === "Link") {
+            data.class = "col-in";
+            data.islink = true;
+          } else if (data.kind === "Quote") {
+            data.class = "col-on";
+            data.isquote = true;
+          } else if (data.kind === "Picture") {
+            data.class = "col-d";
+            data.ispicture = true;
+          }
+          if (data.comments !== undefined){
+            data.comment = data.comments.length;
+          }
+      })
+      refresh($scope.sciences, $scope, TransactionFactory);
+      $scope.$broadcast('scroll.refreshComplete');
+    }).catch(function (error) {
+        console.error("Error:", error);
+    });
+
+  };
+
   $scope.healths = [];
   $scope.article = "Health";
   $scope.healths = TransactionFactory.getBlogs($scope.article);
@@ -239,8 +278,11 @@ angular.module('starter.controllers', [])
           data.class = "col-on";
           data.isquote = true;
         } else if (data.kind === "Picture") {
-          data.class = "col-on";
+          data.class = "col-d";
           data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+          data.comment = data.comments.length;
         }
     })
     refresh($scope.healths, $scope, TransactionFactory);
@@ -270,8 +312,11 @@ angular.module('starter.controllers', [])
           data.class = "col-on";
           data.isquote = true;
         } else if (data.kind === "Picture") {
-          data.class = "col-on";
+          data.class = "col-d";
           data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+          data.comment = data.comments.length;
         }
     })
     refresh($scope.politics, $scope, TransactionFactory);
@@ -301,8 +346,11 @@ angular.module('starter.controllers', [])
           data.class = "col-on";
           data.isquote = true;
         } else if (data.kind === "Picture") {
-          data.class = "col-on";
+          data.class = "col-d";
           data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+          data.comment = data.comments.length;
         }
     })
     refresh($scope.sciences, $scope, TransactionFactory);
@@ -332,8 +380,11 @@ angular.module('starter.controllers', [])
           data.class = "col-on";
           data.isquote = true;
         } else if (data.kind === "Picture") {
-          data.class = "col-on";
+          data.class = "col-d";
           data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+          data.comment = data.comments.length;
         }
     })
     refresh($scope.sports, $scope, TransactionFactory);
@@ -363,8 +414,11 @@ angular.module('starter.controllers', [])
           data.class = "col-on";
           data.isquote = true;
         } else if (data.kind === "Picture") {
-          data.class = "col-on";
+          data.class = "col-d";
           data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+          data.comment = data.comments.length;
         }
     })
     refresh($scope.technos, $scope, TransactionFactory);
@@ -377,6 +431,26 @@ angular.module('starter.controllers', [])
   });
 
   function refresh(healths, politics, sciences, sports, technos, $scope, item) {
+  }
+})
+
+.controller('detailCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+  $scope.detail = {'title': '','desc': '','picture': ''};
+  var getdetail = TransactionFactory.getBlog($stateParams.detailId);
+
+  if ($stateParams.detailId === '') {
+    $state.go('app.blog');
+  } else {
+    var getdetail = TransactionFactory.getBlog($stateParams.detailId);
+    $scope.detail = getdetail;
+  }
+
+  $scope.$on('$ionicView.beforeEnter', function () {
+    $scope.detail = getdetail;
+  });
+
+  function refresh(detail, project, $scope, item) {
+    $scope.detail = {'title': '','desc': '','picture': ''};
   }
 })
 

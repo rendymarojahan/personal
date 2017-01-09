@@ -1612,6 +1612,9 @@ angular.module('starter.controllers', [])
           $scope.validationMessage = "Please enter desc"
           return;
       }
+      if (typeof blog.video === 'undefined' || blog.video === '') {
+          blog.video = "Kosong";
+      }
 
       $ionicLoading.show({
           template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
@@ -1680,11 +1683,6 @@ angular.module('starter.controllers', [])
 
       var kindRef = ref.child($scope.idbl);
       kindRef.update({kind: $scope.datat[0].title, topic: $scope.datat[1].title});
-
-      $ionicLoading.hide();
-      refresh($scope.blog, $scope);
-      $ionicHistory.goBack();
-
     } else {
 
       /* PREPARE DATA FOR FIREBASE*/
@@ -1749,14 +1747,20 @@ angular.module('starter.controllers', [])
 
       var kindRef = ref.child($stateParams.blogId);
       kindRef.update({kind: $scope.datat[0].title, topic: $scope.datat[1].title});
+    }
 
       $ionicLoading.hide();
-      refresh($scope.blog, $scope);
+      $scope.blog = {'title': '','desc': '','picture': '','video': ''};
+      $scope.item = {'photo': ''};
+      $scope.infos = [];
+      $scope.tags = [];
+      $scope.feats = [];
       $ionicHistory.goBack();
-    }
+
   };
 
   function refresh(temp, blog, $scope, item) {
+    
   }
 })
 
