@@ -4,6 +4,7 @@
 			<div class="single">
 				<div class="single-top">
 					<div class="grid-about">
+						<a><youtube-video ng-if="isvideo"  video-id="detail.video"></youtube-video></a>
 						<a><img src="{{detail.picture}}" alt=""></a>
 					</div>
 					<h2><a>{{detail.title}}</a></h2>
@@ -85,24 +86,7 @@
 				</div>
 				<div class="top-single">
 					<h3>Leave a Comment</h3>
-					<div class="grid-single">
-						<div class="your-single">
-							<i> </i>
-							<input type="text" value="Name" onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'Name';}">	
-							<div class="clear"> </div>
-						</div>
-						<div class="your-single">
-							<i class="email"> </i>
-							<input type="text" value="E-mail" onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'E-mail';}">	
-							<div class="clear"> </div>
-						</div>
-						<div class="your-single">
-							<i class="website"> </i>
-							<input type="text" value="Website" onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'Website';}">
-							<div class="clear"> </div>
-						</div>
-					</div>
-				<div class="grid-single-in">
+				<div class="grid-single-det">
 					<textarea cols="77" rows="5" value=" " onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'Message';}">Message</textarea>
 					<input type="submit" value="SENT MESSAGE">
 				</div>
@@ -111,35 +95,30 @@
 				</div>
 				<div class="single-in">
 					<div class="info">
-						<h3>Project Info</h3>
+						<h3>Info</h3>
 						<ul class="likes">
-							<li><a href="#"><i > </i>premiumlayers</a></li>
-							<li><span><i class="like"> </i>138 Likes</span></li>
-							<li><span><i class="dec"> </i>25 December, 2013</span></li>
-							<li><a href="#"><i class="comment"> </i>4 Comments</a></li>
-
+							<li><span><i class="fa fa-newspaper-o"> </i>{{detail.topic}}</span></li>
+							<li><span><i class="fa fa-bookmark"> </i>{{detail.kind}}</span></li>
+							<li><span><i class="fa fa-calendar"> </i>Created {{detail.datecreated | date}}</span></li>
+							<li><span><i class="fa fa-calendar-plus-o"> </i>Updated {{detail.dateupdated | date}}</span></li>
 						</ul>
 					</div>
 					<div class="tags">
 						<h3>Tags</h3>
 						<ul class="tag">
-							<li><a href="#">web design</a></li>
-							<li><a href="#">photography</a></li>
-							<li><a href="#">development</a></li>
-							<li><a href="#">php</a></li>
-							<li><a href="#">ecommerce</a></li>
-							<li><a href="#">graphic</a></li>
+							<li ng-repeat="tag in detail.tags | orderBy:'title'"><a href="#">{{tag.title}}</a></li>
 						</ul>
 					</div>
 					<div class="archive">
-						<h3>Archives</h3>
-						<ul class="archive-grid">
-							<li><a href="#">December 2013 (24)</a></li>
-							<li><a href="#">November 2013 (7)</a></li>
-							<li><a href="#">September 2013 (2)</a></li>
-							<li><a href="#">March 2013 (22)</a></li>
-							<li><a href="#">January 2013 (11)</a></li>
-						</ul>
+						<h3>Share</h3>
+							<ul class="social-in">
+					          <li><a socialshare socialshare-provider="facebook" socialshare-text="{{detail.title}}" socialshare-title="{{detail.title}}" socialshare-description="{{detail.desc}}" socialshare-url="http://www.rendymarojahan.com" socialshare-media="images/logo.jpg" socialshare-via="356918818009905"><i> </i></a></li>
+					          <li><a socialshare socialshare-provider="google" socialshare-url="http://www.rendymarojahan.com"><i class="gmail"> </i></a></li>
+					          <li><a socialshare socialshare-provider="twitter" socialshare-text="{{detail.title}}" socialshare-hashtags="rendymarojahan, websiterendymarojahan" socialshare-url="http://www.rendymarojahan.com"><i class="twitter"> </i></a></li>
+					          <li><a socialshare socialshare-provider="pinterest" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com" socialshare-media="{{detail.picture}}"><i class="pin"> </i></a></li>
+					          <li><a socialshare socialshare-provider="linkedin" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com" socialshare-description="{{detail.desc}}"><i class="dribble"> </i></a></li>
+					          <li><a socialshare socialshare-provider="skype" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com"><i class="behance"> </i></a></li>
+					        </ul>
 					</div>
 				</div>
 				<div class="clear"> </div>

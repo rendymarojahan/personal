@@ -55,6 +55,14 @@ angular.module('starter.services', [])
             getBlog: function (blogid) {
                 var thisBlog = blogsRef.$getRecord(blogid);
                 return thisBlog;
+            },
+            getArticle: function (articleid) {
+                var deferred = $q.defer();
+                ref = fb.child("blogs").child(articleid);
+                ref.once("value", function (snap) {
+                    deferred.resolve(snap.val());
+                });
+                return deferred.promise;
             }
             
             

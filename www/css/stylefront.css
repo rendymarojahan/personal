@@ -782,10 +782,12 @@ ul.date li a{
 }
 iframe{
 	display:block;
+	max-width: 100%;
 }
 .col-d iframe{
 	width:100%;
 	min-height: 172px;
+	height: 100%
 }
 .col-in p{
 	color:#fff;
@@ -918,6 +920,7 @@ a.just-do:hover {
   line-height: 1.7em;
   font-weight: 300;
   padding: 0 0 1em;
+  text-align: justify;
 }
 .single-top p span {
   padding: 2em 0 0;
@@ -1052,6 +1055,51 @@ label.arrow-in {
 }
 .grid-single,.grid-single-in  {
   width: 49%;
+  float: left;
+}
+.your-single input[type="text"],.grid-single-det textarea {
+  background: none;
+  width: 66%;
+  outline: none;
+  border: none;
+  padding:1em 0.8em;
+  font-size: 1em;
+  color: #1ab5b3;
+  margin: 0 0 0 2%;
+  float:left;  
+}
+.grid-single-det textarea{
+  border: 1px solid #e2e2e2;
+ resize:none;
+  margin: 0.7em 0 0.5em;
+  width:89%;
+   font-size: 1.3em;
+    padding: 0.8em;
+}
+.grid-single-det input[type="submit"] {
+  width: 100%;
+  font-size: 1.1em;
+  background: #1ab5b3;
+  padding: 0.7em 1em;
+  text-align: center;
+  color: #fff;
+  border: none;
+  outline: none;
+  margin: 0 auto;
+  -webkit-appearance: none;
+  font-weight: 700;
+  transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -o-transition: 0.5s all;
+  -ms-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  cursor:pointer;
+}
+.grid-single-det input[type="submit"]:hover {
+	background:#242b2e;
+}
+.grid-single,.grid-single-det  {
+  width: 100%;
   float: left;
 }
 .grid-single {
@@ -2053,6 +2101,7 @@ h4.author {
 }
 .col-d img{
 	width:100%;
+	height: 100%;
 }
 .col-in a {
   font-size: 0.8em;

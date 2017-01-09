@@ -436,17 +436,25 @@ angular.module('starter.controllers', [])
 
 .controller('detailCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
   $scope.detail = {'title': '','desc': '','picture': ''};
-  var getdetail = TransactionFactory.getBlog($stateParams.detailId);
 
   if ($stateParams.detailId === '') {
     $state.go('app.blog');
   } else {
-    var getdetail = TransactionFactory.getBlog($stateParams.detailId);
-    $scope.detail = getdetail;
+    TransactionFactory.getArticle($stateParams.detailId).then(function(data){
+      if (data.video !== "Kosong"){
+        $scope.isvideo = true;
+      }
+      $scope.detail = data;
+    })
   }
 
   $scope.$on('$ionicView.beforeEnter', function () {
-    $scope.detail = getdetail;
+    TransactionFactory.getArticle($stateParams.detailId).then(function(data){
+      if (data.video !== "Kosong"){
+        $scope.isvideo = true;
+      }
+      $scope.detail = data;
+    })
   });
 
   function refresh(detail, project, $scope, item) {
