@@ -83,10 +83,6 @@ angular.module('starter.controllers', [])
     $scope.menuqualification = "";
   };
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
 
   // Open the login modal
   $scope.login = function() {
@@ -434,8 +430,47 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('detailCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+.controller('detailCtrl', function($scope, $state, $stateParams, $filter, $ionicModal, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
   $scope.detail = {'title': '','desc': '','picture': ''};
+  $scope.login = false;
+  var gateFb = new firebase.auth.FacebookAuthProvider();
+  $scope.username = myCache.get('thisUserName');
+  $scope.userphoto = myCache.get('thisUserPhoto');
+
+  $scope.loginFacebook = function() {
+    $ionicLoading.show({
+        template: 'Logging in...'
+    });
+
+    firebase.auth().signInWithPopup(gateFb).then(function(result) {
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      myCache.put('thisUserName', user.displayName);
+      myCache.put('thisUserPhoto', user.photoURL);
+      myCache.put('thisUserEmail', user.email);
+      myCache.put('thisUserLogin', true);
+      $scope.user = user;
+      $scope.username = user.displayName;
+      $scope.userphoto = user.photoURL;
+      $scope.login = true;
+      $ionicLoading.hide();
+      $scope.modal.hide();
+      $state.reload('app.detail');
+      // ...
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+      
+  }
 
   if ($stateParams.detailId === '') {
     $state.go('app.blog');
@@ -456,6 +491,25 @@ angular.module('starter.controllers', [])
       $scope.detail = data;
     })
   });
+
+  $ionicModal.fromTemplateUrl('templates/login.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  // Triggered in the login modal to close it
+  $scope.closeLogin = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.gate = function () {
+    if ($scope.login) {
+      $state.reload('');
+    }else if(!$scope.login){
+      $scope.modal.show();
+    }
+  };
 
   function refresh(detail, project, $scope, item) {
     $scope.detail = {'title': '','desc': '','picture': ''};

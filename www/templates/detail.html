@@ -1,31 +1,30 @@
 <ion-view>
   <ion-content>
     <div class="content">
-			<div class="single">
-				<div class="single-top">
-					<div class="grid-about">
-						<a><youtube-video ng-if="isvideo"  video-id="detail.video"></youtube-video></a>
-						<a><img src="{{detail.picture}}" alt=""></a>
-					</div>
-					<h2><a>{{detail.title}}</a></h2>
-					<pre><p>{{detail.desc}}</p></pre>
-					<div class="comment-grid-top">
-						<h3>5 Comments</h3>
-						<div class="comments-top-top">
-							<div class="top-comment-left">
-								<img  src="images/co.jpg" alt="">
-							</div>
-							<div class="top-comment-right">
-								<ul>
-									<li><span > <a href="#">ShaneFreer</a></span></li>
-									<li><span>/ 58 minutes ago</span></li>
-									
-								</ul>
-								<p>great post brainartworks</p>
-							</div>
-							<div class="clear"> </div>
-							<label> </label>
+		<div class="single">
+			<div class="single-top">
+				<div class="grid-about">
+					<a><youtube-video ng-if="isvideo"  video-id="detail.video"></youtube-video></a>
+					<a><img src="{{detail.picture}}" alt=""></a>
+				</div>
+				<h2><a>{{detail.title}}</a></h2>
+				<pre><p>{{detail.desc}}</p></pre>
+				<div class="comment-grid-top">
+					<h3>5 Comments</h3>
+					<div class="comments-top-top">
+						<div class="top-comment-left">
+							<img  src="images/co.jpg" alt="">
 						</div>
+						<div class="top-comment-right">
+							<ul>
+								<li><span > <a href="#">ShaneFreer</a></span></li>
+								<li><span>/ 58 minutes ago</span></li>
+							</ul>
+							<p>great post brainartworks</p>
+						</div>
+						<div class="clear"> </div>
+						<label> </label>
+					</div>
 					<div class="comments-top-top top-comment">
 						<div class="top-comment-left left-single">
 							<img  src="images/co1.jpg" alt="">
@@ -84,44 +83,66 @@
 						<div class="clear"> </div>
 					</div>
 				</div>
-				<div class="top-single">
+				<div ng-show="login" class="comment-grid-top">
+					<div class="comments-top-top ">
+						<div class="top-comment-left ">
+							<img  src="{{userphoto}}" alt="">
+						</div>
+						<div class="top-comment-right ">
+							<ul>
+								<li><span > <a href="#">{{username}}</a></span></li>
+								<li><span >/ now</span></li>
+							</ul>
+							<p>typing...</p>
+						</div>
+						<div class="clear"> </div>
+					</div>
+				</div>
+				<div ng-show="login" class="top-single">
+					<div class="grid-single-det">
+						<textarea cols="77" rows="5" ng-click="gate()" ng-model="comment" autofocus></textarea>
+						<input type="submit" value="SENT MESSAGE">
+					</div>
+					<div class="clear"> </div>
+				</div>
+				<div ng-hide="login" class="top-single">
 					<h3>Leave a Comment</h3>
-				<div class="grid-single-det">
-					<textarea cols="77" rows="5" value=" " onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'Message';}">Message</textarea>
-					<input type="submit" value="SENT MESSAGE">
+					<div class="grid-single-det">
+						<textarea cols="77" rows="5" ng-click="gate()"></textarea>
+					</div>
+					<div class="clear"> </div>
 				</div>
-				<div class="clear"> </div>
 			</div>
+			<div class="single-in">
+				<div class="info">
+					<h3>Info</h3>
+					<ul class="likes">
+						<li><span><i class="fa fa-newspaper-o"> </i>{{detail.topic}}</span></li>
+						<li><span><i class="fa fa-bookmark"> </i>{{detail.kind}}</span></li>
+						<li><span><i class="fa fa-calendar"> </i>Created {{detail.datecreated | date}}</span></li>
+						<li><span><i class="fa fa-calendar-plus-o"> </i>Updated {{detail.dateupdated | date}}</span></li>
+					</ul>
 				</div>
-				<div class="single-in">
-					<div class="info">
-						<h3>Info</h3>
-						<ul class="likes">
-							<li><span><i class="fa fa-newspaper-o"> </i>{{detail.topic}}</span></li>
-							<li><span><i class="fa fa-bookmark"> </i>{{detail.kind}}</span></li>
-							<li><span><i class="fa fa-calendar"> </i>Created {{detail.datecreated | date}}</span></li>
-							<li><span><i class="fa fa-calendar-plus-o"> </i>Updated {{detail.dateupdated | date}}</span></li>
-						</ul>
-					</div>
-					<div class="tags">
-						<h3>Tags</h3>
-						<ul class="tag">
-							<li ng-repeat="tag in detail.tags | orderBy:'title'"><a href="#">{{tag.title}}</a></li>
-						</ul>
-					</div>
-					<div class="archive">
-						<h3>Share</h3>
-							<ul class="social-in">
-					          <li><a socialshare socialshare-provider="facebook" socialshare-text="{{detail.title}}" socialshare-title="{{detail.title}}" socialshare-description="{{detail.desc}}" socialshare-url="http://www.rendymarojahan.com" socialshare-media="images/logo.jpg" socialshare-via="356918818009905"><i> </i></a></li>
-					          <li><a socialshare socialshare-provider="google" socialshare-url="http://www.rendymarojahan.com"><i class="gmail"> </i></a></li>
-					          <li><a socialshare socialshare-provider="twitter" socialshare-text="{{detail.title}}" socialshare-hashtags="rendymarojahan, websiterendymarojahan" socialshare-url="http://www.rendymarojahan.com"><i class="twitter"> </i></a></li>
-					          <li><a socialshare socialshare-provider="pinterest" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com" socialshare-media="{{detail.picture}}"><i class="pin"> </i></a></li>
-					          <li><a socialshare socialshare-provider="linkedin" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com" socialshare-description="{{detail.desc}}"><i class="dribble"> </i></a></li>
-					          <li><a socialshare socialshare-provider="skype" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com"><i class="behance"> </i></a></li>
-					        </ul>
-					</div>
+				<div class="tags">
+					<h3>Tags</h3>
+					<ul class="tag">
+						<li ng-repeat="tag in detail.tags | orderBy:'title'"><a href="#">{{tag.title}}</a></li>
+					</ul>
 				</div>
-				<div class="clear"> </div>
+				<div class="archive">
+					<h3>Share</h3>
+						<ul class="social-in">
+				          <li><a socialshare socialshare-provider="facebook" socialshare-text="{{detail.title}}" socialshare-title="{{detail.title}}" socialshare-description="{{detail.desc}}" socialshare-url="http://www.rendymarojahan.com" socialshare-media="images/logo.jpg" socialshare-via="356918818009905"><i> </i></a></li>
+				          <li><a socialshare socialshare-provider="google" socialshare-url="http://www.rendymarojahan.com"><i class="gmail"> </i></a></li>
+				          <li><a socialshare socialshare-provider="twitter" socialshare-text="{{detail.title}}" socialshare-hashtags="rendymarojahan, websiterendymarojahan" socialshare-url="http://www.rendymarojahan.com"><i class="twitter"> </i></a></li>
+				          <li><a socialshare socialshare-provider="pinterest" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com" socialshare-media="{{detail.picture}}"><i class="pin"> </i></a></li>
+				          <li><a socialshare socialshare-provider="linkedin" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com" socialshare-description="{{detail.desc}}"><i class="dribble"> </i></a></li>
+				          <li><a socialshare socialshare-provider="skype" socialshare-text="{{detail.title}}" socialshare-url="http://www.rendymarojahan.com"><i class="behance"> </i></a></li>
+				        </ul>
+				</div>
+			</div>
+			<div class="clear"> </div>
+		</div>
 	</div>
   </ion-content>
 </ion-view>
