@@ -474,6 +474,7 @@ angular.module('starter.controllers', [])
       firebase.auth().signInWithPopup(pass).then(function(result) {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         var token = result.credential.accessToken;
+        var secret = result.credential.secret;
         // The signed-in user info.
         var user = result.user;
         myCache.put('thisUserName', user.displayName);
@@ -494,6 +495,34 @@ angular.module('starter.controllers', [])
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
         // ...
+        if (errorCode) {
+          if (errorCode === 'auth/operation-not-supported-in-this-environment') {
+            alert('Your Device not supported');
+          } else if (errorCode === 'auth/unauthorized-domain') {
+            alert('Domain unauthorized');
+          } else if (errorCode === 'auth/account-exists-with-different-credential') {
+            alert('Account exists with different credential');
+          } else if (errorCode === 'auth/auth-domain-config-required') {
+            alert('Auth not provided');
+          } else if (errorCode === 'auth/cancelled-popup-request') {
+            alert('Canceled popup request');
+          } else if (errorCode === 'auth/operation-not-allowed') {
+            alert('Credential not provided');
+          } else if (errorCode === 'auth/popup-blocked') {
+            alert('Popup blocked, Enable your popup');
+          } else if (errorCode === 'auth/popup-closed-by-user') {
+            alert('Popup closed before process completed');
+          }
+          
+        } else if (errorMessage){
+          alert('Email Used');
+        } else if (credential){
+          alert('Credential Used');
+        }
+        
+        $ionicLoading.hide();
+        $scope.modal.hide();
+        $state.reload('app.detail/$stateParams.detailId');
       });
     }
 
