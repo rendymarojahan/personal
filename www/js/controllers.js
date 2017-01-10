@@ -241,7 +241,11 @@ angular.module('starter.controllers', [])
             data.ispicture = true;
           }
           if (data.comments !== undefined){
-            data.comment = data.comments.length;
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
           }
       })
       refresh($scope.sciences, $scope, TransactionFactory);
@@ -278,8 +282,12 @@ angular.module('starter.controllers', [])
           data.ispicture = true;
         }
         if (data.comments !== undefined){
-          data.comment = data.comments.length;
-        }
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+          }
     })
     refresh($scope.healths, $scope, TransactionFactory);
   }).catch(function (error) {
@@ -312,8 +320,12 @@ angular.module('starter.controllers', [])
           data.ispicture = true;
         }
         if (data.comments !== undefined){
-          data.comment = data.comments.length;
-        }
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+          }
     })
     refresh($scope.politics, $scope, TransactionFactory);
   }).catch(function (error) {
@@ -346,8 +358,12 @@ angular.module('starter.controllers', [])
           data.ispicture = true;
         }
         if (data.comments !== undefined){
-          data.comment = data.comments.length;
-        }
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+          }
     })
     refresh($scope.sciences, $scope, TransactionFactory);
   }).catch(function (error) {
@@ -380,8 +396,12 @@ angular.module('starter.controllers', [])
           data.ispicture = true;
         }
         if (data.comments !== undefined){
-          data.comment = data.comments.length;
-        }
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+          }
     })
     refresh($scope.sports, $scope, TransactionFactory);
   }).catch(function (error) {
@@ -414,8 +434,12 @@ angular.module('starter.controllers', [])
           data.ispicture = true;
         }
         if (data.comments !== undefined){
-          data.comment = data.comments.length;
-        }
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+          }
     })
     refresh($scope.technos, $scope, TransactionFactory);
   }).catch(function (error) {
@@ -432,45 +456,79 @@ angular.module('starter.controllers', [])
 
 .controller('detailCtrl', function($scope, $state, $stateParams, $filter, $ionicModal, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
   $scope.detail = {'title': '','desc': '','picture': ''};
-  $scope.login = false;
-  var gateFb = new firebase.auth.FacebookAuthProvider();
-  $scope.username = myCache.get('thisUserName');
-  $scope.userphoto = myCache.get('thisUserPhoto');
-
-  $scope.loginFacebook = function() {
+  $scope.comment = {'data': ''};
+  
+  $scope.guest = function(gate) {
     $ionicLoading.show({
         template: 'Logging in...'
     });
 
-    firebase.auth().signInWithPopup(gateFb).then(function(result) {
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      var token = result.credential.accessToken;
-      // The signed-in user info.
-      var user = result.user;
-      myCache.put('thisUserName', user.displayName);
-      myCache.put('thisUserPhoto', user.photoURL);
-      myCache.put('thisUserEmail', user.email);
-      myCache.put('thisUserLogin', true);
-      $scope.user = user;
-      $scope.username = user.displayName;
-      $scope.userphoto = user.photoURL;
-      $scope.login = true;
-      $ionicLoading.hide();
-      $scope.modal.hide();
-      $state.reload('app.detail');
-      // ...
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
-      
+    if (gate){
+      if (gate === "Facebook"){
+        var pass = new firebase.auth.FacebookAuthProvider();
+      } else if (gate === "Google"){
+        var pass = new firebase.auth.GoogleAuthProvider();
+      }else if (gate === "Twitter"){
+        var pass = new firebase.auth.TwitterAuthProvider();
+      }
+      firebase.auth().signInWithPopup(pass).then(function(result) {
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        myCache.put('thisUserName', user.displayName);
+        myCache.put('thisUserPhoto', user.photoURL);
+        myCache.put('thisUserEmail', user.email);
+        myCache.put('thisUserLogin', true);
+        $scope.login = true;
+        $ionicLoading.hide();
+        $scope.modal.hide();
+        $state.reload('app.detail/$stateParams.detailId');
+        // ...
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
+      });
+    }
+
+    
   }
+
+  $scope.comm = function (data) {
+
+      // Validate form data
+      if (typeof data.data === 'undefined' || data.data === '') {
+          $scope.hideValidationMessage = false;
+          $scope.validationMessage = "Please give your comment"
+          return;
+      }
+
+      $ionicLoading.show({
+          template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
+      });
+
+      /* PREPARE DATA FOR FIREBASE*/
+      $scope.temp = {
+          comment: data.data,
+          commentator: $scope.username,
+          picture: $scope.userphoto,
+          datecreated: Date.now()
+      }
+
+      /* SAVE MEMBER DATA */
+      var ref = TransactionFactory.cRef();
+      var cref = ref.child($stateParams.detailId).child("comments");
+      cref.push($scope.temp);
+      $ionicLoading.hide();
+      $scope.comment = {'data': ''};
+      $state.reload('app.detail/$stateParams.detailId');
+  };
 
   if ($stateParams.detailId === '') {
     $state.go('app.blog');
@@ -479,17 +537,31 @@ angular.module('starter.controllers', [])
       if (data.video !== "Kosong"){
         $scope.isvideo = true;
       }
+      if (data.comments !== undefined){
+        var total = 0;
+        angular.forEach(data.comments, function (comment) {
+          total++;
+        })
+        data.comment = total;
+      }
       $scope.detail = data;
     })
   }
 
   $scope.$on('$ionicView.beforeEnter', function () {
     TransactionFactory.getArticle($stateParams.detailId).then(function(data){
-      if (data.video !== "Kosong"){
-        $scope.isvideo = true;
+      if (data.comments !== undefined){
+        var total = 0;
+        angular.forEach(data.comments, function (comment) {
+          total++;
+        })
+        data.comment = total;
       }
       $scope.detail = data;
     })
+    $scope.username = myCache.get('thisUserName');
+    $scope.userphoto = myCache.get('thisUserPhoto');
+    $scope.login = myCache.get('thisUserLogin');
   });
 
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -511,8 +583,9 @@ angular.module('starter.controllers', [])
     }
   };
 
-  function refresh(detail, project, $scope, item) {
+  function refresh(detail, comment, project, $scope, item) {
     $scope.detail = {'title': '','desc': '','picture': ''};
+    $scope.comment = {'data': ''};
   }
 })
 

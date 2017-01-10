@@ -17,6 +17,7 @@ angular.module('starter.services', [])
         var articleRef = {};
         var blogRef = {};
         var ovRef = fb.child("overviews");
+        var cRef = fb.child("blogs");
         return {
             ref: function () {
                 ref = fb.child("publics").child(thisPublicId).child(thisUserId);
@@ -24,6 +25,9 @@ angular.module('starter.services', [])
             },
             ovRef: function () {
                 return ovRef;
+            },
+            cRef: function () {
+                return cRef;
             },
             getOverviews: function () {
                 ref = fb.child("overviews");

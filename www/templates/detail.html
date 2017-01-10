@@ -10,75 +10,17 @@
 				<h2><a>{{detail.title}}</a></h2>
 				<pre><p>{{detail.desc}}</p></pre>
 				<div class="comment-grid-top">
-					<h3>5 Comments</h3>
-					<div class="comments-top-top">
+					<h3>{{detail.comment}} Comments</h3>
+					<div class="comments-top-top" ng-repeat="data in detail.comments">
 						<div class="top-comment-left">
-							<img  src="images/co.jpg" alt="">
+							<img  src="{{data.picture}}" alt="">
 						</div>
 						<div class="top-comment-right">
 							<ul>
-								<li><span > <a href="#">ShaneFreer</a></span></li>
-								<li><span>/ 58 minutes ago</span></li>
+								<li><span > <a href="#">{{data.commentator}}</a></span></li>
+								<li><span>/ {{data.datecreated|amCalendar:referenceTime:formats}}</span></li>
 							</ul>
-							<p>great post brainartworks</p>
-						</div>
-						<div class="clear"> </div>
-						<label> </label>
-					</div>
-					<div class="comments-top-top top-comment">
-						<div class="top-comment-left left-single">
-							<img  src="images/co1.jpg" alt="">
-						</div>
-						<div class="top-comment-right right-single">
-							<ul>
-								<li><span ><a href="#">ShaneFreer</a></span></li>
-								<li><span >/ 58 minutes ago</span></li>
-								
-							</ul>
-							<p>great post brainartworks</p>
-						</div>
-						<div class="clear"> </div>
-						<label> </label>
-					</div>
-					<div class="comments-top-top top-com">
-						<div class="top-comment-left left-single1">
-							<img  src="images/co2.jpg" alt="">
-						</div>
-						<div class="top-comment-right  right-single1">
-							<ul>
-								<li><span > <a href="#">ShaneFreer</a></span></li>
-								<li><span >/ 58 minutes ago</span></li>
-								
-							</ul>
-							<p>great post brainartworks</p>
-						</div>
-						<div class="clear"> </div>
-						<label class="arrow-in"> </label>
-					</div>
-					<div class="comments-top-top top-comment">
-						<div class="top-comment-left left-single">
-							<img  src="images/co3.jpg" alt="">
-						</div>
-						<div class="top-comment-right right-single">
-							<ul>
-								<li><span><a href="#">ShaneFreer</a></span></li>
-								<li><span >/ 58 minutes ago</span></li>
-								
-							</ul>
-							<p>great post brainartworks</p>
-						</div>
-						<div class="clear"> </div>
-					</div>
-					<div class="comments-top-top ">
-						<div class="top-comment-left ">
-							<img  src="images/co4.jpg" alt="">
-						</div>
-						<div class="top-comment-right ">
-							<ul>
-								<li><span > <a href="#">ShaneFreer</a></span></li>
-								<li><span >/ 58 minutes ago</span></li>
-							</ul>
-							<p>great post brainartworks</p>
+							<p>{{data.comment}}</p>
 						</div>
 						<div class="clear"> </div>
 					</div>
@@ -93,15 +35,15 @@
 								<li><span > <a href="#">{{username}}</a></span></li>
 								<li><span >/ now</span></li>
 							</ul>
-							<p>typing...</p>
+							<p>{{type}}</p>
 						</div>
 						<div class="clear"> </div>
 					</div>
 				</div>
 				<div ng-show="login" class="top-single">
 					<div class="grid-single-det">
-						<textarea cols="77" rows="5" ng-click="gate()" ng-model="comment" autofocus></textarea>
-						<input type="submit" value="SENT MESSAGE">
+						<textarea  ng-blur="type=''" ng-focus="type='typing...'" cols="77" rows="5" ng-click="gate()" ng-model="comment.data" autofocus></textarea>
+						<input type="submit" value="SENT MESSAGE" ng-click="comm(comment)">
 					</div>
 					<div class="clear"> </div>
 				</div>
