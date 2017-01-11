@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -41,6 +41,8 @@ angular.module('starter.controllers', [])
     $scope.menublog = "";
     $scope.menuqualification = "";
     $scope.menucontact = "";
+    $scope.menutop = "display: none;";
+    $state.go('app.rendy');
   };
   $scope.trigprofile = function() {
     $scope.menuprofile = "active";
@@ -49,6 +51,8 @@ angular.module('starter.controllers', [])
     $scope.menublog = "";
     $scope.menuqualification = "";
     $scope.menucontact = "";
+    $scope.menutop = "display: none;";
+    $state.go('app.profile');
   };
   $scope.trigproject = function() {
     $scope.menuproject = "active";
@@ -57,6 +61,8 @@ angular.module('starter.controllers', [])
     $scope.menublog = "";
     $scope.menuqualification = "";
     $scope.menucontact = "";
+    $scope.menutop = "display: none;";
+    $state.go('app.project');
   };
   $scope.trigblog = function() {
     $scope.menublog = "active";
@@ -65,6 +71,8 @@ angular.module('starter.controllers', [])
     $scope.menuproject = "";
     $scope.menuqualification = "";
     $scope.menucontact = "";
+    $scope.menutop = "display: none;";
+    $state.go('app.blog');
   };
   $scope.trigqualification = function() {
     $scope.menuqualification = "active";
@@ -73,6 +81,8 @@ angular.module('starter.controllers', [])
     $scope.menuproject = "";
     $scope.menublog = "";
     $scope.menucontact = "";
+    $scope.menutop = "display: none;";
+    $state.go('app.carrier');
   };
   $scope.trigcontact = function() {
     $scope.menucontact = "active";
@@ -81,6 +91,8 @@ angular.module('starter.controllers', [])
     $scope.menuproject = "";
     $scope.menublog = "";
     $scope.menuqualification = "";
+    $scope.menutop = "display: none;";
+    $state.go('app.contact');
   };
 
 
@@ -102,11 +114,12 @@ angular.module('starter.controllers', [])
 })
 
 .controller('rendyCtrl', function($scope, $state, $ionicLoading, TransactionFactory, $ionicPopup, myCache) {
+  $ionicLoading.show();
   $scope.overviews = [];
-
   $scope.overviews = TransactionFactory.getOverviews();
   $scope.overviews.$loaded().then(function (x) {
     refresh($scope.overviews, $scope, TransactionFactory);
+    $ionicLoading.hide();
   }).catch(function (error) {
       console.error("Error:", error);
   });
@@ -120,8 +133,10 @@ angular.module('starter.controllers', [])
 })
 
 .controller('projectCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+  $ionicLoading.show();
   $scope.overviews = [];
   $scope.projects = [];
+  $scope.jalan = document.URL;
 
   if ($stateParams.projectId === '') {
       $scope.article = "Project";
@@ -129,6 +144,7 @@ angular.module('starter.controllers', [])
       $scope.overviews.$loaded().then(function (x) {
         $scope.project = $scope.overviews[0];
         refresh($scope.overviews, $scope, TransactionFactory);
+        $ionicLoading.hide();
       }).catch(function (error) {
           console.error("Error:", error);
       });
@@ -140,6 +156,7 @@ angular.module('starter.controllers', [])
           $scope.project = data;
         })
         refresh($scope.overviews, $scope, TransactionFactory);
+        $ionicLoading.hide();
       }).catch(function (error) {
           console.error("Error:", error);
       });
@@ -155,8 +172,10 @@ angular.module('starter.controllers', [])
 })
 
 .controller('carrierCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+  $ionicLoading.show();
   $scope.overviews = [];
   $scope.projects = [];
+  $scope.jalanc = window.location.href.toString();
 
   if ($stateParams.carrierId === '') {
       $scope.article = "Carrier";
@@ -164,6 +183,7 @@ angular.module('starter.controllers', [])
       $scope.overviews.$loaded().then(function (x) {
         $scope.project = $scope.overviews[0];
         refresh($scope.overviews, $scope, TransactionFactory);
+        $ionicLoading.hide();
       }).catch(function (error) {
           console.error("Error:", error);
       });
@@ -175,6 +195,7 @@ angular.module('starter.controllers', [])
           $scope.project = data;
         })
         refresh($scope.overviews, $scope, TransactionFactory);
+        $ionicLoading.hide();
       }).catch(function (error) {
           console.error("Error:", error);
       });
@@ -190,11 +211,12 @@ angular.module('starter.controllers', [])
 })
 
 .controller('profileCtrl', function($scope, $state, $ionicLoading, ContactsFactory, TransactionFactory, $ionicPopup, myCache) {
-
+  $ionicLoading.show();
   $scope.profile = {};
   $scope.profile = ContactsFactory.getProfile();
   $scope.profile.$loaded().then(function (x) {
     refresh($scope.profile, $scope, ContactsFactory);
+    $ionicLoading.hide();
   }).catch(function (error) {
       console.error("Error:", error);
   });
@@ -212,7 +234,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('blogCtrl', function($scope, $state, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
-
+  $ionicLoading.show();
   $scope.doRefresh = function (){
 
     $scope.sciences = [];
@@ -366,6 +388,7 @@ angular.module('starter.controllers', [])
           }
     })
     refresh($scope.sciences, $scope, TransactionFactory);
+    $ionicLoading.hide();
   }).catch(function (error) {
       console.error("Error:", error);
   });
@@ -455,9 +478,11 @@ angular.module('starter.controllers', [])
 })
 
 .controller('detailCtrl', function($scope, $state, $stateParams, $filter, $ionicModal, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+  $ionicLoading.show();
   $scope.detail = {'title': '','desc': '','picture': ''};
   $scope.comment = {'data': ''};
-  
+  $scope.jaland = window.location.href.toString();
+
   $scope.guest = function(gate) {
     $ionicLoading.show({
         template: 'Logging in...'
@@ -574,6 +599,7 @@ angular.module('starter.controllers', [])
         data.comment = total;
       }
       $scope.detail = data;
+      $ionicLoading.hide();
     })
   }
 

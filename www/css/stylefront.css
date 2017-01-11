@@ -1426,7 +1426,6 @@ ul.date li i {
   width: 33.333%;
 }
 .content-grid:nth-child(4){
-  display:none;
 }
 ul.social-in li:nth-child(7){
   display:none;
@@ -1478,7 +1477,6 @@ h4.author {
   width: 23.5%;
 }
 .blog-top:nth-child(5) {
-  display:none;
 }
 .blog-top:nth-child(4) {
   margin:0;
@@ -1834,7 +1832,7 @@ ul.social li span, ul.social li a {
 }
 .logo-in{
 	float:left;
-	width: 29%;
+	width: 22%;
 }
 .logo-in img{
 	width: 100%;
@@ -1923,7 +1921,7 @@ span.menu {
 }
 @media(max-width:320px){
 .logo-in {
-  width: 36%;
+  width: 30%;
 }
 .top-nav-in {
   margin-top: 0.3em;
@@ -1959,8 +1957,6 @@ ul.social li span, ul.social li a {
 }
 .work-top p, .about-top p , p.para{
   font-size: 0.7em;
-  height: 107px;
-  overflow: hidden;
 }
 .projects h3, .info h3, .tags h3, .gallery h3, .feature h3, .staff h3, .skills h3, .services h3 {
   font-size: 1em;
@@ -2020,7 +2016,6 @@ ul.service-grid li a {
   width: 100%;
 }
 .blog-top:nth-child(3), .blog-top:nth-child(4) {
-	display:none;
 }
 ul.date li span {
   font-size: 0.9em;
