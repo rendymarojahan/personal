@@ -41,7 +41,7 @@ angular.module('starter.controllers', [])
     } else if ($scope.message === "open") {
         $scope.message = "";
     }
-    refresh($scope.transactions, $scope, TransactionFactory);
+    refresh($scope.emails, $scope, TransactionFactory);
   };
 
   $scope.profile = "";
@@ -94,10 +94,10 @@ angular.module('starter.controllers', [])
     }
   };
 
-  $scope.transactions = [];
-  $scope.transactions = TransactionFactory.getTransactions();
-  $scope.transactions.$loaded().then(function (x) {
-    refresh($scope.transactions, $scope, TransactionFactory);
+  $scope.emails = [];
+  $scope.emails = TransactionFactory.getEmails();
+  $scope.emails.$loaded().then(function (x) {
+    refresh($scope.emails, $scope, TransactionFactory);
   }).catch(function (error) {
       console.error("Error:", error);
   });
@@ -113,15 +113,15 @@ angular.module('starter.controllers', [])
     }, 1000);
   };
 
-  function refresh(transactions, $scope, item) {
+  function refresh(emails, $scope, item) {
     var notif = 0;
     var index;
     //
-    for (index = 0; index < transactions.length; ++index) {
+    for (index = 0; index < emails.length; ++index) {
         //
-        var transaction = transactions[index];
+        var mail = emails[index];
         //
-        if (transaction.newly === true) {
+        if (mail.open === false) {
             notif = notif + 1;
         }
     }
@@ -137,42 +137,22 @@ angular.module('starter.controllers', [])
 
   $scope.doRefresh = function (){
 
-    $scope.transactions = [];
-    $scope.transactions = TransactionFactory.getTransactions();
-    $scope.transactions.$loaded().then(function (x) {
-      var outstanding = 0;
-      var total = 0;
+    $scope.emails = [];
+    $scope.emails = TransactionFactory.getEmails();
+    $scope.emails.$loaded().then(function (x) {
+      var notif = 0;
       var index;
       //
-      for (index = 0; index < $scope.transactions.length; ++index) {
+      for (index = 0; index < $scope.emails.length; ++index) {
           //
-          var transaction = $scope.transactions[index];
+          var mail = $scope.emails[index];
           //
-          total++;
-          if (transaction.newly === true) {
-              outstanding = outstanding + 1;
+          if (mail.open === false) {
+              notif = notif + 1;
           }
       }
-      $scope.notify = outstanding;
-      $scope.totalorder = total;
-    }).catch(function (error) {
-        console.error("Error:", error);
-    });
-
-    $scope.contacts = ContactsFactory.getContacts();
-    $scope.contacts.$loaded().then(function (x) {
-      var employee = 0;
-      var index;
-      //
-      for (index = 0; index < $scope.contacts.length; ++index) {
-          //
-          var contact = $scope.contacts[index];
-          //
-          if (contact.status === "active") {
-              employee = employee + 1;
-          }
-      }
-      $scope.activeemployee = employee;
+      $scope.notify = notif;
+      refresh($scope.emails, $scope, TransactionFactory);
     }).catch(function (error) {
         console.error("Error:", error);
     });
@@ -190,75 +170,18 @@ angular.module('starter.controllers', [])
         console.error("Error:", error);
     });
 
-    $scope.inventories = MasterFactory.getInventories();
-    $scope.inventories.$loaded().then(function (x) {
-      var empty = 0;
-      var index;
-      //
-      for (index = 0; index < $scope.inventories.length; ++index) {
-          //
-          var inventory = $scope.inventories[index];
-          //
-          if (inventory.stock === 0) {
-              empty = empty + 1;
-          }
-      }
-      $scope.emptyinven = empty;
-    }).catch(function (error) {
-        console.error("Error:", error);
-    });
-
-    $scope.materials = MasterFactory.getMaterials();
-    $scope.materials.$loaded().then(function (x) {
-      var empty = 0;
-      var index;
-      //
-      for (index = 0; index < $scope.materials.length; ++index) {
-          //
-          var material = $scope.materials[index];
-          //
-          if (material.stock === 0) {
-              empty = empty + 1;
-          }
-      }
-      $scope.emptyraw = empty;
-    }).catch(function (error) {
-        console.error("Error:", error);
-    });
-
   };
 
-  $scope.transactions = [];
-  $scope.transactions = TransactionFactory.getTransactions();
-  $scope.transactions.$loaded().then(function (x) {
-    $scope.doRefresh();
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
-  $scope.contacts = ContactsFactory.getContacts();
-  $scope.contacts.$loaded().then(function (x) {
-    $scope.doRefresh();
+  $scope.emails = [];
+  $scope.emails = TransactionFactory.getEmails();
+  $scope.emails.$loaded().then(function (x) {
+    refresh($scope.emails, $scope, TransactionFactory);
   }).catch(function (error) {
       console.error("Error:", error);
   });
 
   $scope.users = AccountsFactory.getUsers();
   $scope.users.$loaded().then(function (x) {
-    $scope.doRefresh();
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
-  $scope.inventories = MasterFactory.getInventories();
-  $scope.inventories.$loaded().then(function (x) {
-    $scope.doRefresh();
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
-  $scope.materials = MasterFactory.getMaterials();
-  $scope.materials.$loaded().then(function (x) {
     $scope.doRefresh();
   }).catch(function (error) {
       console.error("Error:", error);

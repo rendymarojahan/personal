@@ -63,7 +63,7 @@ angular.module('starter.services', [])
 .factory('TransactionFactory', function ($firebaseArray, $q, myCache, CurrentUserService, $timeout) {
         var fb = firebase.database().ref();
         var ref = {};
-        var transactionsRef = {};
+        var emailsRef = {};
         var ordersRef = {};
         var overviewsRef = {};
         var blogsRef = {};
@@ -93,10 +93,10 @@ angular.module('starter.services', [])
                 var thisOverview = overviewsRef.$getRecord(overviewid);
                 return thisOverview;
             },
-            getTransactions: function () {
-                ref = fb.child("transactions").child("orders").orderByChild('kode');
-                transactionsRef = $firebaseArray(ref);
-                return transactionsRef;
+            getEmails: function () {
+                ref = fb.child("emails").orderByChild("datecreated");
+                emailsRef = $firebaseArray(ref);
+                return emailsRef;
             },
             getBlogs: function () {
                 ref = fb.child("blogs");
@@ -119,11 +119,11 @@ angular.module('starter.services', [])
                 return ordersRef;
             },
             getTransaction: function (transactionid) {
-                var thisMaterial = transactionsRef.$getRecord(transactionid);
+                var thisMaterial = emailsRef.$getRecord(transactionid);
                 return thisMaterial;
             },
             saveTransaction: function (temp) {
-                transactionsRef.$save(temp).then(function (ref) {
+                emailsRef.$save(temp).then(function (ref) {
                     //ref.key() = posting.$id;
                 });
             }

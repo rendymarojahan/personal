@@ -237,11 +237,10 @@ angular.module('starter.controllers', [])
   $ionicLoading.show();
   $scope.doRefresh = function (){
 
-    $scope.sciences = [];
-    $scope.articles = "Science";
-    $scope.sciences = TransactionFactory.getBlogs($scope.articles);
-    $scope.sciences.$loaded().then(function (x) {
-      angular.forEach($scope.sciences, function (data) {
+    $scope.blogs = TransactionFactory.getBlogs();
+    $scope.blogs.$loaded().then(function (x) {
+      angular.forEach($scope.blogs, function (data) {
+        if (data.topic === "Politic") {
           if (data.kind === "Blog") {
             data.class = "col-d";
             data.isblog = true;
@@ -263,14 +262,132 @@ angular.module('starter.controllers', [])
             data.ispicture = true;
           }
           if (data.comments !== undefined){
-            var total = 0;
-            angular.forEach(data.comments, function (comment) {
-              total++;
-            })
-            data.comment = total;
+              var total = 0;
+              angular.forEach(data.comments, function (comment) {
+                total++;
+              })
+              data.comment = total;
           }
+          $scope.politics = $scope.blog.concat($scope.politics);
+        } else if (data.topic === "Science") {
+          if (data.kind === "Blog") {
+            data.class = "col-d";
+            data.isblog = true;
+            data.isvideo = false;
+            if (data.video !== "Kosong"){
+              data.isvideo = true;
+            }
+          } else if (data.kind === "Note") {
+            data.class = "col-in-at";
+            data.isnote = true;
+          } else if (data.kind === "Link") {
+            data.class = "col-in";
+            data.islink = true;
+          } else if (data.kind === "Quote") {
+            data.class = "col-on";
+            data.isquote = true;
+          } else if (data.kind === "Picture") {
+            data.class = "col-d";
+            data.ispicture = true;
+          }
+          if (data.comments !== undefined){
+              var total = 0;
+              angular.forEach(data.comments, function (comment) {
+                total++;
+              })
+              data.comment = total;
+          }
+          $scope.sciences = $scope.blog.concat($scope.sciences);
+        } else if (data.topic === "Technology") {
+          if (data.kind === "Blog") {
+            data.class = "col-d";
+            data.isblog = true;
+            data.isvideo = false;
+            if (data.video !== "Kosong"){
+              data.isvideo = true;
+            }
+          } else if (data.kind === "Note") {
+            data.class = "col-in-at";
+            data.isnote = true;
+          } else if (data.kind === "Link") {
+            data.class = "col-in";
+            data.islink = true;
+          } else if (data.kind === "Quote") {
+            data.class = "col-on";
+            data.isquote = true;
+          } else if (data.kind === "Picture") {
+            data.class = "col-d";
+            data.ispicture = true;
+          }
+          if (data.comments !== undefined){
+              var total = 0;
+              angular.forEach(data.comments, function (comment) {
+                total++;
+              })
+              data.comment = total;
+          }
+          $scope.technos = $scope.blog.concat($scope.technos);
+        } else if (data.topic === "Sport") {
+          if (data.kind === "Blog") {
+            data.class = "col-d";
+            data.isblog = true;
+            data.isvideo = false;
+            if (data.video !== "Kosong"){
+              data.isvideo = true;
+            }
+          } else if (data.kind === "Note") {
+            data.class = "col-in-at";
+            data.isnote = true;
+          } else if (data.kind === "Link") {
+            data.class = "col-in";
+            data.islink = true;
+          } else if (data.kind === "Quote") {
+            data.class = "col-on";
+            data.isquote = true;
+          } else if (data.kind === "Picture") {
+            data.class = "col-d";
+            data.ispicture = true;
+          }
+          if (data.comments !== undefined){
+              var total = 0;
+              angular.forEach(data.comments, function (comment) {
+                total++;
+              })
+              data.comment = total;
+          }
+          $scope.sports = $scope.blog.concat($scope.sports);
+        } else if (data.topic === "Health") {
+          if (data.kind === "Blog") {
+            data.class = "col-d";
+            data.isblog = true;
+            data.isvideo = false;
+            if (data.video !== "Kosong"){
+              data.isvideo = true;
+            }
+          } else if (data.kind === "Note") {
+            data.class = "col-in-at";
+            data.isnote = true;
+          } else if (data.kind === "Link") {
+            data.class = "col-in";
+            data.islink = true;
+          } else if (data.kind === "Quote") {
+            data.class = "col-on";
+            data.isquote = true;
+          } else if (data.kind === "Picture") {
+            data.class = "col-d";
+            data.ispicture = true;
+          }
+          if (data.comments !== undefined){
+              var total = 0;
+              angular.forEach(data.comments, function (comment) {
+                total++;
+              })
+              data.comment = total;
+          }
+          $scope.healths = $scope.blog.concat($scope.healths);
+        }
       })
-      refresh($scope.sciences, $scope, TransactionFactory);
+      refresh($scope.blogs, $scope, TransactionFactory);
       $scope.$broadcast('scroll.refreshComplete');
     }).catch(function (error) {
         console.error("Error:", error);
@@ -279,86 +396,16 @@ angular.module('starter.controllers', [])
   };
 
   $scope.healths = [];
-  $scope.article = "Health";
-  $scope.healths = TransactionFactory.getBlogs($scope.article);
-  $scope.healths.$loaded().then(function (x) {
-    angular.forEach($scope.healths, function (data) {
-        if (data.kind === "Blog") {
-          data.class = "col-d";
-          data.isblog = true;
-          data.isvideo = false;
-          if (data.video !== "Kosong"){
-            data.isvideo = true;
-          }
-        } else if (data.kind === "Note") {
-          data.class = "col-in-at";
-          data.isnote = true;
-        } else if (data.kind === "Link") {
-          data.class = "col-in";
-          data.islink = true;
-        } else if (data.kind === "Quote") {
-          data.class = "col-on";
-          data.isquote = true;
-        } else if (data.kind === "Picture") {
-          data.class = "col-d";
-          data.ispicture = true;
-        }
-        if (data.comments !== undefined){
-            var total = 0;
-            angular.forEach(data.comments, function (comment) {
-              total++;
-            })
-            data.comment = total;
-          }
-    })
-    refresh($scope.healths, $scope, TransactionFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
   $scope.politics = [];
-  $scope.articlep = "Politic";
-  $scope.politics = TransactionFactory.getBlogs($scope.articlep);
-  $scope.politics.$loaded().then(function (x) {
-    angular.forEach($scope.politics, function (data) {
-        if (data.kind === "Blog") {
-          data.class = "col-d";
-          data.isblog = true;
-          data.isvideo = false;
-          if (data.video !== "Kosong"){
-            data.isvideo = true;
-          }
-        } else if (data.kind === "Note") {
-          data.class = "col-in-at";
-          data.isnote = true;
-        } else if (data.kind === "Link") {
-          data.class = "col-in";
-          data.islink = true;
-        } else if (data.kind === "Quote") {
-          data.class = "col-on";
-          data.isquote = true;
-        } else if (data.kind === "Picture") {
-          data.class = "col-d";
-          data.ispicture = true;
-        }
-        if (data.comments !== undefined){
-            var total = 0;
-            angular.forEach(data.comments, function (comment) {
-              total++;
-            })
-            data.comment = total;
-          }
-    })
-    refresh($scope.politics, $scope, TransactionFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
   $scope.sciences = [];
-  $scope.articles = "Science";
-  $scope.sciences = TransactionFactory.getBlogs($scope.articles);
-  $scope.sciences.$loaded().then(function (x) {
-    angular.forEach($scope.sciences, function (data) {
+  $scope.sports = [];
+  $scope.technos = [];
+  $scope.blogs = [];
+  $scope.blog = [];
+  $scope.blogs = TransactionFactory.getBlogs();
+  $scope.blogs.$loaded().then(function (x) {
+    angular.forEach($scope.blogs, function (data) {
+      if (data.topic === "Politic") {
         if (data.kind === "Blog") {
           data.class = "col-d";
           data.isblog = true;
@@ -385,99 +432,141 @@ angular.module('starter.controllers', [])
               total++;
             })
             data.comment = total;
+        }
+        $scope.politics.push(data);
+      } else if (data.topic === "Science") {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
           }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-d";
+          data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+        }
+        $scope.sciences.push(data);
+      } else if (data.topic === "Technology") {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
+          }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-d";
+          data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+        }
+        $scope.technos.push(data);
+      } else if (data.topic === "Sport") {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
+          }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-d";
+          data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+        }
+        $scope.sports.push(data);
+      } else if (data.topic === "Health") {
+        if (data.kind === "Blog") {
+          data.class = "col-d";
+          data.isblog = true;
+          data.isvideo = false;
+          if (data.video !== "Kosong"){
+            data.isvideo = true;
+          }
+        } else if (data.kind === "Note") {
+          data.class = "col-in-at";
+          data.isnote = true;
+        } else if (data.kind === "Link") {
+          data.class = "col-in";
+          data.islink = true;
+        } else if (data.kind === "Quote") {
+          data.class = "col-on";
+          data.isquote = true;
+        } else if (data.kind === "Picture") {
+          data.class = "col-d";
+          data.ispicture = true;
+        }
+        if (data.comments !== undefined){
+            var total = 0;
+            angular.forEach(data.comments, function (comment) {
+              total++;
+            })
+            data.comment = total;
+        }
+        $scope.healths.push(data);
+      }
     })
-    refresh($scope.sciences, $scope, TransactionFactory);
+    refresh($scope.blogs, $scope, TransactionFactory);
     $ionicLoading.hide();
   }).catch(function (error) {
       console.error("Error:", error);
   });
-
-  $scope.sports = [];
-  $scope.articlesp = "Sport";
-  $scope.sports = TransactionFactory.getBlogs($scope.articlesp);
-  $scope.sports.$loaded().then(function (x) {
-    angular.forEach($scope.sports, function (data) {
-        if (data.kind === "Blog") {
-          data.class = "col-d";
-          data.isblog = true;
-          data.isvideo = false;
-          if (data.video !== "Kosong"){
-            data.isvideo = true;
-          }
-        } else if (data.kind === "Note") {
-          data.class = "col-in-at";
-          data.isnote = true;
-        } else if (data.kind === "Link") {
-          data.class = "col-in";
-          data.islink = true;
-        } else if (data.kind === "Quote") {
-          data.class = "col-on";
-          data.isquote = true;
-        } else if (data.kind === "Picture") {
-          data.class = "col-d";
-          data.ispicture = true;
-        }
-        if (data.comments !== undefined){
-            var total = 0;
-            angular.forEach(data.comments, function (comment) {
-              total++;
-            })
-            data.comment = total;
-          }
-    })
-    refresh($scope.sports, $scope, TransactionFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
-  $scope.technos = [];
-  $scope.articlet = "Technology";
-  $scope.technos = TransactionFactory.getBlogs($scope.articlet);
-  $scope.technos.$loaded().then(function (x) {
-    angular.forEach($scope.technos, function (data) {
-        if (data.kind === "Blog") {
-          data.class = "col-d";
-          data.isblog = true;
-          data.isvideo = false;
-          if (data.video !== "Kosong"){
-            data.isvideo = true;
-          }
-        } else if (data.kind === "Note") {
-          data.class = "col-in-at";
-          data.isnote = true;
-        } else if (data.kind === "Link") {
-          data.class = "col-in";
-          data.islink = true;
-        } else if (data.kind === "Quote") {
-          data.class = "col-on";
-          data.isquote = true;
-        } else if (data.kind === "Picture") {
-          data.class = "col-d";
-          data.ispicture = true;
-        }
-        if (data.comments !== undefined){
-            var total = 0;
-            angular.forEach(data.comments, function (comment) {
-              total++;
-            })
-            data.comment = total;
-          }
-    })
-    refresh($scope.technos, $scope, TransactionFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
+  
   $scope.$on('$ionicView.beforeEnter', function () {
-    refresh($scope.healths, $scope.politics, $scope.sciences, $scope.sports, $scope.technos, $scope);
+    refresh($scope.blogs, $scope.healths, $scope.politics, $scope.sciences, $scope.sports, $scope.technos, $scope);
   });
 
-  function refresh(healths, politics, sciences, sports, technos, $scope, item) {
+  function refresh(blogs, healths, politics, sciences, sports, technos, $scope, item) {
   }
 })
 
-.controller('detailCtrl', function($scope, $state, $stateParams, $filter, $ionicModal, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+.controller('detailCtrl', function($scope, $state, $stateParams, $filter, $ionicModal, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache, $http) {
   $ionicLoading.show();
   $scope.detail = {'title': '','desc': '','picture': ''};
   $scope.comment = {'data': ''};
@@ -600,6 +689,63 @@ angular.module('starter.controllers', [])
       }
       $scope.detail = data;
       $ionicLoading.hide();
+      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+        if (ip.ip){
+          var ip = ip.ip;
+        } else {
+          var ip = "";
+        }
+        if (ip.hostname){
+          var hostname = ip.hostname;
+        } else {
+          var hostname = "";
+        }
+        if (ip.loc){
+          var loc = ip.loc;
+        } else {
+          var loc = "";
+        }
+        if (ip.org){
+          var org = ip.org;
+        } else {
+          var org = "";
+        }
+        if (ip.city){
+          var city = ip.city;
+        } else {
+          var city = "";
+        }
+        if (ip.region){
+          var region = ip.region;
+        } else {
+          var region = "";
+        }
+        if (ip.country){
+          var country = ip.country;
+        } else {
+          var country = "";
+        }
+        if (ip.phone){
+          var phone = ip.phone;
+        } else {
+          var phone = "";
+        }
+        $scope.temp = {
+            ip: ip,
+            hostname: hostname,
+            loc: loc, //Latitude and Longitude
+            org: org, //organization
+            city: city, //city area code
+            region: region, //state
+            country: country,
+            phone: phone,
+            datecreated: Date.now()
+        }
+        /* SAVE MEMBER DATA */
+        var ref = TransactionFactory.cRef();
+        var cref = ref.child($stateParams.detailId).child("reads");
+        cref.push($scope.temp);
+      });
     })
   }
 
@@ -644,7 +790,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('contactCtrl', function($scope, $stateParams, $ionicLoading, $http) {
+.controller('contactCtrl', function($scope, $stateParams, $ionicLoading, $http, TransactionFactory) {
   $scope.email = {'name': '','contact': '','topic': '','message': ''};
 
   $scope.sendEmail = function (email) {
@@ -652,12 +798,24 @@ angular.module('starter.controllers', [])
       $ionicLoading.show({
           template: '<ion-spinner icon="ios"></ion-spinner><br>Adding...'
       });
-      var receiper = "rendy.marojahan@gmail.com";
-      var from = function() { return email.name +" "+ email.contact;}
+      $scope.temp = {
+          name: email.name,
+          email: email.contact,
+          topic: email.topic,
+          message: email.message,
+          open: false,
+          datecreated: Date.now()
+      }
 
-      location.href = 'mailto:'+ receiper + '?subject=' + email.topic + '&body=' + email.message + '&header=' + from;
+      /* SAVE MEMBER DATA */
+      var ref = TransactionFactory.mRef();
+      ref.push($scope.temp);
+      //var receiper = "rendy.marojahan@gmail.com";
+      //var from = function() { return email.name +" "+ email.contact;}
+      //location.href = 'mailto:'+ receiper + '?subject=' + email.topic + '&body=' + email.message + '&header=' + from;
 
       $ionicLoading.hide();
+      alert('Your message sent!')
       refresh($scope.email, $scope);
   };
 

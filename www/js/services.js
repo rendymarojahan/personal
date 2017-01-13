@@ -18,6 +18,7 @@ angular.module('starter.services', [])
         var blogRef = {};
         var ovRef = fb.child("overviews");
         var cRef = fb.child("blogs");
+        var mRef = fb.child("emails");
         return {
             ref: function () {
                 ref = fb.child("publics").child(thisPublicId).child(thisUserId);
@@ -28,6 +29,9 @@ angular.module('starter.services', [])
             },
             cRef: function () {
                 return cRef;
+            },
+            mRef: function () {
+                return mRef;
             },
             getOverviews: function () {
                 ref = fb.child("overviews");
@@ -51,8 +55,8 @@ angular.module('starter.services', [])
                 });
                 return deferred.promise;
             },
-            getBlogs: function (article) {
-                ref = fb.child("blogs").orderByChild("topic").equalTo(article);
+            getBlogs: function () {
+                ref = fb.child("blogs");
                 blogsRef = $firebaseArray(ref);
                 return blogsRef;
             },

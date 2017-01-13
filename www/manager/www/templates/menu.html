@@ -37,15 +37,15 @@
                   <span class="badge bg-green">{{notify}}</span>
                 </a>
                 <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                  <li ng-if="transaction.newly" ng-repeat="transaction in transactions | orderBy:'kode'">
+                  <li ng-hide="mail.open" ng-repeat="mail in emails | orderBy:'-datecreated'">
                     <a>
-                      <span class="image"><img src="{{ transaction.picture }}" alt="Product Image" /></span>
+                      <span class="image"><img src="img/mail.png" alt="Product Image" /></span>
                       <span>
-                        <span>{{transaction.product}}</span>
-                        <span class="time">{{ transaction.datecreated | amCalendar:referenceTime:formats }}</span>
+                        <span>{{mail.topic}}</span>
+                        <span class="time">{{ mail.datecreated | amCalendar:referenceTime:formats }}</span>
                       </span>
                       <span class="message">
-                        {{transaction.pelanggan}}
+                        {{mail.name}}
                       </span>
                     </a>
                   </li>
