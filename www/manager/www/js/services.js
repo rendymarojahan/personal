@@ -66,13 +66,14 @@ angular.module('starter.services', [])
         var emailsRef = {};
         var ordersRef = {};
         var overviewsRef = {};
+        var accessRef = {};
         var blogsRef = {};
         var tRef = fb.child("transactions").child("orders");
         var ovRef = fb.child("overviews");
         var blRef = fb.child("blogs");
         return {
             ref: function () {
-                ref = fb.child("publics").child(thisPublicId).child(thisUserId);
+                ref = fb.child("overviews").child("access");
                 return ref;
             },
             tRef: function () {
@@ -83,6 +84,11 @@ angular.module('starter.services', [])
             },
             blRef: function () {
                 return blRef;
+            },
+            getAccess: function () {
+                ref = fb.child("overviews").child("access");
+                accessRef = $firebaseArray(ref);
+                return accessRef;
             },
             getOverviews: function () {
                 ref = fb.child("overviews");

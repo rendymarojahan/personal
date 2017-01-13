@@ -134,6 +134,12 @@ angular.module('starter.controllers', [])
   $scope.photo = CurrentUserService.picture;
   $scope.level = CurrentUserService.level;
   $scope.userid = myCache.get('thisMemberId');
+  $scope.notify = 0;
+  $scope.posting = 0;
+  $scope.comments = 0;
+  $scope.reads = 0;
+  $scope.shares = 0;
+  $scope.access = 0;
 
   $scope.doRefresh = function (){
 
@@ -157,6 +163,49 @@ angular.module('starter.controllers', [])
         console.error("Error:", error);
     });
 
+    $scope.blogs = [];
+    $scope.blogs = TransactionFactory.getBlogs();
+    $scope.blogs.$loaded().then(function (x) {
+      $scope.posting = $scope.blogs.length;     
+      var index;
+      //
+      angular.forEach($scope.blogs, function (blog) {
+          if (blog.reads !== undefined) {
+            var total = $scope.reads;
+            angular.forEach(blog.reads, function () {
+              total++;
+            })
+            $scope.reads = total; 
+          }
+          if (blog.comments !== undefined) {
+            var total = $scope.comments;
+            angular.forEach(blog.comments, function () {
+              total++;
+            })
+            $scope.comments = total; 
+          }
+          if (blog.shares !== undefined) {
+            var total = $scope.shares;
+            angular.forEach(blog.shares, function () {
+              total++;
+            })
+            $scope.shares = total; 
+          }
+      })
+      refresh($scope.blogs, $scope, TransactionFactory);
+    }).catch(function (error) {
+        console.error("Error:", error);
+    });
+
+    
+    $scope.overviews = TransactionFactory.getAccess();
+    $scope.overviews.$loaded().then(function (x) {
+      $scope.access = $scope.overviews.length;
+      refresh($scope.overviews, $scope, TransactionFactory);
+    }).catch(function (error) {
+        console.error("Error:", error);
+    });
+
     $scope.users = AccountsFactory.getUsers();
     $scope.users.$loaded().then(function (x) {
       var juser = 0;
@@ -176,6 +225,21 @@ angular.module('starter.controllers', [])
   $scope.emails = TransactionFactory.getEmails();
   $scope.emails.$loaded().then(function (x) {
     refresh($scope.emails, $scope, TransactionFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.blogs = [];
+  $scope.blogs = TransactionFactory.getBlogs();
+  $scope.blogs.$loaded().then(function (x) {
+    refresh($scope.blogs, $scope, TransactionFactory);
+  }).catch(function (error) {
+      console.error("Error:", error);
+  });
+
+  $scope.overviews = TransactionFactory.getAccess();
+  $scope.overviews.$loaded().then(function (x) {
+    refresh($scope.overviews, $scope, TransactionFactory);
   }).catch(function (error) {
       console.error("Error:", error);
   });

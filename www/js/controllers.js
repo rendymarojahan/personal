@@ -113,13 +113,70 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('rendyCtrl', function($scope, $state, $ionicLoading, TransactionFactory, $ionicPopup, myCache) {
+.controller('rendyCtrl', function($scope, $state, $ionicLoading, TransactionFactory, $ionicPopup, myCache, $http) {
   $ionicLoading.show();
   $scope.overviews = [];
   $scope.overviews = TransactionFactory.getOverviews();
   $scope.overviews.$loaded().then(function (x) {
     refresh($scope.overviews, $scope, TransactionFactory);
     $ionicLoading.hide();
+    $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+      if (ip.ip){
+        var ip = ip.ip;
+      } else {
+        var ip = "";
+      }
+      if (ip.hostname){
+        var hostname = ip.hostname;
+      } else {
+        var hostname = "";
+      }
+      if (ip.loc){
+        var loc = ip.loc;
+      } else {
+        var loc = "";
+      }
+      if (ip.org){
+        var org = ip.org;
+      } else {
+        var org = "";
+      }
+      if (ip.city){
+        var city = ip.city;
+      } else {
+        var city = "";
+      }
+      if (ip.region){
+        var region = ip.region;
+      } else {
+        var region = "";
+      }
+      if (ip.country){
+        var country = ip.country;
+      } else {
+        var country = "";
+      }
+      if (ip.phone){
+        var phone = ip.phone;
+      } else {
+        var phone = "";
+      }
+      $scope.temp = {
+          ip: ip,
+          hostname: hostname,
+          loc: loc, //Latitude and Longitude
+          org: org, //organization
+          city: city, //city area code
+          region: region, //state
+          country: country,
+          phone: phone,
+          datecreated: Date.now()
+      }
+      /* SAVE MEMBER DATA */
+      var ref = TransactionFactory.ovRef();
+      var cref = ref.child("access");
+      cref.push($scope.temp);
+    });
   }).catch(function (error) {
       console.error("Error:", error);
   });
@@ -132,7 +189,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('projectCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+.controller('projectCtrl', function($scope, $state, $http, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
   $ionicLoading.show();
   $scope.overviews = [];
   $scope.projects = [];
@@ -157,10 +214,130 @@ angular.module('starter.controllers', [])
         })
         refresh($scope.overviews, $scope, TransactionFactory);
         $ionicLoading.hide();
+        $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+          if (ip.ip){
+            var ip = ip.ip;
+          } else {
+            var ip = "";
+          }
+          if (ip.hostname){
+            var hostname = ip.hostname;
+          } else {
+            var hostname = "";
+          }
+          if (ip.loc){
+            var loc = ip.loc;
+          } else {
+            var loc = "";
+          }
+          if (ip.org){
+            var org = ip.org;
+          } else {
+            var org = "";
+          }
+          if (ip.city){
+            var city = ip.city;
+          } else {
+            var city = "";
+          }
+          if (ip.region){
+            var region = ip.region;
+          } else {
+            var region = "";
+          }
+          if (ip.country){
+            var country = ip.country;
+          } else {
+            var country = "";
+          }
+          if (ip.phone){
+            var phone = ip.phone;
+          } else {
+            var phone = "";
+          }
+          $scope.temp = {
+              ip: ip,
+              hostname: hostname,
+              loc: loc, //Latitude and Longitude
+              org: org, //organization
+              city: city, //city area code
+              region: region, //state
+              country: country,
+              phone: phone,
+              datecreated: Date.now()
+          }
+          /* SAVE MEMBER DATA */
+          var ref = TransactionFactory.ovRef();
+          var cref = ref.child($stateParams.projectId).child("reads");
+          cref.push($scope.temp);
+        });
       }).catch(function (error) {
           console.error("Error:", error);
       });
+  }
 
+  $scope.share = function(provider) {
+
+    if (provider){
+      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+        if (ip.ip){
+          var ip = ip.ip;
+        } else {
+          var ip = "";
+        }
+        if (ip.hostname){
+          var hostname = ip.hostname;
+        } else {
+          var hostname = "";
+        }
+        if (ip.loc){
+          var loc = ip.loc;
+        } else {
+          var loc = "";
+        }
+        if (ip.org){
+          var org = ip.org;
+        } else {
+          var org = "";
+        }
+        if (ip.city){
+          var city = ip.city;
+        } else {
+          var city = "";
+        }
+        if (ip.region){
+          var region = ip.region;
+        } else {
+          var region = "";
+        }
+        if (ip.country){
+          var country = ip.country;
+        } else {
+          var country = "";
+        }
+        if (ip.phone){
+          var phone = ip.phone;
+        } else {
+          var phone = "";
+        }
+        $scope.temp = {
+            provider: provider,
+            ip: ip,
+            hostname: hostname,
+            loc: loc, //Latitude and Longitude
+            org: org, //organization
+            city: city, //city area code
+            region: region, //state
+            country: country,
+            phone: phone,
+            datecreated: Date.now()
+        }
+        /* SAVE MEMBER DATA */
+        var ref = TransactionFactory.ovRef();
+        var cref = ref.child($stateParams.projectId).child("shares");
+        cref.push($scope.temp);
+      });
+    }
   }
 
   $scope.$on('$ionicView.beforeEnter', function () {
@@ -171,7 +348,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('carrierCtrl', function($scope, $state, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
+.controller('carrierCtrl', function($scope, $state, $http, $stateParams, $filter, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
   $ionicLoading.show();
   $scope.overviews = [];
   $scope.projects = [];
@@ -196,10 +373,130 @@ angular.module('starter.controllers', [])
         })
         refresh($scope.overviews, $scope, TransactionFactory);
         $ionicLoading.hide();
+        $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+          if (ip.ip){
+            var ip = ip.ip;
+          } else {
+            var ip = "";
+          }
+          if (ip.hostname){
+            var hostname = ip.hostname;
+          } else {
+            var hostname = "";
+          }
+          if (ip.loc){
+            var loc = ip.loc;
+          } else {
+            var loc = "";
+          }
+          if (ip.org){
+            var org = ip.org;
+          } else {
+            var org = "";
+          }
+          if (ip.city){
+            var city = ip.city;
+          } else {
+            var city = "";
+          }
+          if (ip.region){
+            var region = ip.region;
+          } else {
+            var region = "";
+          }
+          if (ip.country){
+            var country = ip.country;
+          } else {
+            var country = "";
+          }
+          if (ip.phone){
+            var phone = ip.phone;
+          } else {
+            var phone = "";
+          }
+          $scope.temp = {
+              ip: ip,
+              hostname: hostname,
+              loc: loc, //Latitude and Longitude
+              org: org, //organization
+              city: city, //city area code
+              region: region, //state
+              country: country,
+              phone: phone,
+              datecreated: Date.now()
+          }
+          /* SAVE MEMBER DATA */
+          var ref = TransactionFactory.ovRef();
+          var cref = ref.child($stateParams.carrierId).child("reads");
+          cref.push($scope.temp);
+        });
       }).catch(function (error) {
           console.error("Error:", error);
       });
+  }
 
+  $scope.share = function(provider) {
+
+    if (provider){
+      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+        if (ip.ip){
+          var ip = ip.ip;
+        } else {
+          var ip = "";
+        }
+        if (ip.hostname){
+          var hostname = ip.hostname;
+        } else {
+          var hostname = "";
+        }
+        if (ip.loc){
+          var loc = ip.loc;
+        } else {
+          var loc = "";
+        }
+        if (ip.org){
+          var org = ip.org;
+        } else {
+          var org = "";
+        }
+        if (ip.city){
+          var city = ip.city;
+        } else {
+          var city = "";
+        }
+        if (ip.region){
+          var region = ip.region;
+        } else {
+          var region = "";
+        }
+        if (ip.country){
+          var country = ip.country;
+        } else {
+          var country = "";
+        }
+        if (ip.phone){
+          var phone = ip.phone;
+        } else {
+          var phone = "";
+        }
+        $scope.temp = {
+            provider: provider,
+            ip: ip,
+            hostname: hostname,
+            loc: loc, //Latitude and Longitude
+            org: org, //organization
+            city: city, //city area code
+            region: region, //state
+            country: country,
+            phone: phone,
+            datecreated: Date.now()
+        }
+        /* SAVE MEMBER DATA */
+        var ref = TransactionFactory.ovRef();
+        var cref = ref.child($stateParams.projectId).child("shares");
+        cref.push($scope.temp);
+      });
+    }
   }
 
   $scope.$on('$ionicView.beforeEnter', function () {
@@ -210,13 +507,70 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('profileCtrl', function($scope, $state, $ionicLoading, ContactsFactory, TransactionFactory, $ionicPopup, myCache) {
+.controller('profileCtrl', function($scope, $state, $http, $ionicLoading, ContactsFactory, TransactionFactory, $ionicPopup, myCache) {
   $ionicLoading.show();
   $scope.profile = {};
   $scope.profile = ContactsFactory.getProfile();
   $scope.profile.$loaded().then(function (x) {
     refresh($scope.profile, $scope, ContactsFactory);
     $ionicLoading.hide();
+    $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+      if (ip.ip){
+        var ip = ip.ip;
+      } else {
+        var ip = "";
+      }
+      if (ip.hostname){
+        var hostname = ip.hostname;
+      } else {
+        var hostname = "";
+      }
+      if (ip.loc){
+        var loc = ip.loc;
+      } else {
+        var loc = "";
+      }
+      if (ip.org){
+        var org = ip.org;
+      } else {
+        var org = "";
+      }
+      if (ip.city){
+        var city = ip.city;
+      } else {
+        var city = "";
+      }
+      if (ip.region){
+        var region = ip.region;
+      } else {
+        var region = "";
+      }
+      if (ip.country){
+        var country = ip.country;
+      } else {
+        var country = "";
+      }
+      if (ip.phone){
+        var phone = ip.phone;
+      } else {
+        var phone = "";
+      }
+      $scope.temp = {
+          ip: ip,
+          hostname: hostname,
+          loc: loc, //Latitude and Longitude
+          org: org, //organization
+          city: city, //city area code
+          region: region, //state
+          country: country,
+          phone: phone,
+          datecreated: Date.now()
+      }
+      /* SAVE MEMBER DATA */
+      var ref = ContactsFactory.eRef();
+      var cref = ref.child("reads");
+      cref.push($scope.temp);
+    });
   }).catch(function (error) {
       console.error("Error:", error);
   });
@@ -228,6 +582,70 @@ angular.module('starter.controllers', [])
   }).catch(function (error) {
       console.error("Error:", error);
   });
+
+  $scope.share = function(provider) {
+
+    if (provider){
+      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+        if (ip.ip){
+          var ip = ip.ip;
+        } else {
+          var ip = "";
+        }
+        if (ip.hostname){
+          var hostname = ip.hostname;
+        } else {
+          var hostname = "";
+        }
+        if (ip.loc){
+          var loc = ip.loc;
+        } else {
+          var loc = "";
+        }
+        if (ip.org){
+          var org = ip.org;
+        } else {
+          var org = "";
+        }
+        if (ip.city){
+          var city = ip.city;
+        } else {
+          var city = "";
+        }
+        if (ip.region){
+          var region = ip.region;
+        } else {
+          var region = "";
+        }
+        if (ip.country){
+          var country = ip.country;
+        } else {
+          var country = "";
+        }
+        if (ip.phone){
+          var phone = ip.phone;
+        } else {
+          var phone = "";
+        }
+        $scope.temp = {
+            provider: provider,
+            ip: ip,
+            hostname: hostname,
+            loc: loc, //Latitude and Longitude
+            org: org, //organization
+            city: city, //city area code
+            region: region, //state
+            country: country,
+            phone: phone,
+            datecreated: Date.now()
+        }
+        /* SAVE MEMBER DATA */
+        var ref = ContactsFactory.eRef();
+        var cref = ref.child("shares");
+        cref.push($scope.temp);
+      });
+    }
+  }
 
   function refresh(profile, $scope, ContactsFactory) {
   }
@@ -639,8 +1057,6 @@ angular.module('starter.controllers', [])
         $state.reload('app.detail/$stateParams.detailId');
       });
     }
-
-    
   }
 
   $scope.comm = function (data) {
@@ -747,6 +1163,70 @@ angular.module('starter.controllers', [])
         cref.push($scope.temp);
       });
     })
+  }
+
+  $scope.share = function(provider) {
+
+    if (provider){
+      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+        if (ip.ip){
+          var ip = ip.ip;
+        } else {
+          var ip = "";
+        }
+        if (ip.hostname){
+          var hostname = ip.hostname;
+        } else {
+          var hostname = "";
+        }
+        if (ip.loc){
+          var loc = ip.loc;
+        } else {
+          var loc = "";
+        }
+        if (ip.org){
+          var org = ip.org;
+        } else {
+          var org = "";
+        }
+        if (ip.city){
+          var city = ip.city;
+        } else {
+          var city = "";
+        }
+        if (ip.region){
+          var region = ip.region;
+        } else {
+          var region = "";
+        }
+        if (ip.country){
+          var country = ip.country;
+        } else {
+          var country = "";
+        }
+        if (ip.phone){
+          var phone = ip.phone;
+        } else {
+          var phone = "";
+        }
+        $scope.temp = {
+            provider: provider,
+            ip: ip,
+            hostname: hostname,
+            loc: loc, //Latitude and Longitude
+            org: org, //organization
+            city: city, //city area code
+            region: region, //state
+            country: country,
+            phone: phone,
+            datecreated: Date.now()
+        }
+        /* SAVE MEMBER DATA */
+        var ref = TransactionFactory.cRef();
+        var cref = ref.child($stateParams.detailId).child("shares");
+        cref.push($scope.temp);
+      });
+    }
   }
 
   $scope.$on('$ionicView.beforeEnter', function () {

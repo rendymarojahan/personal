@@ -74,12 +74,12 @@
 				<div class="archive">
 					<h3>Share</h3>
 						<ul class="social-in">
-				          <li><a socialshare socialshare-provider="facebook" socialshare-text="{{detail.title}}" socialshare-title="{{detail.title}}" socialshare-description="{{detail.desc}}" socialshare-url="{{jaland}}" socialshare-media="images/logo.jpg" socialshare-via="356918818009905"><i> </i></a></li>
-				          <li><a socialshare socialshare-provider="google" socialshare-url="{{jaland}}"><i class="gmail"> </i></a></li>
-				          <li><a socialshare socialshare-provider="twitter" socialshare-text="{{detail.title}}" socialshare-hashtags="rendymarojahan, websiterendymarojahan" socialshare-url="{{jaland}}"><i class="twitter"> </i></a></li>
-				          <li><a socialshare socialshare-provider="pinterest" socialshare-text="{{detail.title}}" socialshare-url="{{jaland}}" socialshare-media="{{detail.picture}}"><i class="pin"> </i></a></li>
-				          <li><a socialshare socialshare-provider="linkedin" socialshare-text="{{detail.title}}" socialshare-url="{{jaland}}" socialshare-description="{{detail.desc}}"><i class="dribble"> </i></a></li>
-				          <li><a socialshare socialshare-provider="skype" socialshare-text="{{detail.title}}" socialshare-url="{{jaland}}"><i class="behance"> </i></a></li>
+				          <li><a ng-init="passFb='Facebook'" ng-click="share(passFb)" socialshare socialshare-provider="facebook" socialshare-text="{{detail.title}}" socialshare-title="{{detail.title}}" socialshare-description="{{detail.desc}}" socialshare-url="{{jaland}}" socialshare-media="images/logo.jpg" socialshare-via="356918818009905"><i> </i></a></li>
+				          <li><a ng-init="passGo='Google'" ng-click="share(passGo)" socialshare socialshare-provider="google" socialshare-url="{{jaland}}"><i class="gmail"> </i></a></li>
+				          <li><a ng-init="passTw='Twitter'" ng-click="share(passTw)" socialshare socialshare-provider="twitter" socialshare-text="{{detail.title}}" socialshare-hashtags="rendymarojahan, websiterendymarojahan" socialshare-url="{{jaland}}"><i class="twitter"> </i></a></li>
+				          <li><a ng-init="passPn='Pinterest'" ng-click="share(passPn)" socialshare socialshare-provider="pinterest" socialshare-text="{{detail.title}}" socialshare-url="{{jaland}}" socialshare-media="{{detail.picture}}"><i class="pin"> </i></a></li>
+				          <li><a ng-init="passLk='Linkedin'" ng-click="share(passLk)" socialshare socialshare-provider="linkedin" socialshare-text="{{detail.title}}" socialshare-url="{{jaland}}" socialshare-description="{{detail.desc}}"><i class="dribble"> </i></a></li>
+				          <li><a ng-init="passSk='Skype'" ng-click="share(passSk)" socialshare socialshare-provider="skype" socialshare-text="{{detail.title}}" socialshare-url="{{jaland}}"><i class="behance"> </i></a></li>
 				        </ul>
 				</div>
 			</div>
