@@ -56,7 +56,7 @@ angular.module('starter.services', [])
                 return deferred.promise;
             },
             getBlogs: function () {
-                ref = fb.child("blogs");
+                ref = fb.child("blogs").orderByChild("dateupdated").limitToLast(20);
                 blogsRef = $firebaseArray(ref);
                 return blogsRef;
             },

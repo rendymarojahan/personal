@@ -134,14 +134,22 @@ angular.module('starter.controllers', [])
   $scope.photo = CurrentUserService.picture;
   $scope.level = CurrentUserService.level;
   $scope.userid = myCache.get('thisMemberId');
-  $scope.notify = 0;
-  $scope.posting = 0;
-  $scope.comments = 0;
   $scope.reads = 0;
   $scope.shares = 0;
   $scope.access = 0;
+  $scope.comment = 0;
+  $scope.notify = 0;
+  $scope.posting = 0;
+  
+  
 
   $scope.doRefresh = function (){
+    $scope.reads = 0;
+    $scope.shares = 0;
+    $scope.access = 0;
+    $scope.comments = 0;
+    $scope.notify = 0;
+    $scope.posting = 0;
 
     $scope.emails = [];
     $scope.emails = TransactionFactory.getEmails();
@@ -177,6 +185,7 @@ angular.module('starter.controllers', [])
             })
             $scope.reads = total; 
           }
+          
           if (blog.comments !== undefined) {
             var total = $scope.comments;
             angular.forEach(blog.comments, function () {
@@ -184,13 +193,15 @@ angular.module('starter.controllers', [])
             })
             $scope.comments = total; 
           }
+          
           if (blog.shares !== undefined) {
             var total = $scope.shares;
             angular.forEach(blog.shares, function () {
               total++;
-            })
-            $scope.shares = total; 
+            }) 
+            $scope.shares = total;
           }
+          
       })
       refresh($scope.blogs, $scope, TransactionFactory);
     }).catch(function (error) {
@@ -215,34 +226,12 @@ angular.module('starter.controllers', [])
           juser++;
       }
       $scope.jumlahuser = juser;
+      $scope.$broadcast('scroll.refreshComplete');
     }).catch(function (error) {
         console.error("Error:", error);
     });
 
   };
-
-  $scope.emails = [];
-  $scope.emails = TransactionFactory.getEmails();
-  $scope.emails.$loaded().then(function (x) {
-    refresh($scope.emails, $scope, TransactionFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
-  $scope.blogs = [];
-  $scope.blogs = TransactionFactory.getBlogs();
-  $scope.blogs.$loaded().then(function (x) {
-    refresh($scope.blogs, $scope, TransactionFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
-
-  $scope.overviews = TransactionFactory.getAccess();
-  $scope.overviews.$loaded().then(function (x) {
-    refresh($scope.overviews, $scope, TransactionFactory);
-  }).catch(function (error) {
-      console.error("Error:", error);
-  });
 
   $scope.users = AccountsFactory.getUsers();
   $scope.users.$loaded().then(function (x) {
@@ -251,7 +240,12 @@ angular.module('starter.controllers', [])
       console.error("Error:", error);
   });
 
-  function refresh(transactions, contacts, users, $scope, item) {
+  $scope.$on('$ionicView.beforeEnter', function () {
+    refresh($scope.blogs, $scope.emails, $scope.overviews, $scope.users, $scope);
+  });
+
+  function refresh(blogs, emails, overviews, users, $scope, item) {
+    
   }
 })
 

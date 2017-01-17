@@ -120,7 +120,7 @@ angular.module('starter.controllers', [])
   $scope.overviews.$loaded().then(function (x) {
     refresh($scope.overviews, $scope, TransactionFactory);
     $ionicLoading.hide();
-    $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+    $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
       if (ip.ip){
         var ip = ip.ip;
       } else {
@@ -214,7 +214,7 @@ angular.module('starter.controllers', [])
         })
         refresh($scope.overviews, $scope, TransactionFactory);
         $ionicLoading.hide();
-        $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+        $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
           if (ip.ip){
             var ip = ip.ip;
           } else {
@@ -279,7 +279,7 @@ angular.module('starter.controllers', [])
   $scope.share = function(provider) {
 
     if (provider){
-      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+      $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
         if (ip.ip){
           var ip = ip.ip;
         } else {
@@ -373,7 +373,7 @@ angular.module('starter.controllers', [])
         })
         refresh($scope.overviews, $scope, TransactionFactory);
         $ionicLoading.hide();
-        $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+        $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
           if (ip.ip){
             var ip = ip.ip;
           } else {
@@ -438,7 +438,7 @@ angular.module('starter.controllers', [])
   $scope.share = function(provider) {
 
     if (provider){
-      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+      $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
         if (ip.ip){
           var ip = ip.ip;
         } else {
@@ -514,7 +514,7 @@ angular.module('starter.controllers', [])
   $scope.profile.$loaded().then(function (x) {
     refresh($scope.profile, $scope, ContactsFactory);
     $ionicLoading.hide();
-    $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+    $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
       if (ip.ip){
         var ip = ip.ip;
       } else {
@@ -586,7 +586,7 @@ angular.module('starter.controllers', [])
   $scope.share = function(provider) {
 
     if (provider){
-      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+      $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
         if (ip.ip){
           var ip = ip.ip;
         } else {
@@ -654,6 +654,12 @@ angular.module('starter.controllers', [])
 .controller('blogCtrl', function($scope, $state, $ionicLoading, TransactionFactory, MasterFactory, $ionicPopup, myCache) {
   $ionicLoading.show();
   $scope.doRefresh = function (){
+    $scope.healths = [];
+    $scope.politics = [];
+    $scope.sciences = [];
+    $scope.sports = [];
+    $scope.technos = [];
+    $scope.blogs = [];
 
     $scope.blogs = TransactionFactory.getBlogs();
     $scope.blogs.$loaded().then(function (x) {
@@ -686,7 +692,7 @@ angular.module('starter.controllers', [])
               })
               data.comment = total;
           }
-          $scope.politics = $scope.blog.concat($scope.politics);
+          $scope.politics.push(data);
         } else if (data.topic === "Science") {
           if (data.kind === "Blog") {
             data.class = "col-d";
@@ -715,7 +721,7 @@ angular.module('starter.controllers', [])
               })
               data.comment = total;
           }
-          $scope.sciences = $scope.blog.concat($scope.sciences);
+          $scope.sciences.push(data);
         } else if (data.topic === "Technology") {
           if (data.kind === "Blog") {
             data.class = "col-d";
@@ -744,7 +750,7 @@ angular.module('starter.controllers', [])
               })
               data.comment = total;
           }
-          $scope.technos = $scope.blog.concat($scope.technos);
+          $scope.technos.push(data);
         } else if (data.topic === "Sport") {
           if (data.kind === "Blog") {
             data.class = "col-d";
@@ -773,7 +779,7 @@ angular.module('starter.controllers', [])
               })
               data.comment = total;
           }
-          $scope.sports = $scope.blog.concat($scope.sports);
+          $scope.sports.push(data);
         } else if (data.topic === "Health") {
           if (data.kind === "Blog") {
             data.class = "col-d";
@@ -802,7 +808,7 @@ angular.module('starter.controllers', [])
               })
               data.comment = total;
           }
-          $scope.healths = $scope.blog.concat($scope.healths);
+          $scope.healths.push(data);
         }
       })
       refresh($scope.blogs, $scope, TransactionFactory);
@@ -1105,7 +1111,7 @@ angular.module('starter.controllers', [])
       }
       $scope.detail = data;
       $ionicLoading.hide();
-      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+      $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
         if (ip.ip){
           var ip = ip.ip;
         } else {
@@ -1168,7 +1174,7 @@ angular.module('starter.controllers', [])
   $scope.share = function(provider) {
 
     if (provider){
-      $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
+      $http.jsonp('https://ipinfo.io/?callback=JSON_CALLBACK').success(function(ip) {
         if (ip.ip){
           var ip = ip.ip;
         } else {
