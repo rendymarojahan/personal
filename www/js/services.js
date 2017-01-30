@@ -181,7 +181,7 @@ angular.module('starter.services', [])
                 return thisEmployee;
             },
             getProfile: function () {
-                ref = fb.child("profile").orderByKey();
+                ref = fb.child("profile").orderByChild("dateupdated").limitToLast(1);
                 profileRef = $firebaseArray(ref);
                 return profileRef;
             },
