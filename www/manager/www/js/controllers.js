@@ -1948,7 +1948,7 @@ angular.module('starter.controllers', [])
 
   $scope.takepict = function(data) {
     
-    var filesSelected = document.getElementById("0").files;
+    var filesSelected = document.getElementById(data.company).files;
     if (filesSelected.length > 0) {
       var fileToLoad = filesSelected[0];
       var fileReader = new FileReader();
@@ -1959,7 +1959,13 @@ angular.module('starter.controllers', [])
         $scope.item = {
           picture: fileLoadedEvent.target.result
         };
-        $scope.tests.fill({picture: $scope.item.picture});
+        if ($scope.tests !== undefined) {
+          angular.forEach($scope.tests, function (testi) {
+              if (testi.company == data.company) {
+                  testi.picture = $scope.item.picture;
+              }
+          })
+        }
       };
 
       fileReader.readAsDataURL(fileToLoad);

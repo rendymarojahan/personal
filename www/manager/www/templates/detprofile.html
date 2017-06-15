@@ -62,7 +62,7 @@
 	                </div>
 
 	              <label><input type="checkbox" ng-click="addtags()">Add Testimoni ?</label><br>
-	                <div ng-repeat="item in tests track by $index">
+	                <div ng-repeat="item in tests">
 	                  <div class="form-group">
   		                <label>Name * :</label>
                       <input type="text" class="form-control" ng-model="item.name" required />
@@ -78,7 +78,7 @@
 
                       <label for="picture">Picture * :</label>
                       <img ng-show="item.picture !== undefined" class="img-responsive avatar-view" src="{{ item.picture }}">
-                      <input ng-click="takepict($index)" type="file" id="0" ng-model="item.picture" required>
+                      <input ng-click="takepict(item)" type="file" id="{{item.company}}" ng-model="item.picture" required>
   		              </div>
 	                </div>
 
